@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "STMusic",
+  "name": "STMusic - Ouça milhares de músicas gratuitamente.",
   "icons": [
     {
       "src": "favicon.ico",
