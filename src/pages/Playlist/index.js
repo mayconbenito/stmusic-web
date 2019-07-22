@@ -16,7 +16,7 @@ import {
   TracksList,
 } from './styles';
 
-import { play } from '../../store/ducks/player';
+import { Creators as PlayerActions } from '../../store/ducks/player';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
 import Image from '../../components/Image';
@@ -34,6 +34,7 @@ function Playlist({
     clearPlaylist,
     requestDeletePlaylist,
   } = PlaylistActions;
+
   const playlist = useSelector(state => state.playlist);
   const dispatch = useDispatch();
 
@@ -57,6 +58,10 @@ function Playlist({
 
   const artistListRef = useBottomScrollListener(onEndReached);
 
+  function handlePlaylistPlay() {
+    dispatch(PlayerActions.fetchPlaylist(playlistId));
+  }
+
   return (
     <Content ref={artistListRef}>
       {playlist.loading && <LoadingSpinner size={120} loading={playlist.loading} />}
@@ -73,7 +78,7 @@ function Playlist({
             </HeaderContainer>
             <Buttons>
               <Button onClick={() => dispatch(requestDeletePlaylist(playlist.data.id))}>Excluir Playlist</Button>
-              <Button>Tocar Músicas</Button>
+              <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
             </Buttons>
           </Header>
 
@@ -83,7 +88,7 @@ function Playlist({
             </SectionTitle>
             <TracksList>
               {playlist.tracks.data.map(data => (
-                <TrackItem key={data.id} data={data} onClick={() => dispatch(play(data))} />
+                <TrackItem key={data.id} data={data} />
               ))}
             </TracksList>
           </Section>

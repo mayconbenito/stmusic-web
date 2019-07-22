@@ -4,9 +4,10 @@ import { connectRouter } from 'connected-react-router';
 import player from './player';
 import browse from './browse';
 import search from './search';
-import signIn from './signIn';
+import login from './login';
 import signUp from './signUp';
-import library from './library';
+import libraryArtist from './libraryArtist';
+import libraryPlaylist from './libraryPlaylist';
 import playlist from './playlist';
 import artist from './artist';
 import genre from './genre';
@@ -19,10 +20,11 @@ export default history => combineReducers({
   genre,
   artist,
   playlist,
-  library,
+  libraryArtist,
+  libraryPlaylist,
   player,
   browse,
   search,
-  signIn,
+  login,
   signUp,
 });

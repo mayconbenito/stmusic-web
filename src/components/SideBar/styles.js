@@ -50,33 +50,28 @@ export const MenuText = styled(Link)`
 `;
 
 export const Profile = styled.div`
-  display: flex;
-`;
-
-export const ProfileImage = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 100%;
-  background-color: #d99207;
-`;
-
-export const ProfileButtons = styled.div`
+  width: 100%;
+  justify-content: flex-start;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  margin-left: 5px;
 `;
 
-export const ProfileButton = styled.a`
+export const Username = styled.span`
   min-width: 100px;
   font-family: Roboto;
   font-size: 14px;
-  font-weight: 500;
   color: #d99207;
+`;
 
-  &:hover {
-    color: #d94524;
-  }
+export const LogoutButton = styled.button`
+  background-color: #141414;
+  color: #d99207;
+  border-radius: 3px;
+  margin-top: 5px;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  font-weight: 500;
 `;
 
 export const CreatePlaylist = styled.div`
@@ -88,7 +83,7 @@ export const CreatePlaylist = styled.div`
   padding-top: 5px;
 `;
 
-export const PlaylistLabel = styled.span`
+export const PlaylistLabel = styled.label`
   color: #d99207;
   font-size: 12px;
   font-weight: 500;
@@ -96,7 +91,7 @@ export const PlaylistLabel = styled.span`
 
 export const PlaylistInput = styled.input`
   height: 30px;
-  padding: 5px;
+  padding: 2px 5px;
   border-radius: 3px;
   background-color: #141414;
   border: none;

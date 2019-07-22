@@ -96,3 +96,9 @@ export const PlaylistTracks = styled.span`
   font-size: 12px;
   font-weight: 500;
 `;
+
+export const Warning = styled.span`
+  color: #d99207;
+  font-weight: 500;
+  font-size: 12px;
+`;

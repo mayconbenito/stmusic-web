@@ -1,14 +1,16 @@
 import {
   put, call, all, takeLatest,
 } from 'redux-saga/effects';
-import { Types as SearchTypes, successSearch, failureSearch } from '../ducks/search';
+import { Types as SearchTypes, Creators as SearchActions } from '../ducks/search';
 
 import api from '../../services/api';
 
-function* fetchSearch(action) {
+const { successSearch, failureSearch } = SearchActions;
+
+function* fetchSearch({ query }) {
   try {
     const token = localStorage.getItem('@STMusic:token');
-    const response = yield call(api.get, `/app/search/${action.payload.query}`, {
+    const response = yield call(api.get, `/app/search/${query}`, {
       headers: { Authorization: `Bearer ${token}` },
       params: {
         limit: 50,
@@ -16,12 +18,12 @@ function* fetchSearch(action) {
       },
     });
 
-    yield put(successSearch(response.data));
+    yield put(successSearch(response.data.results));
   } catch (err) {
     yield put(failureSearch(err));
   }
 }
 
-export default function* artistSaga() {
-  yield all([takeLatest(SearchTypes.REQUEST_SEARCH, fetchSearch)]);
+export default function* searchSaga() {
+  yield all([takeLatest(SearchTypes.FETCH_SEARCH, fetchSearch)]);
 }

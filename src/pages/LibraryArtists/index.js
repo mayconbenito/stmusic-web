@@ -8,14 +8,16 @@ import {
   ArtistInfo,
   ArtistName,
   ArtistFollowers,
+  Warning,
 } from './styles';
 
-import { Creators as LibraryActions } from '../../store/ducks/library';
+import { Creators as LibraryArtistActions } from '../../store/ducks/libraryArtist';
 import Image from '../../components/Image';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 function LibraryArtists({ history }) {
-  const { fetchArtists, clearArtists } = LibraryActions;
-  const library = useSelector(state => state.library);
+  const { fetchArtists, clearArtists } = LibraryArtistActions;
+  const libraryArtist = useSelector(state => state.libraryArtist);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -27,17 +29,21 @@ function LibraryArtists({ history }) {
   }, []);
 
   const onEndReached = useCallback(() => {
-    if (library.artist.total > library.artist.data.length) {
-      dispatch(fetchArtists(library.artist.page));
+    if (libraryArtist.total > libraryArtist.data.length) {
+      dispatch(fetchArtists(libraryArtist.page));
     }
-  }, [library.artist.page, library.artist.total]);
+  }, [libraryArtist.page, libraryArtist.total]);
 
   const artistListRef = useBottomScrollListener(onEndReached);
 
   return (
     <ArtistList ref={artistListRef}>
+      { libraryArtist.data.length === 0 && !libraryArtist.loading && <Warning>Você ainda nao segue nenhum artista.</Warning> }
       {
-        library.artist.data.map(data => (
+        libraryArtist.data.length === 0 && libraryArtist.loading && <LoadingSpinner loading={libraryArtist.loading} size={40} />
+      }
+      {
+        libraryArtist.data.map(data => (
           <ArtistItem key={data.id}>
             <Image src={data.picture} style={{ width: 80, height: 80, borderRadius: '100%' }} onClick={() => history.push(`/artists/${data.id}`)} />
             <ArtistInfo>

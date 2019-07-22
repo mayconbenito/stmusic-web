@@ -78,7 +78,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 260px;
-  height: 129px;
+  height: 146px;
   margin-right: 5px;
   margin-bottom: 5px;
   position: relative;

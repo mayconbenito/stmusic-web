@@ -1,9 +1,13 @@
-export const Types = {
-  REQUEST_SEARCH: 'browse/REQUEST_SEARCH',
-  SUCCESS_SEARCH: 'browse/SUCCESS_SEARCH',
-  FAILURE_SEARCH: 'browse/FAILURE_SEARCH',
-  CLEAR_SEARCH: 'browse/CLEAR_SEARCH',
-};
+import { createActions, createReducer } from 'reduxsauce';
+
+export const { Types, Creators } = createActions({
+  fetchSearch: ['query'],
+  successSearch: ['data'],
+  failureSearch: ['error'],
+  clearSearch: [],
+}, {
+  prefix: 'search/',
+});
 
 const initialState = {
   data: {
@@ -13,54 +17,25 @@ const initialState = {
   loading: false,
 };
 
-export default function reducer(state = initialState, action) {
-  switch (action.type) {
-    case Types.REQUEST_SEARCH:
-      return { ...state, loading: true };
-    case Types.SUCCESS_SEARCH:
-      return {
-        ...state,
-        data: action.payload.data,
-        loading: false,
-      };
-    case Types.FAILURE_SEARCH:
-      return { ...state, loading: false };
-    case Types.CLEAR_SEARCH:
-      return { ...state, data: { artists: [], tracks: [] }, loading: true };
-    default:
-      return state;
-  }
-}
+const fetchSearch = (state = initialState) => ({ ...state, loading: true });
 
-export function fetchSearch(query) {
-  return {
-    type: Types.REQUEST_SEARCH,
-    payload: {
-      query,
-    },
-  };
-}
+const successSearch = (state = initialState, action) => ({
+  ...state,
+  data: action.data,
+  loading: false,
+});
 
-export function successSearch(data) {
-  return {
-    type: Types.SUCCESS_SEARCH,
-    payload: {
-      data: data.results,
-    },
-  };
-}
+const failureSearch = (state = initialState) => ({ ...state, loading: false });
 
-export function failureSearch(error) {
-  return {
-    type: Types.FAILURE_SEARCH,
-    payload: {
-      error,
-    },
-  };
-}
+const clearSearch = (state = initialState) => ({
+  ...state,
+  data: { artists: [], tracks: [] },
+  loading: true,
+});
 
-export function clearSearch() {
-  return {
-    type: Types.CLEAR_SEARCH,
-  };
-}
+export default createReducer(initialState, {
+  [Types.FETCH_SEARCH]: fetchSearch,
+  [Types.SUCCESS_SEARCH]: successSearch,
+  [Types.FAILURE_SEARCH]: failureSearch,
+  [Types.CLEAR_SEARCH]: clearSearch,
+});

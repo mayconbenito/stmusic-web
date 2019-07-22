@@ -13,10 +13,10 @@ import {
 import TrackItem from '../../components/TrackItem';
 import ArtistItem from '../../components/ArtistItem';
 
-import { fetchSearch, clearSearch } from '../../store/ducks/search';
-import { play } from '../../store/ducks/player';
+import { Creators as SearchActions } from '../../store/ducks/search';
 
 function Search({ history }) {
+  const { fetchSearch, clearSearch } = SearchActions;
   const search = useSelector(state => state.search);
   const dispatch = useDispatch();
 
@@ -45,7 +45,7 @@ function Search({ history }) {
             <SectionTitle>Músicas</SectionTitle>
             <SectionItems>
               {
-                search.data.tracks.map(data => <TrackItem key={data.id} data={data} onClick={() => dispatch(play(data))} /> )
+                search.data.tracks.map(data => <TrackItem key={data.id} data={data} /> )
               }
             </SectionItems>
           </Section>

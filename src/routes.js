@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import { history } from './store';
 
-import SignIn from './pages/SignIn';
+import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
 import Search from './pages/Search';
@@ -36,13 +36,13 @@ const PrivateRoute = (Component) => {
       </React.Fragment>
     );
   }
-  return <Redirect to="/sign-in" />;
+  return <Redirect to="/login" />;
 };
 
 const Routes = () => (
   <ConnectedRouter history={history}>
     <Switch>
-      <Route path="/sign-in" component={SignIn} />
+      <Route path="/login" component={Login} />
       <Route path="/sign-up" component={SignUp} />
       <PrivateRoute path="/" exact component={Home} />
       <PrivateRoute path="/search" component={Search} />

@@ -16,6 +16,7 @@ import {
   PlaylistInfo,
   PlaylistTitle,
   PlaylistTracks,
+  Warning,
 } from './styles';
 
 import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
@@ -64,46 +65,42 @@ function PlaylistModal() {
   return (
     <Container id="container" onClick={handleCloseModalFromContainer}>
       <Modal>
-        { playlistModal.playlists.loading && playlistModal.playlists.data.length === 0 && (
-          <LoadingSpinner size={48} loading={playlistModal.playlists.loading} />
-        )}
-        {
-          playlistModal.playlists.data.length > 0 && (
-            <React.Fragment>
-              <Header>
-                <HeaderTitle>Salvar em</HeaderTitle>
-                <HeaderButton onClick={handleCloseModal}>
-                  <MdClear size={18} color="#d99207" />
-                </HeaderButton>
-              </Header>
-              <Body>
-                <Playlists ref={playlistListRef}>
-                  {
-                    playlistModal.playlists.data.map(playlist => (
-                      <PlaylistItem key={playlist.id} onClick={() => handleAddTrack(playlist.id)}>
-                        <PlaylistOpacity />
-                        <Image
-                          src={playlist.picture}
-                          style={{
-                            borderWidth: 1,
-                            borderColor: '#d99207',
-                            borderStyle: 'solid',
-                            width: 170,
-                            height: 80,
-                          }}
-                        />
-                        <PlaylistInfo>
-                          <PlaylistTitle>
-                            {playlist.name}
-                          </PlaylistTitle>
-                          <PlaylistTracks>{`${playlist.tracks} Músicas`}</PlaylistTracks>
-                        </PlaylistInfo>
-                      </PlaylistItem>
-                    ))}
-                </Playlists>
-              </Body>
-            </React.Fragment>
-          )}
+        <Header>
+          <HeaderTitle>Salvar em</HeaderTitle>
+          <HeaderButton onClick={handleCloseModal}>
+            <MdClear size={18} color="#d99207" />
+          </HeaderButton>
+        </Header>
+        <Body>
+          <Playlists ref={playlistListRef}>
+            { playlistModal.playlists.data.length === 0 && !playlistModal.playlists.loading && <Warning>Você ainda não tem nenhuma playlist.</Warning> }
+            { playlistModal.playlists.loading && playlistModal.playlists.data.length === 0 && (
+              <LoadingSpinner size={48} loading={playlistModal.playlists.loading} />
+            )}
+            {
+              playlistModal.playlists.data.map(playlist => (
+                <PlaylistItem key={playlist.id} onClick={() => handleAddTrack(playlist.id)}>
+                  <PlaylistOpacity />
+                  <Image
+                    src={playlist.picture}
+                    style={{
+                      borderWidth: 1,
+                      borderColor: '#d99207',
+                      borderStyle: 'solid',
+                      width: 170,
+                      height: 95,
+                    }}
+                  />
+                  <PlaylistInfo>
+                    <PlaylistTitle>
+                      {playlist.name}
+                    </PlaylistTitle>
+                    <PlaylistTracks>{`${playlist.tracks} Músicas`}</PlaylistTracks>
+                  </PlaylistInfo>
+                </PlaylistItem>
+              ))}
+          </Playlists>
+        </Body>
       </Modal>
     </Container>
   );

@@ -15,8 +15,6 @@ import {
   TracksList,
 } from './styles';
 
-import { play } from '../../store/ducks/player';
-
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
 import Image from '../../components/Image';
@@ -82,7 +80,6 @@ function Genre({
                 <TrackItem
                   key={data.id}
                   data={data}
-                  onClick={() => dispatch(play(data))}
                   style={{ marginBottom: 5 }}
                 />
               ))}

@@ -67,7 +67,7 @@ export const GenreTitle = styled.span`
 export const GenreItem = styled.div`
   display: flex;
   width: 260px;
-  height: 129px;
+  height: 146px;
   margin-right: 5px;
   margin-bottom: 5px;
   justify-content: center;
@@ -77,6 +77,6 @@ export const GenreItem = styled.div`
 
 export const GenreImage = styled.div`
   width: 260px;
-  height: 129px;
+  height: 146px;
   background-color: #4d120f;
 `;

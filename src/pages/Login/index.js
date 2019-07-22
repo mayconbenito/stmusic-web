@@ -4,10 +4,10 @@ import { useAlert } from 'react-alert';
 
 import * as yup from 'yup';
 
-import { requestSignIn } from '../../store/ducks/signIn';
+import { Creators as LoginActions } from '../../store/ducks/login';
 
 import {
-  GlobalStyle, Container, Title, Form, Input, Button, WarningBox,
+  GlobalStyle, Container, Title, Form, Input, Submit, Button, WarningBox,
 } from './styles';
 
 const schema = yup.object().shape({
@@ -18,9 +18,10 @@ const schema = yup.object().shape({
   password: yup.string().required('Campo senha é obrigatório'),
 });
 
-function SignIn() {
+function Login() {
+  const { requestLogin } = LoginActions;
   const dispatch = useDispatch();
-  const signIn = useSelector(state => state.signIn);
+  const login = useSelector(state => state.login);
   const alert = useAlert();
 
   const [warning, setWarning] = useState(false);
@@ -28,11 +29,11 @@ function SignIn() {
 
   useLayoutEffect(
     () => {
-      if (signIn.error.length > 0) {
-        alert.show(signIn.error);
+      if (login.error.length > 0) {
+        alert.show(login.error);
       }
     },
-    [signIn.error],
+    [login.error],
   );
 
   function handleInputChange(event) {
@@ -42,11 +43,12 @@ function SignIn() {
     });
   }
 
-  async function handleSubmit() {
+  async function handleSubmit(e) {
     try {
+      e.preventDefault();
       const isValid = await schema.validate(form, { abortEarly: false });
       setWarning(false);
-      dispatch(requestSignIn(isValid));
+      dispatch(requestLogin(isValid));
     } catch (err) {
       err.inner
         .slice(0)
@@ -61,7 +63,7 @@ function SignIn() {
     <React.Fragment>
       <GlobalStyle />
       <Container>
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <Title>Entrar</Title>
           <Input
             warning={warning.path === 'email'}
@@ -81,11 +83,9 @@ function SignIn() {
             onChange={handleInputChange}
           />
 
-          <Input
-            onClick={handleSubmit}
-            type="submit"
-            value={signIn.loading ? 'Carregando...' : 'Entrar'}
-          />
+          <Submit type="submit">
+            { login.loading ? 'Carregando...' : 'Entrar' }
+          </Submit>
 
           <Button to="/sign-up">Cadastrar</Button>
           {warning && (
@@ -99,4 +99,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default Login;

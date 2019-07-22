@@ -2,28 +2,38 @@ import {
   put, call, all, takeLatest,
 } from 'redux-saga/effects';
 
-import { Types as PlayerTypes, successStream, failureStream } from '../ducks/player';
+import { Types as PlayerTypes, Creators as PlayerActions } from '../ducks/player';
 
 import api from '../../services/api';
 
-function* fetchStream(action) {
+const {
+  successPlaylist,
+} = PlayerActions;
+
+function* fetchPlaylist({ playlistId }) {
   try {
     const token = localStorage.getItem('@STMusic:token');
-    const response = yield call(api.get, `/app/stream/${action.payload.trackId}`, {
+    const response = yield call(api.get, `/app/playlists/${playlistId}/tracks`, {
       headers: { Authorization: `Bearer ${token}` },
       params: {
-        type: 'play',
+        limit: 100,
+        page: 1,
       },
     });
 
-    yield put(successStream(response.data.streamInfo.filter(item => item.audioBitrate === 48)));
-  } catch (err) {
-    yield put(failureStream(err));
+    const playlist = yield call(api.get, `/app/playlists/${playlistId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    
+
+    yield put(successPlaylist({ name: playlist.data.playlist.name, tracks: response.data.tracks }));
+  } catch (e) {
+    console.log('ERrror olayer', e);
   }
 }
 
-export default function* artistSaga() {
+export default function* playerSaga() {
   yield all([
-    takeLatest(PlayerTypes.REQUEST_STREAM, fetchStream),
+    takeLatest(PlayerTypes.FETCH_PLAYLIST, fetchPlaylist),
   ]);
 }

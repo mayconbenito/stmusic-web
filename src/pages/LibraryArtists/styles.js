@@ -30,3 +30,9 @@ export const ArtistFollowers = styled.span`
   color: #d99207;
   font-size: 10px;
 `;
+
+export const Warning = styled.span`
+  color: #d99207;
+  font-weight: 500;
+  font-size: 12px;
+`;

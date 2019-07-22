@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import {
   MdHome, MdSearch, MdFolder, MdAudiotrack,
@@ -13,12 +13,10 @@ import {
   MenuItem,
   MenuText,
   Profile,
-  ProfileImage,
-  ProfileButtons,
-  ProfileButton,
-  CreatePlaylist,
-  PlaylistLabel,
+  Username,
+  LogoutButton,
   PlaylistInput,
+  CreatePlaylist,
   CreatePlaylistButton,
 } from './styles';
 
@@ -69,19 +67,18 @@ function SideBar() {
       </Header>
 
       <CreatePlaylist>
-        <PlaylistLabel>Criar playlist</PlaylistLabel>
-        <PlaylistInput value={playlistInput} onChange={handlePlaylistName} placeholder="Nome da playlist" />
+        <PlaylistInput id="playlistInput" value={playlistInput} onChange={handlePlaylistName} placeholder="Nome da playlist" />
         <CreatePlaylistButton onClick={handleSubmitPlaylist}>
           Criar Playlist
         </CreatePlaylistButton>
       </CreatePlaylist>
 
       <Profile>
-        <ProfileImage />
-        <ProfileButtons>
-          <ProfileButton href="#">{user.name}</ProfileButton>
-          <ProfileButton onClick={logout} href="#">Sair</ProfileButton>
-        </ProfileButtons>
+        <Username href="#">
+          Bem Vindo,
+          <strong>{` ${user.name}`}</strong>
+        </Username>
+        <LogoutButton onClick={logout} href="#">Sair</LogoutButton>
       </Profile>
     </Container>
   );

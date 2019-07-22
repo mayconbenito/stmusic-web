@@ -23,7 +23,7 @@ export const Title = styled.h1`
   margin-bottom: 15px;
 `;
 
-export const Form = styled.div`
+export const Form = styled.form`
   display: flex;
   flex-direction: column;
 `;
@@ -43,10 +43,20 @@ export const Input = styled.input`
   &::placeholder {
     color: #d99207;
   }
+`;
 
-  &[type='submit'] {
-    cursor: pointer;
-  }
+export const Submit = styled.button`
+  min-width: 300px;
+  height: 35px;
+  padding: 3px 5px;
+  border: none;
+  background-color: #000;
+  color: #d99207;
+  margin-bottom: 5px;
+  border-radius: 3px;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: ${props => (props.warning ? '1px solid #d99207' : 'none')};
 `;
 
 export const Button = styled(Link)`

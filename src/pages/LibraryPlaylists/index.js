@@ -10,16 +10,19 @@ import {
   PlaylistName,
   PlaylistTracks,
   PlaylistButton,
+  Warning,
 } from './styles';
 
 import Image from '../../components/Image';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
-import { Creators as LibraryActions } from '../../store/ducks/library';
+
+import { Creators as LibraryPlaylistActions } from '../../store/ducks/libraryPlaylist';
 import { Creators as PlaylistActions } from '../../store/ducks/playlist';
 
 function LibraryPlaylists({ history }) {
-  const { fetchPlaylists, clearPlaylists } = LibraryActions;
-  const library = useSelector(state => state.library);
+  const { fetchPlaylists, clearPlaylists } = LibraryPlaylistActions;
+  const LibraryPlaylist = useSelector(state => state.libraryPlaylist);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,21 +34,24 @@ function LibraryPlaylists({ history }) {
   }, []);
 
   const onEndReached = useCallback(() => {
-    if (library.playlist.total > library.playlist.data.length) {
-      dispatch(fetchPlaylists(library.playlist.page));
+    if (LibraryPlaylist.total > LibraryPlaylist.data.length) {
+      dispatch(fetchPlaylists(LibraryPlaylist.page));
     }
-  }, [library.playlist.page, library.playlist.total]);
+  }, [LibraryPlaylist.page, LibraryPlaylist.total]);
 
   const playlistListRef = useBottomScrollListener(onEndReached);
 
   return (
     <PlaylistList ref={playlistListRef}>
-
-      { library.playlist.data.map(playlist => (
+      { LibraryPlaylist.data.length === 0 && !LibraryPlaylist.loading && <Warning>Você ainda nao tem nenhuma playlist.</Warning> }
+      {
+        LibraryPlaylist.data.length === 0 && LibraryPlaylist.loading && <LoadingSpinner loading={LibraryPlaylist.loading} size={40} />
+      }
+      { LibraryPlaylist.data.map(playlist => (
         <PlaylistItem key={playlist.id}>
           <Image
             src={playlist.picture}
-            style={{ width: 180, height: 90 }}
+            style={{ width: 160, height: 90 }}
             onClick={() => history.push(`/playlists/${playlist.id}`)}
           />
 

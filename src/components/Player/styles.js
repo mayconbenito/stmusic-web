@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Img from 'react-image';
 
 export const Container = styled.div`
   position: fixed;
@@ -20,16 +19,9 @@ export const TrackInfo = styled.div`
   flex: 1;
 `;
 
-export const TrackImage = styled(Img)`
-  width: 130px;
-  height: 60px;
-  border-radius: 3px;
-  background-color: #d99207;
-`;
-
 export const TrackTexts = styled.div`
   display: flex;
-  width: 130px;
+  width: 160px;
   flex-direction: column;
   justify-content: center;
   margin-left: 5px;

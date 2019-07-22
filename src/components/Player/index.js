@@ -8,12 +8,11 @@ import {
 
 import { Player as VideoPlayer } from 'video-react';
 
-import { Types as PlayerTypes, fetchStream } from '../../store/ducks/player';
+import { Types as PlayerTypes, Creators as PlayerActions } from '../../store/ducks/player';
 
 import {
   Container,
   TrackInfo,
-  TrackImage,
   TrackTexts,
   TrackName,
   ArtistName,
@@ -28,7 +27,16 @@ import {
   VolumeBar,
 } from './styles';
 
+import Image from '../Image';
+
+import api from '../../services/api';
+
 function Player() {
+
+
+  const { ended } = PlayerActions;
+
+
   const [currentTime, setCurrentTime] = useState('00:00');
   const [duration, setDuration] = useState('00:00');
   const [playerSrc, setPlayerSrc] = useState('https://sample-videos.com/audio/mp3/wave.mp3');
@@ -50,15 +58,12 @@ function Player() {
       setDuration(state.duration);
     }
 
+    if (state.ended) {
+      dispatch(ended());
+    }
+
     setCurrentTime(state.currentTime);
   }
-
-  useEffect(() => {
-    if (player.active) {
-      dispatch(fetchStream(player.active.id));
-      playerRef.current.actions.play();
-    }
-  }, [player.active.url]);
 
   useLayoutEffect(() => {
     playerRef.current.subscribeToStateChange(listener);
@@ -88,14 +93,14 @@ function Player() {
           volume={0.5}
           ref={playerRef}
           src={player.active.url || playerSrc}
-          autoPlay={false}
+          autoPlay={true}
         />
       </div>
 
       { player.active && (
         <React.Fragment>
           <TrackInfo>
-            <TrackImage src={player.active.picture} />
+            <Image src={player.active.picture} style={{ width: 130, height: 73 }} />
             <TrackTexts>
               <TrackName>{player.active.name}</TrackName>
               <ArtistName>{player.active.artist.name}</ArtistName>
@@ -110,7 +115,7 @@ function Player() {
               <Control>
                 <MdSkipPrevious size={40} color="#d99207" />
               </Control>
-              <Control onClick={() => dispatch({ type: PlayerTypes.CHANGE_STATUS })}>
+              <Control>
                 {player.isPlaying ? (
                   <MdPause size={40} color="#d99207" />
                 ) : (

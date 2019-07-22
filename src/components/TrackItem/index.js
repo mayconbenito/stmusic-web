@@ -18,7 +18,7 @@ import {
 
 import Image from '../Image';
 
-import { play } from '../../store/ducks/player';
+import { Creators as PlayerActions } from '../../store/ducks/player';
 import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
 
 function TrackItem({ data, style }) {
@@ -26,8 +26,8 @@ function TrackItem({ data, style }) {
   return (
     <Container style={style}>
       <Opacity />
-      <Image src={data.picture} style={{ width: 260, height: 129 }} />
-      <PlayButton onClick={() => dispatch(play(data))}>
+      <Image src={data.picture} style={{ width: 260, height: 146 }} />
+      <PlayButton onClick={() => dispatch(PlayerActions.play(data))}>
         <MdPlayArrow size={80} color="#d99207" />
       </PlayButton>
       <Title>{data.name}</Title>
