@@ -23,13 +23,14 @@ import {
 import { Creators as PlaylistActions } from '../../store/ducks/playlist';
 import session from '../../services/session';
 
-function SideBar() {
+function SideBar({ history }) {
   const dispatch = useDispatch();
   const [playlistInput, setPlaylistInput] = useState('');
   const { user } = session();
 
   function logout() {
     localStorage.removeItem('@STMusic:token');
+    history.push('/login');
   }
 
   function handlePlaylistName(e) {

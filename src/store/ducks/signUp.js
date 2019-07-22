@@ -1,45 +1,34 @@
-export const Types = {
-  REQUEST_SIGN_UP: 'browse/REQUEST_SIGN_UP',
-  SUCCESS_SIGN_UP: 'browse/SUCCESS_SIGN_UP',
-  FAILURE_SIGN_UP: 'browse/FAILURE_SIGN_UP',
-};
+import { createActions, createReducer } from 'reduxsauce';
+
+export const { Types, Creators } = createActions({
+  requestSignUp: ['form'],
+  successSignUp: [],
+  failureSignUp: ['error'],
+}, {
+  prefix: 'signUp/',
+});
 
 const initialState = {
   loading: false,
   error: '',
 };
 
-export default function reducer(state = initialState, action) {
-  switch (action.type) {
-    case Types.REQUEST_SIGN_UP:
-      return { ...state, loading: true, error: '' };
-    case Types.SUCCESS_SIGN_UP:
-      return {
-        ...state,
-        loading: false,
-        error: '',
-      };
-    case Types.FAILURE_SIGN_UP:
-      return { ...state, loading: false, error: action.payload.error };
-    default:
-      return state;
-  }
-}
+const requestSignUp = (state = initialState) => ({ ...state, loading: true, error: '' });
 
-export function requestSignUp(form) {
-  return {
-    type: Types.REQUEST_SIGN_UP,
-    payload: {
-      form,
-    },
-  };
-}
+const successSignUp = (state = initialState) => ({
+  ...state,
+  loading: false,
+  error: '',
+});
 
-export function failureSignUp(error) {
-  return {
-    type: Types.FAILURE_SIGN_UP,
-    payload: {
-      error,
-    },
-  };
-}
+const failureSignUp = (state = initialState, action) => ({
+  ...state,
+  loading: false,
+  error: action.error,
+});
+
+export default createReducer(initialState, {
+  [Types.REQUEST_SIGN_UP]: requestSignUp,
+  [Types.SUCCESS_SIGN_UP]: successSignUp,
+  [Types.FAILURE_SIGN_UP]: failureSignUp,
+});

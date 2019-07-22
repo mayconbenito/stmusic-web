@@ -2,15 +2,20 @@ import {
   put, call, all, takeLatest,
 } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
-import { Types as SignUpTypes, failureSignUp } from '../ducks/signUp';
-
+import { Types as SignUpTypes, Creators as SignUpActions } from '../ducks/signUp';
 
 import api from '../../services/api';
 
+const {
+  successSignUp,
+  failureSignUp,
+} = SignUpActions;
+
 function* requestSignUp(action) {
   try {
-    const response = yield call(api.post, '/app/register', { ...action.payload.form });
+    const response = yield call(api.post, '/app/register', { ...action.form });
 
+    yield put(successSignUp());
     localStorage.setItem('@STMusic:token', response.data.jwt);
     yield put(push('/'));
   } catch (err) {
@@ -24,6 +29,6 @@ function* requestSignUp(action) {
   }
 }
 
-export default function* artistSaga() {
+export default function* signUpSaga() {
   yield all([takeLatest(SignUpTypes.REQUEST_SIGN_UP, requestSignUp)]);
 }

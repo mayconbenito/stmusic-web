@@ -4,10 +4,10 @@ import { useAlert } from 'react-alert';
 
 import * as yup from 'yup';
 
-import { requestSignUp } from '../../store/ducks/signUp';
+import { Creators as SignUpActions } from '../../store/ducks/signUp';
 
 import {
-  GlobalStyle, Container, Title, Form, Input, Button, WarningBox,
+  GlobalStyle, Container, Title, Form, Input, Submit, Button, WarningBox,
 } from './styles';
 
 const schema = yup.object().shape({
@@ -20,6 +20,9 @@ const schema = yup.object().shape({
 });
 
 function SignUp() {
+  const {
+    requestSignUp,
+  } = SignUpActions;
   const dispatch = useDispatch();
   const signUp = useSelector(state => state.signUp);
   const alert = useAlert();
@@ -43,8 +46,9 @@ function SignUp() {
     });
   }
 
-  async function handleSubmit() {
+  async function handleSubmit(e) {
     try {
+      e.preventDefault();
       const isValid = await schema.validate(form, { abortEarly: false });
       setWarning(false);
       dispatch(requestSignUp(isValid));
@@ -62,7 +66,7 @@ function SignUp() {
     <React.Fragment>
       <GlobalStyle />
       <Container>
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <Title>Registrar</Title>
           <Input
             warning={warning.path === 'name'}
@@ -91,13 +95,11 @@ function SignUp() {
             onChange={handleInputChange}
           />
 
-          <Input
-            onClick={handleSubmit}
-            type="submit"
-            value={signUp.loading ? 'Carregando...' : 'Cadastrar'}
-          />
+          <Submit type="submit">
+            {signUp.loading ? 'Carregando...' : 'Cadastrar'}
+          </Submit>
 
-          <Button to="/sign-in">Fazer Login</Button>
+          <Button to="/login">Fazer Login</Button>
           {warning && (
             <WarningBox>
               <span>{warning.message}</span>

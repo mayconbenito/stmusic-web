@@ -54,7 +54,7 @@ const successTracks = (state = initialState, action) => ({
   },
 });
 
-const failureTracks = (state = initialState) => ({ ...state, loading: false })
+const failureTracks = (state = initialState) => ({ ...state, loading: false });
 
 const clearArtist = () => ({
   ...initialState,

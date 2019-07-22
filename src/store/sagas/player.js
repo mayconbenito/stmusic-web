@@ -24,11 +24,10 @@ function* fetchPlaylist({ playlistId }) {
     const playlist = yield call(api.get, `/app/playlists/${playlistId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    
 
     yield put(successPlaylist({ name: playlist.data.playlist.name, tracks: response.data.tracks }));
-  } catch (e) {
-    console.log('ERrror olayer', e);
+  } catch (err) {
+    console.log(err);
   }
 }
 

@@ -10,12 +10,14 @@ import api from '../../services/api';
 
 const {
   failureLogin,
+  successLogin,
 } = LoginActions;
 
 export function* requestLogin({ form }) {
   try {
     const response = yield call(api.post, '/app/sessions', { ...form });
 
+    yield put(successLogin());
     localStorage.setItem('@STMusic:token', response.data.jwt);
     yield put(push('/'));
   } catch (err) {

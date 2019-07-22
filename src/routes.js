@@ -29,7 +29,7 @@ const PrivateRoute = (Component) => {
   if (session()) {
     return (
       <React.Fragment>
-        <SideBar />
+        <SideBar history={history} />
         <Player />
         <Route {...Component} />
         { playlistModal.open && <PlaylistModal /> }
