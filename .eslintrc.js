@@ -32,5 +32,6 @@ module.exports = {
     "jsx-a11y/media-has-caption": "off",
     "react/prop-types": "off",
     "no-restricted-globals": "off",
+    "radix": "off"
   }
 };
