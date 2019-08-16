@@ -17,16 +17,20 @@ const {
   failureArtist,
   successTracks,
   failureTracks,
+  successFollowArtist,
+  successUnfollowArtist,
 } = ArtistActions;
 
 function* fetchArtist({ artistId }) {
   try {
-    const token = localStorage.getItem('@STMusic:token');
-    const response = yield call(api.get, `/app/artists/${artistId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = yield call(api.get, `/app/artists/${artistId}`);
 
-    yield put(successArtist(response.data.artist));
+    const followingState = yield call(api.get, `/app/me/following/artists/contains?artists=${artistId}`);
+
+    yield put(successArtist({
+      ...response.data.artist,
+      followingState: followingState.data.artists.find(itemId => itemId === parseInt(artistId)),
+    }));
   } catch (err) {
     yield put(failureArtist(err));
   }
@@ -34,9 +38,7 @@ function* fetchArtist({ artistId }) {
 
 function* fetchTracks({ page = 1, artistId }) {
   try {
-    const token = localStorage.getItem('@STMusic:token');
     const response = yield call(api.get, `/app/artists/${artistId}/tracks`, {
-      headers: { Authorization: `Bearer ${token}` },
       params: {
         page,
       },
@@ -48,9 +50,41 @@ function* fetchTracks({ page = 1, artistId }) {
   }
 }
 
+function* followArtist({ artistId }) {
+  try {
+    const response = yield call(api.put, '/app/me/following/artists', {
+      artists: [parseInt(artistId)],
+    });
+
+    if (response.status === 204) {
+      yield put(successFollowArtist());
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function* unfollowArtist({ artistId }) {
+  try {
+    const response = yield call(api.delete, '/app/me/following/artists', {
+      data: {
+        artists: [parseInt(artistId)],
+      },
+    });
+
+    if (response.status === 204) {
+      yield put(successUnfollowArtist());
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export default function* artistSaga() {
   yield all([
     takeLatest(ArtistTypes.FETCH_ARTIST, fetchArtist),
     takeLatest(ArtistTypes.FETCH_TRACKS, fetchTracks),
+    takeLatest(ArtistTypes.FOLLOW_ARTIST, followArtist),
+    takeLatest(ArtistTypes.UNFOLLOW_ARTIST, unfollowArtist),
   ]);
 }

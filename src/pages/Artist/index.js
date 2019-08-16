@@ -27,7 +27,9 @@ function Artist({
     params: { artistId },
   },
 }) {
-  const { fetchArtist, fetchTracks, clearArtist } = ArtistActions;
+  const {
+    fetchArtist, fetchTracks, clearArtist, followArtist, unfollowArtist,
+  } = ArtistActions;
   const artist = useSelector(state => state.artist);
   const dispatch = useDispatch();
 
@@ -51,6 +53,14 @@ function Artist({
 
   const artistListRef = useBottomScrollListener(onEndReached);
 
+  function handleFollowing() {
+    if (artist.data.followingState) {
+      dispatch(unfollowArtist(artistId));
+    } else {
+      dispatch(followArtist(artistId));
+    }
+  }
+
   return (
     <Content ref={artistListRef}>
       {artist.loading && <LoadingSpinner size={120} loading={artist.loading} />}
@@ -70,7 +80,7 @@ function Artist({
               </HeaderInfo>
             </HeaderContainer>
             <Buttons>
-              <Button>Seguir</Button>
+              <Button onClick={handleFollowing}>{artist.data.followingState ? 'Seguindo' : 'Seguir'}</Button>
               <Button>Tocar Músicas</Button>
             </Buttons>
           </Header>

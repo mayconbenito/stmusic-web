@@ -8,6 +8,10 @@ export const { Types, Creators } = createActions({
   successTracks: ['data'],
   failureTracks: ['error'],
   clearArtist: [],
+  followArtist: ['artistId'],
+  unfollowArtist: ['artistId'],
+  successUnfollowArtist: ['data'],
+  successFollowArtist: ['data'],
 }, {
   prefix: 'artist/',
 });
@@ -19,6 +23,7 @@ const initialState = {
     followers: 0,
     tracks: 0,
     picture: '',
+    followingState: true,
   },
   tracks: {
     loading: true,
@@ -60,6 +65,29 @@ const clearArtist = () => ({
   ...initialState,
 });
 
+const followArtist = (state = initialState) => ({
+  ...state,
+});
+
+const unfollowArtist = (state = initialState) => ({
+  ...state,
+});
+
+const successFollowArtist = (state = initialState) => ({
+  ...state,
+  data: {
+    ...state.data,
+    followingState: true,
+  },
+});
+
+const successUnfollowArtist = (state = initialState) => ({
+  ...state,
+  data: {
+    ...state.data,
+    followingState: false,
+  },
+});
 
 export default createReducer(initialState, {
   [Types.FETCH_ARTIST]: fetchArtist,
@@ -69,4 +97,8 @@ export default createReducer(initialState, {
   [Types.SUCCESS_TRACKS]: successTracks,
   [Types.FAILURE_TRACKS]: failureTracks,
   [Types.CLEAR_ARTIST]: clearArtist,
+  [Types.FOLLOW_ARTIST]: followArtist,
+  [Types.UNFOLLOW_ARTIST]: unfollowArtist,
+  [Types.SUCCESS_FOLLOW_ARTIST]: successFollowArtist,
+  [Types.SUCCESS_UNFOLLOW_ARTIST]: successUnfollowArtist,
 });
