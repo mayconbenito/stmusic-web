@@ -21,6 +21,7 @@ import TrackItem from '../../components/TrackItem';
 import Image from '../../components/Image';
 
 import { Creators as ArtistActions } from '../../store/ducks/artist';
+import { Creators as PlayerActions } from '../../store/ducks/player';
 
 function Artist({
   match: {
@@ -30,6 +31,9 @@ function Artist({
   const {
     fetchArtist, fetchTracks, clearArtist, followArtist, unfollowArtist,
   } = ArtistActions;
+  const {
+    fetchPlaylist,
+  } = PlayerActions;
   const artist = useSelector(state => state.artist);
   const dispatch = useDispatch();
 
@@ -61,6 +65,10 @@ function Artist({
     }
   }
 
+  function handlePlaylistPlay() {
+    dispatch(PlayerActions.fetchPlaylist(artistId, 'artists'));
+  }
+
   return (
     <Content ref={artistListRef}>
       {artist.loading && <LoadingSpinner size={120} loading={artist.loading} />}
@@ -81,7 +89,7 @@ function Artist({
             </HeaderContainer>
             <Buttons>
               <Button onClick={handleFollowing}>{artist.data.followingState ? 'Seguindo' : 'Seguir'}</Button>
-              <Button>Tocar Músicas</Button>
+              <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
             </Buttons>
           </Header>
 

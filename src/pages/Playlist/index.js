@@ -59,7 +59,7 @@ function Playlist({
   const artistListRef = useBottomScrollListener(onEndReached);
 
   function handlePlaylistPlay() {
-    dispatch(PlayerActions.fetchPlaylist(playlistId));
+    dispatch(PlayerActions.fetchPlaylist(playlistId, 'playlists'));
   }
 
   return (

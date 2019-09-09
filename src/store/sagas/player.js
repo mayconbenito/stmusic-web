@@ -1,5 +1,5 @@
 import {
-  put, call, all, takeLatest,
+  put, call, all, takeLatest, select
 } from 'redux-saga/effects';
 
 import { Types as PlayerTypes, Creators as PlayerActions } from '../ducks/player';
@@ -10,22 +10,31 @@ const {
   successPlaylist,
 } = PlayerActions;
 
-function* fetchPlaylist({ playlistId }) {
+function* fetchPlaylist({ playlistId, playlistType }) {
   try {
-    const token = localStorage.getItem('@STMusic:token');
-    const response = yield call(api.get, `/app/playlists/${playlistId}/tracks`, {
-      headers: { Authorization: `Bearer ${token}` },
+    const response = yield call(api.get, `/app/${playlistType}/${playlistId}/tracks`, {
       params: {
         limit: 100,
         page: 1,
       },
     });
 
-    const playlist = yield call(api.get, `/app/playlists/${playlistId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const playlist = yield call(api.get, `/app/${playlistType}/${playlistId}`);
+  
+    let name;
+    if (playlist.data.playlist) {
+      name = playlist.data.playlist.name
+    }
 
-    yield put(successPlaylist({ name: playlist.data.playlist.name, tracks: response.data.tracks }));
+    if (playlist.data.artist) {
+      name = playlist.data.artist.name
+    }
+
+    if (playlist.data.genre) {
+      name = playlist.data.genre.name
+    }
+
+    yield put(successPlaylist({ id: playlistId, name, tracks: response.data.tracks, total: response.data.meta.total, page: response.data.meta.page }));
   } catch (err) {
     console.log(err);
   }

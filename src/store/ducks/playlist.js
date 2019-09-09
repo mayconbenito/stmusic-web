@@ -5,7 +5,7 @@ export const { Types, Creators } = createActions({
   successPlaylist: ['data'],
   failurePlaylist: ['error'],
   fetchTracks: ['page', 'playlistId'],
-  successTracks: ['data'],
+  successTracks: ['data', 'total'],
   failureTracks: ['error'],
   clearPlaylist: [],
   requestDeletePlaylist: ['id'],
@@ -55,7 +55,9 @@ const successTracks = (state = initialState, action) => ({
   ...state,
   tracks: {
     loading: false,
-    data: action.data,
+    data: [...state.tracks.data, ...action.data],
+    total: action.total,
+    page: state.tracks.page + 1
   },
 });
 

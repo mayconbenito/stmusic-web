@@ -20,6 +20,7 @@ import TrackItem from '../../components/TrackItem';
 import Image from '../../components/Image';
 
 import { Creators as GenreActions } from '../../store/ducks/genre';
+import { Creators as PlayerActions } from '../../store/ducks/player';
 
 function Genre({
   match: {
@@ -50,6 +51,10 @@ function Genre({
 
   const artistListRef = useBottomScrollListener(onEndReached);
 
+  function handlePlaylistPlay() {
+    dispatch(PlayerActions.fetchPlaylist(genreId, 'genres'));
+  }
+
   return (
     <Content ref={artistListRef}>
       {genre.loading && <LoadingSpinner size={120} loading={genre.loading} />}
@@ -67,7 +72,7 @@ function Genre({
               </HeaderInfo>
             </HeaderContainer>
             <Buttons>
-              <Button>Tocar Músicas</Button>
+              <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
             </Buttons>
           </Header>
 
