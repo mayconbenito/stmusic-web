@@ -31,9 +31,6 @@ function Artist({
   const {
     fetchArtist, fetchTracks, clearArtist, followArtist, unfollowArtist,
   } = ArtistActions;
-  const {
-    fetchPlaylist,
-  } = PlayerActions;
   const artist = useSelector(state => state.artist);
   const dispatch = useDispatch();
 

@@ -10,7 +10,7 @@ import {
   GlobalStyle, Container, Title, Logo, Form, Input, Submit, Button, WarningBox,
 } from './styles';
 
-import logo from '../../images/logo.svg'
+import logo from '../../images/logo.svg';
 
 const schema = yup.object().shape({
   email: yup

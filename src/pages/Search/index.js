@@ -45,7 +45,7 @@ function Search({ history }) {
             <SectionTitle>Músicas</SectionTitle>
             <SectionItems>
               {
-                search.data.tracks.map(data => <TrackItem key={data.id} data={data} /> )
+                search.data.tracks.map(data => <TrackItem key={data.id} data={data} />)
               }
             </SectionItems>
           </Section>
@@ -67,4 +67,3 @@ function Search({ history }) {
 }
 
 export default Search;
-

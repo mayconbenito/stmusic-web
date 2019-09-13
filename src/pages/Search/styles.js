@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Img from 'react-image';
 
 export const Content = styled.div`
   position: fixed;

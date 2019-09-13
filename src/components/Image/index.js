@@ -8,11 +8,12 @@ function Loader({ style }) {
 }
 
 function Image(props) {
+  const { src, style } = props;
   return (
     <Img
       {...props}
-      src={[props.src, noImage]}
-      loader={<Loader style={props.style} />}
+      src={[src, noImage]}
+      loader={<Loader style={style} />}
     />
   );
 }

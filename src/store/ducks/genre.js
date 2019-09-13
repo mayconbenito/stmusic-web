@@ -51,11 +51,11 @@ const successTracks = (state = initialState, action) => ({
     loading: false,
     data: [...state.tracks.data, ...action.data],
     total: action.total,
-    page: state.tracks.page + 1
+    page: state.tracks.page + 1,
   },
 });
 
-const failureTracks = (state = initialState) => ({ ...state, loading: false })
+const failureTracks = (state = initialState) => ({ ...state, loading: false });
 
 const clearGenre = () => ({
   ...initialState,
