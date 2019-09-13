@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es6: true,
   },
-  extends: 'airbnb',
+  extends: ['airbnb', 'prettier'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -17,6 +17,7 @@ module.exports = {
   },
   plugins: [
     'react',
+    'prettier'
   ],
   rules: {
     "react/jsx-filename-extension": [
@@ -32,6 +33,9 @@ module.exports = {
     "jsx-a11y/media-has-caption": "off",
     "react/prop-types": "off",
     "no-restricted-globals": "off",
-    "radix": "off"
+    "radix": "off",
+    "no-underscore-dangle": "off",
+    "no-console": "off",
+    "prefer-destructuring": "off",
   }
 };
