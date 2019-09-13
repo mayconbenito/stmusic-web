@@ -10,11 +10,15 @@ export const history = createBrowserHistory();
 
 const sagaMiddleware = createSagaMiddleware();
 
+const middleware = [
+    applyMiddleware(sagaMiddleware, routerMiddleware(history)),
+    ...(window.__REDUX_DEVTOOLS_EXTENSION__ ? [window.__REDUX_DEVTOOLS_EXTENSION__()] : [])
+  ]
+
 const store = createStore(
   createRootReducer(history),
   compose(
-    applyMiddleware(sagaMiddleware, routerMiddleware(history)),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+    ...middleware
   ),
 );
 
