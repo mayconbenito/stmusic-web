@@ -7,16 +7,18 @@ import * as yup from 'yup';
 import { Creators as SignUpActions } from '../../store/ducks/signUp';
 
 import {
-  GlobalStyle, Container, Title, Form, Input, Submit, Button, WarningBox,
+  GlobalStyle, Container, Title, Logo, Form, Input, Submit, Button, WarningBox,
 } from './styles';
 
+import logo from '../../images/logo.svg';
+
 const schema = yup.object().shape({
-  name: yup.string().required('Campo nome é obrigatório'),
+  name: yup.string().required('Nome é obrigatório'),
   email: yup
     .string()
     .email('Formato de email invalido')
-    .required('Campo email é obrigatório'),
-  password: yup.string().required('Campo senha é obrigatório'),
+    .required('Email é obrigatório'),
+  password: yup.string().required('Senha é obrigatória'),
 });
 
 function SignUp() {
@@ -67,6 +69,7 @@ function SignUp() {
       <GlobalStyle />
       <Container>
         <Form onSubmit={handleSubmit}>
+          <Logo src={logo} />
           <Title>Registrar</Title>
           <Input
             warning={warning.path === 'name'}
