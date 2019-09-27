@@ -1,4 +1,6 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import React, {
+  useState, useEffect,
+} from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -8,7 +10,7 @@ import {
 
 import Sound from 'react-sound';
 
-import { Types as PlayerTypes, Creators as PlayerActions } from '../../store/ducks/player';
+import { Creators as PlayerActions } from '../../store/ducks/player';
 
 import {
   Container,
@@ -30,47 +32,49 @@ import {
 import Image from '../Image';
 
 function Player() {
-  const { pause, resume, stop, next } = PlayerActions;
+  const {
+    pause, resume, stop, next,
+  } = PlayerActions;
 
   const player = useSelector(state => state.player);
   const dispatch = useDispatch();
 
-  const [currentTime, setCurrentTime] = useState()
-  const [duration, setDuration] = useState()
-  const [volume, setVolume] = useState(60)
+  const [currentTime, setCurrentTime] = useState();
+  const [duration, setDuration] = useState();
+  const [volume, setVolume] = useState(60);
 
   useEffect(() => {
-    setCurrentTime(0)
-    setDuration(0)
-  }, [player.active]) 
+    setCurrentTime(0);
+    setDuration(0);
+  }, [player.active]);
 
   function formatTime(millis = 0) {
     const minutes = Math.floor(millis / 60000);
     const seconds = ((millis % 60000) / 1000).toFixed(0);
 
-    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
 
-  function handleOnPlaying({ position, duration }) {
-    setCurrentTime(position)
-    setDuration(duration)
+  function handleOnPlaying({ position, duration: totalDuration }) {
+    setCurrentTime(position);
+    setDuration(totalDuration);
   }
 
   function handleVolumeChange(e) {
-    setVolume(parseInt(e.target.value))
+    setVolume(parseInt(e.target.value));
   }
 
   function streamUrl(youtubeId) {
-    return `${process.env.REACT_APP_STREAM_URL}/yt?url=${youtubeId}`
+    return `${process.env.REACT_APP_STREAM_URL}/yt?url=${youtubeId}`;
   }
 
   function handleFinishedPlaying() {
     if (player.playlist) {
-      dispatch(next())
+      dispatch(next());
       return;
     }
 
-    dispatch(stop())
+    dispatch(stop());
   }
 
   return (

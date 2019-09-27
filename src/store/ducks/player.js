@@ -7,25 +7,25 @@ export const { Types, Creators } = createActions({
   pause: [],
   resume: [],
   stop: [],
-  next: []
+  next: [],
 }, {
   prefix: 'player/',
 });
 
-const exampleState = {
-  isPlaying: false,
-  active: {
-    id: 52,
-    name: 'Song name',
-    picture: 'https://i.ytimg.com/vi/VY1eFxgRR-k/hqdefault.jpg',
-    youtubeId: '',
-    artist: {
-      name: 'Artist name',
-      picture: 'https://yt3.ggpht.com/a/AGF-l7_rwqSxaKtyb--b-sr4p_bhHgjEPaxsLVpyvw=s88-mo-c-c0xffffffff-rj-k-no'
-    },
-  },
-  playlist: false,
-};
+// const exampleState = {
+//   isPlaying: false,
+//   active: {
+//     id: 52,
+//     name: 'Song name',
+//     picture: 'https://i.ytimg.com/vi/VY1eFxgRR-k/hqdefault.jpg',
+//     youtubeId: '',
+//     artist: {
+//       name: 'Artist name',
+//       picture: 'https://yt3.ggpht.com/a/AGF-l7_rwqSxaKtyb--b-sr4p_bhHgjEPaxsLVpyvw=s88-mo-c-c0xffffffff-rj-k-no',
+//     },
+//   },
+//   playlist: false,
+// };
 
 const initialState = {
   isPlaying: 'STOPPED',
@@ -33,14 +33,12 @@ const initialState = {
   playlist: false,
 };
 
-const successPlaylist = (state = initialState, action) => {
-  return {
-    ...state,
-    isPlaying: 'PLAYING',
-    active: action.playlist.tracks[0],
-    playlist: action.playlist,
-  }
-}
+const successPlaylist = (state = initialState, action) => ({
+  ...state,
+  isPlaying: 'PLAYING',
+  active: action.playlist.tracks[0],
+  playlist: action.playlist,
+});
 
 const play = (state = initialState, action) => ({
   ...state,
@@ -49,26 +47,26 @@ const play = (state = initialState, action) => ({
   active: action.track,
 });
 
-const pause = (state = initialState, action) => ({
+const pause = (state = initialState) => ({
   ...state,
   isPlaying: 'PAUSED',
-})
+});
 
 const resume = (state = initialState) => ({
   ...state,
-  isPlaying: 'PLAYING'
-})
+  isPlaying: 'PLAYING',
+});
 
-const stop = (state = initialState, action) => ({
+const stop = (state = initialState) => ({
   ...state,
   isPlaying: 'STOPPED',
-})
+});
 
-const next = (state = initialState, action) => ({
+const next = (state = initialState) => ({
   ...state,
   isPlaying: 'PLAYING',
-  active: state.playlist.tracks[state.playlist.tracks.findIndex(i => i.id == state.active.id) + 1]
-})
+  active: state.playlist.tracks[state.playlist.tracks.findIndex(i => parseInt(i.id) === parseInt(state.active.id)) + 1],
+});
 
 export default createReducer(initialState, {
   [Types.SUCCESS_PLAYLIST]: successPlaylist,
@@ -76,5 +74,5 @@ export default createReducer(initialState, {
   [Types.PAUSE]: pause,
   [Types.RESUME]: resume,
   [Types.STOP]: stop,
-  [Types.NEXT]: next
+  [Types.NEXT]: next,
 });

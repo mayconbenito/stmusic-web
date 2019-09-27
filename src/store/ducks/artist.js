@@ -57,7 +57,7 @@ const successTracks = (state = initialState, action) => ({
     loading: false,
     data: [...state.tracks.data, ...action.data],
     total: action.total,
-    page: state.tracks.page + 1
+    page: state.tracks.page + 1,
   },
 });
 

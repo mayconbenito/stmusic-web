@@ -7,15 +7,17 @@ import * as yup from 'yup';
 import { Creators as LoginActions } from '../../store/ducks/login';
 
 import {
-  GlobalStyle, Container, Title, Form, Input, Submit, Button, WarningBox,
+  GlobalStyle, Container, Title, Logo, Form, Input, Submit, Button, WarningBox,
 } from './styles';
+
+import logo from '../../images/logo.svg';
 
 const schema = yup.object().shape({
   email: yup
     .string()
     .email('Formato de email invalido')
-    .required('Campo email é obrigatório'),
-  password: yup.string().required('Campo senha é obrigatório'),
+    .required('Email é obrigatório'),
+  password: yup.string().required('Senha é obrigatória'),
 });
 
 function Login() {
@@ -64,6 +66,7 @@ function Login() {
       <GlobalStyle />
       <Container>
         <Form onSubmit={handleSubmit}>
+          <Logo src={logo} />
           <Title>Entrar</Title>
           <Input
             warning={warning.path === 'email'}

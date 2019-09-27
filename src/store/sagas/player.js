@@ -1,5 +1,5 @@
 import {
-  put, call, all, takeLatest, select
+  put, call, all, takeLatest,
 } from 'redux-saga/effects';
 
 import { Types as PlayerTypes, Creators as PlayerActions } from '../ducks/player';
@@ -20,21 +20,23 @@ function* fetchPlaylist({ playlistId, playlistType }) {
     });
 
     const playlist = yield call(api.get, `/app/${playlistType}/${playlistId}`);
-  
+
     let name;
     if (playlist.data.playlist) {
-      name = playlist.data.playlist.name
+      name = playlist.data.playlist.name;
     }
 
     if (playlist.data.artist) {
-      name = playlist.data.artist.name
+      name = playlist.data.artist.name;
     }
 
     if (playlist.data.genre) {
-      name = playlist.data.genre.name
+      name = playlist.data.genre.name;
     }
 
-    yield put(successPlaylist({ id: playlistId, name, tracks: response.data.tracks, total: response.data.meta.total, page: response.data.meta.page }));
+    yield put(successPlaylist({
+      id: playlistId, name, tracks: response.data.tracks, total: response.data.meta.total, page: response.data.meta.page,
+    }));
   } catch (err) {
     console.log(err);
   }
