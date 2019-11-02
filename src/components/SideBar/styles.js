@@ -11,12 +11,14 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
 `;
 
 export const Header = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
+  border-bottom: 1px solid #d99207;
+  padding-bottom: 5px;
 `;
 
 export const Logo = styled.div`
@@ -29,6 +31,7 @@ export const Menu = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 5px;
+  align-items: center;
 `;
 
 export const MenuItem = styled.div`
@@ -49,38 +52,12 @@ export const MenuText = styled(Link)`
   }
 `;
 
-export const Profile = styled.div`
-  width: 100%;
-  justify-content: flex-start;
-  display: flex;
-  flex-direction: column;
-`;
-
-export const Username = styled.span`
-  min-width: 100px;
-  font-family: Roboto;
-  font-size: 14px;
-  color: #d99207;
-`;
-
-export const LogoutButton = styled.button`
-  background-color: #141414;
-  color: #d99207;
-  border-radius: 3px;
-  margin-top: 5px;
-  border: none;
-  padding: 5px;
-  cursor: pointer;
-  font-weight: 500;
-`;
-
 export const CreatePlaylist = styled.div`
   width: 100%;
   flex: 1;
   display: flex;
   flex-direction: column;
-  border-top: 1px solid #d99207;
-  padding-top: 5px;
+  padding: 5px 15px 0px 15px;
 `;
 
 export const PlaylistLabel = styled.label`
@@ -104,6 +81,32 @@ export const PlaylistInput = styled.input`
 `;
 
 export const CreatePlaylistButton = styled.button`
+  background-color: #141414;
+  color: #d99207;
+  border-radius: 3px;
+  margin-top: 5px;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  font-weight: 500;
+`;
+
+export const Profile = styled.div`
+  width: 100%;
+  justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+`;
+
+export const Username = styled.span`
+  min-width: 100px;
+  font-family: Roboto;
+  font-size: 14px;
+  color: #d99207;
+`;
+
+export const ProfileButton = styled.button`
   background-color: #141414;
   color: #d99207;
   border-radius: 3px;

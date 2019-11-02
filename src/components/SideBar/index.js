@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import {
-  MdHome, MdSearch, MdFolder, MdAudiotrack,
-} from 'react-icons/md';
+import { MdHome, MdSearch, MdFolder, MdAudiotrack } from 'react-icons/md';
 
 import {
   Container,
@@ -12,12 +10,12 @@ import {
   Menu,
   MenuItem,
   MenuText,
-  Profile,
-  Username,
-  LogoutButton,
   PlaylistInput,
   CreatePlaylist,
   CreatePlaylistButton,
+  Profile,
+  Username,
+  ProfileButton,
 } from './styles';
 
 import { Creators as PlaylistActions } from '../../store/ducks/playlist';
@@ -30,7 +28,7 @@ function SideBar({ history }) {
 
   function logout() {
     localStorage.removeItem('@STMusic:token');
-    history.push('/login');
+    window.location = '/';
   }
 
   function handlePlaylistName(e) {
@@ -50,36 +48,57 @@ function SideBar({ history }) {
         </Logo>
 
         <Menu>
-          <MenuItem>
-            <MdHome size={36} color="#d99207" />
-            <MenuText to="/">Ínicio</MenuText>
-          </MenuItem>
+          <div>
+            <MenuItem>
+              <MdHome size={36} color="#d99207" />
+              <MenuText to="/">Ínicio</MenuText>
+            </MenuItem>
 
-          <MenuItem>
-            <MdFolder size={36} color="#d99207" />
-            <MenuText to="/library/playlists">Biblioteca</MenuText>
-          </MenuItem>
+            {session() && (
+              <MenuItem>
+                <MdFolder size={36} color="#d99207" />
+                <MenuText to="/library/playlists">Biblioteca</MenuText>
+              </MenuItem>
+            )}
 
-          <MenuItem>
-            <MdSearch size={36} color="#d99207" />
-            <MenuText to="/search">Buscar</MenuText>
-          </MenuItem>
+            <MenuItem>
+              <MdSearch size={36} color="#d99207" />
+              <MenuText to="/search">Buscar</MenuText>
+            </MenuItem>
+          </div>
         </Menu>
       </Header>
 
-      <CreatePlaylist>
-        <PlaylistInput id="playlistInput" value={playlistInput} onChange={handlePlaylistName} placeholder="Nome da playlist" />
-        <CreatePlaylistButton onClick={handleSubmitPlaylist}>
-          Criar Playlist
-        </CreatePlaylistButton>
-      </CreatePlaylist>
+      {session() && (
+        <CreatePlaylist>
+          <PlaylistInput
+            id="playlistInput"
+            value={playlistInput}
+            onChange={handlePlaylistName}
+            placeholder="Nome da playlist"
+          />
+          <CreatePlaylistButton onClick={handleSubmitPlaylist}>
+            Criar Playlist
+          </CreatePlaylistButton>
+        </CreatePlaylist>
+      )}
 
       <Profile>
-        <Username href="#">
-          Bem Vindo,
-          <strong>{` ${user.name}`}</strong>
-        </Username>
-        <LogoutButton onClick={logout} href="#">Sair</LogoutButton>
+        {session() ? (
+          <>
+            <Username href="#">
+              Bem Vindo,
+              <strong>{` ${user.name}`}</strong>
+            </Username>
+            <ProfileButton onClick={logout} href="#">
+              Sair
+            </ProfileButton>
+          </>
+        ) : (
+          <ProfileButton onClick={() => history.push('/login')} href="#">
+            Fazer Login
+          </ProfileButton>
+        )}
       </Profile>
     </Container>
   );

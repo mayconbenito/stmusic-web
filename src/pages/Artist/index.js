@@ -20,6 +20,8 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
 import Image from '../../components/Image';
 
+import session from '../../services/session';
+
 import { Creators as ArtistActions } from '../../store/ducks/artist';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 
@@ -29,7 +31,11 @@ function Artist({
   },
 }) {
   const {
-    fetchArtist, fetchTracks, clearArtist, followArtist, unfollowArtist,
+    fetchArtist,
+    fetchTracks,
+    clearArtist,
+    followArtist,
+    unfollowArtist,
   } = ArtistActions;
   const artist = useSelector(state => state.artist);
   const dispatch = useDispatch();
@@ -43,14 +49,11 @@ function Artist({
     };
   }, []);
 
-  const onEndReached = useCallback(
-    () => {
-      if (artist.tracks.total > artist.tracks.data.length) {
-        dispatch(fetchTracks(artist.tracks.page, artistId));
-      }
-    },
-    [artist.tracks.page, artist.tracks.total],
-  );
+  const onEndReached = useCallback(() => {
+    if (artist.tracks.total > artist.tracks.data.length) {
+      dispatch(fetchTracks(artist.tracks.page, artistId));
+    }
+  }, [artist.tracks.page, artist.tracks.total]);
 
   const artistListRef = useBottomScrollListener(onEndReached);
 
@@ -85,14 +88,20 @@ function Artist({
               </HeaderInfo>
             </HeaderContainer>
             <Buttons>
-              <Button onClick={handleFollowing}>{artist.data.followingState ? 'Seguindo' : 'Seguir'}</Button>
+              {session() && (
+                <Button onClick={handleFollowing}>
+                  {artist.data.followingState ? 'Seguindo' : 'Seguir'}
+                </Button>
+              )}
               <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
             </Buttons>
           </Header>
 
           <Section>
             <SectionTitle>
-              {artist.tracks.data.length > 0 ? 'Músicas' : 'Nenhuma música disponível'}
+              {artist.tracks.data.length > 0
+                ? 'Músicas'
+                : 'Nenhuma música disponível'}
             </SectionTitle>
             <TracksList>
               {artist.tracks.data.map(data => (
