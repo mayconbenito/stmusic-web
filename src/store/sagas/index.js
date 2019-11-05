@@ -1,5 +1,6 @@
 import { all, fork } from 'redux-saga/effects';
 
+import album from './album';
 import genre from './genre';
 import artist from './artist';
 import browse from './browse';
@@ -14,6 +15,7 @@ import player from './player';
 
 export default function* rootSaga() {
   yield all([
+    fork(album),
     fork(genre),
     fork(artist),
     fork(browse),

@@ -1,11 +1,6 @@
-import {
-  put, call, all, takeLatest,
-} from 'redux-saga/effects';
+import { put, call, all, takeLatest } from 'redux-saga/effects';
 
-import {
-  Types as GenreTypes,
-  Creators as GenreActions,
-} from '../ducks/genre';
+import { Types as GenreTypes, Creators as GenreActions } from '../ducks/genre';
 
 import api from '../../services/api';
 
@@ -36,6 +31,7 @@ function* fetchTracks({ page = 1, genreId }) {
       headers: { Authorization: `Bearer ${token}` },
       params: {
         page,
+        limit: 100,
       },
     });
 

@@ -3,15 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { MdPlayArrow, MdPlaylistAdd } from 'react-icons/md';
 
-import {
-  Container,
-  Opacity,
-  PlayButton,
-  Title,
-  Artist,
-  ArtistName,
-  AddOnPlaylist,
-} from './styles';
+import { Container, Opacity, PlayButton, Title, AddOnPlaylist } from './styles';
 
 import Image from '../Image';
 
@@ -30,13 +22,6 @@ function TrackItem({ data, style }) {
         <MdPlayArrow size={80} color="#d99207" />
       </PlayButton>
       <Title>{data.name}</Title>
-      <Artist>
-        <Image
-          src={data.artist.picture}
-          style={{ width: 30, height: 30, borderRadius: '100%' }}
-        />
-        <ArtistName>{data.artist.name}</ArtistName>
-      </Artist>
       {session() && (
         <AddOnPlaylist
           onClick={() => dispatch(PlaylistModalActions.openModal(data.id))}

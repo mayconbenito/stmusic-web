@@ -14,6 +14,7 @@ import Library from './pages/Library';
 import Artist from './pages/Artist';
 import Playlist from './pages/Playlist';
 import Genre from './pages/Genre';
+import Album from './pages/Album';
 
 // Global Components
 import SideBar from './components/SideBar';
@@ -63,6 +64,7 @@ const Routes = () => (
       <AppRoute path="/artists/:artistId" component={Artist} />
       <PrivateRoute path="/playlists/:playlistId" component={Playlist} />
       <AppRoute path="/genres/:genreId" component={Genre} />
+      <AppRoute path="/albums/:albumId" component={Album} />
     </Switch>
   </ConnectedRouter>
 );
