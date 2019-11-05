@@ -55,25 +55,6 @@ export const Title = styled.span`
   text-align: center;
 `;
 
-export const Artist = styled.div`
-  display: flex;
-  align-items: center;
-  position: absolute;
-  top: 5px;
-  left: 5px;
-`;
-
-export const ArtistName = styled.span`
-  width: 130px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  color: #d99207;
-  font-size: 14px;
-  font-weight: 500;
-  margin-left: 5px;
-`;
-
 export const Container = styled.div`
   display: flex;
   flex-direction: column;

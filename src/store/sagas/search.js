@@ -1,7 +1,8 @@
+import { put, call, all, takeLatest } from 'redux-saga/effects';
 import {
-  put, call, all, takeLatest,
-} from 'redux-saga/effects';
-import { Types as SearchTypes, Creators as SearchActions } from '../ducks/search';
+  Types as SearchTypes,
+  Creators as SearchActions,
+} from '../ducks/search';
 
 import api from '../../services/api';
 
@@ -14,7 +15,7 @@ function* fetchSearch({ query }) {
       headers: { Authorization: `Bearer ${token}` },
       params: {
         limit: 50,
-        type: 'artist,track',
+        type: 'artist,album,track',
       },
     });
 

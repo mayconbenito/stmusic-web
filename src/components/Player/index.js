@@ -1,11 +1,13 @@
-import React, {
-  useState, useEffect,
-} from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
-  MdPlayArrow, MdPause, MdSkipPrevious, MdSkipNext, MdVolumeMute,
+  MdPlayArrow,
+  MdPause,
+  MdSkipPrevious,
+  MdSkipNext,
+  MdVolumeMute,
 } from 'react-icons/md';
 
 import Sound from 'react-sound';
@@ -32,9 +34,7 @@ import {
 import Image from '../Image';
 
 function Player() {
-  const {
-    pause, resume, stop, next,
-  } = PlayerActions;
+  const { pause, resume, stop, next } = PlayerActions;
 
   const player = useSelector(state => state.player);
   const dispatch = useDispatch();
@@ -89,13 +89,20 @@ function Player() {
         />
       </div>
 
-      { player.active && (
+      {player.active && (
         <React.Fragment>
           <TrackInfo>
-            <Image src={player.active.picture} style={{ width: 130, height: 73 }} />
+            <Image
+              src={player.active.picture}
+              style={{ width: 130, height: 73 }}
+            />
             <TrackTexts>
               <TrackName>{player.active.name}</TrackName>
-              <ArtistName>{player.active.artist.name}</ArtistName>
+              <ArtistName>
+                {player.active.artists.map(
+                  (artist, index) => (index ? ', ' : '') + artist.name
+                )}
+              </ArtistName>
             </TrackTexts>
           </TrackInfo>
 
@@ -108,12 +115,21 @@ function Player() {
                 <MdSkipPrevious size={40} color="#d99207" />
               </Control>
               <Control>
-                {
-                  player.isPlaying === 'PLAYING' && <MdPause size={40} color="#d99207" onClick={() => dispatch(pause())} />
-                }
-                {
-                  player.isPlaying === 'PLAYING' || 'STOPPED' && <MdPlayArrow size={40} color="#d99207" onClick={() => dispatch(resume())} />
-                }
+                {player.isPlaying === 'PLAYING' && (
+                  <MdPause
+                    size={40}
+                    color="#d99207"
+                    onClick={() => dispatch(pause())}
+                  />
+                )}
+                {player.isPlaying === 'PLAYING' ||
+                  ('STOPPED' && (
+                    <MdPlayArrow
+                      size={40}
+                      color="#d99207"
+                      onClick={() => dispatch(resume())}
+                    />
+                  ))}
               </Control>
               <Control onClick={() => dispatch(next())}>
                 <MdSkipNext size={40} color="#d99207" />
@@ -121,7 +137,10 @@ function Player() {
             </Controls>
             <Progress>
               <ProgressTime>{formatTime(currentTime)}</ProgressTime>
-              <ProgressBar value={(currentTime * 100) / duration || 0} max="100" />
+              <ProgressBar
+                value={(currentTime * 100) / duration || 0}
+                max="100"
+              />
               <ProgressTime>{formatTime(duration)}</ProgressTime>
             </Progress>
           </TrackMiddle>
@@ -130,7 +149,13 @@ function Player() {
             <Control>
               <MdVolumeMute size={20} color="#d99207" />
             </Control>
-            <VolumeBar onChange={handleVolumeChange} value={volume} type="range" min="0" max="100" />
+            <VolumeBar
+              onChange={handleVolumeChange}
+              value={volume}
+              type="range"
+              min="0"
+              max="100"
+            />
           </Volume>
         </React.Fragment>
       )}

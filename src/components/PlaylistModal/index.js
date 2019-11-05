@@ -73,32 +73,39 @@ function PlaylistModal() {
         </Header>
         <Body>
           <Playlists ref={playlistListRef}>
-            { playlistModal.playlists.data.length === 0 && !playlistModal.playlists.loading && <Warning>Você ainda não tem nenhuma playlist.</Warning> }
-            { playlistModal.playlists.loading && playlistModal.playlists.data.length === 0 && (
-              <LoadingSpinner size={48} loading={playlistModal.playlists.loading} />
-            )}
-            {
-              playlistModal.playlists.data.map(playlist => (
-                <PlaylistItem key={playlist.id} onClick={() => handleAddTrack(playlist.id)}>
-                  <PlaylistOpacity />
-                  <Image
-                    src={playlist.picture}
-                    style={{
-                      borderWidth: 1,
-                      borderColor: '#d99207',
-                      borderStyle: 'solid',
-                      width: 170,
-                      height: 95,
-                    }}
-                  />
-                  <PlaylistInfo>
-                    <PlaylistTitle>
-                      {playlist.name}
-                    </PlaylistTitle>
-                    <PlaylistTracks>{`${playlist.tracks} Músicas`}</PlaylistTracks>
-                  </PlaylistInfo>
-                </PlaylistItem>
-              ))}
+            {playlistModal.playlists.data.length === 0 &&
+              !playlistModal.playlists.loading && (
+                <Warning>Você ainda não tem nenhuma playlist.</Warning>
+              )}
+            {playlistModal.playlists.loading &&
+              playlistModal.playlists.data.length === 0 && (
+                <LoadingSpinner
+                  size={48}
+                  loading={playlistModal.playlists.loading}
+                />
+              )}
+            {playlistModal.playlists.data.map(playlist => (
+              <PlaylistItem
+                key={playlist.id}
+                onClick={() => handleAddTrack(playlist.id)}
+              >
+                <PlaylistOpacity />
+                <Image
+                  src={playlist.picture}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: '#141414',
+                    borderStyle: 'solid',
+                    width: 170,
+                    height: 95,
+                  }}
+                />
+                <PlaylistInfo>
+                  <PlaylistTitle>{playlist.name}</PlaylistTitle>
+                  <PlaylistTracks>{`${playlist.tracks} Músicas`}</PlaylistTracks>
+                </PlaylistInfo>
+              </PlaylistItem>
+            ))}
           </Playlists>
         </Body>
       </Modal>

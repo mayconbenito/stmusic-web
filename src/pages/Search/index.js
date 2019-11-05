@@ -11,6 +11,7 @@ import {
 } from './styles';
 
 import TrackItem from '../../components/TrackItem';
+import AlbumItem from '../../components/AlbumItem';
 import ArtistItem from '../../components/ArtistItem';
 
 import { Creators as SearchActions } from '../../store/ducks/search';
@@ -37,27 +38,50 @@ function Search({ history }) {
 
   return (
     <Content>
-      <SearchInput autoFocus onChange={handleInput} placeholder="Buscar músicas e artistas." />
+      <SearchInput
+        autoFocus
+        onChange={handleInput}
+        placeholder="Buscar artistas, albums e músicas."
+      />
 
       <SectionContainer>
-        {search.data.tracks.length > 0 && (
-          <Section>
-            <SectionTitle>Músicas</SectionTitle>
-            <SectionItems>
-              {
-                search.data.tracks.map(data => <TrackItem key={data.id} data={data} />)
-              }
-            </SectionItems>
-          </Section>
-        )}
-
         {search.data.artists.length > 0 && (
           <Section>
             <SectionTitle>Artistas</SectionTitle>
             <SectionItems>
-              {
-                search.data.artists.map(data => <ArtistItem key={data.id} data={data} onClick={() => history.push(`/artists/${data.id}`)} />)
-              }
+              {search.data.artists.map(data => (
+                <ArtistItem
+                  key={data.id}
+                  data={data}
+                  onClick={() => history.push(`/artists/${data.id}`)}
+                />
+              ))}
+            </SectionItems>
+          </Section>
+        )}
+
+        {search.data.albums.length > 0 && (
+          <Section>
+            <SectionTitle>Albums</SectionTitle>
+            <SectionItems>
+              {search.data.albums.map(data => (
+                <AlbumItem
+                  key={data.id}
+                  data={data}
+                  onClick={() => history.push(`/albums/${data.id}`)}
+                />
+              ))}
+            </SectionItems>
+          </Section>
+        )}
+
+        {search.data.tracks.length > 0 && (
+          <Section>
+            <SectionTitle>Músicas</SectionTitle>
+            <SectionItems>
+              {search.data.tracks.map(data => (
+                <TrackItem key={data.id} data={data} />
+              ))}
             </SectionItems>
           </Section>
         )}

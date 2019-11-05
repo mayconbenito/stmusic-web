@@ -1,6 +1,5 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 
 import {
   Content,
@@ -18,6 +17,7 @@ import {
 
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
+import AlbumItem from '../../components/AlbumItem';
 import Image from '../../components/Image';
 
 import session from '../../services/session';
@@ -29,10 +29,12 @@ function Artist({
   match: {
     params: { artistId },
   },
+  history,
 }) {
   const {
     fetchArtist,
     fetchTracks,
+    fetchAlbums,
     clearArtist,
     followArtist,
     unfollowArtist,
@@ -43,19 +45,12 @@ function Artist({
   useEffect(() => {
     dispatch(fetchArtist(artistId));
     dispatch(fetchTracks(1, artistId));
+    dispatch(fetchAlbums(1, artistId));
 
     return () => {
       dispatch(clearArtist());
     };
   }, []);
-
-  const onEndReached = useCallback(() => {
-    if (artist.tracks.total > artist.tracks.data.length) {
-      dispatch(fetchTracks(artist.tracks.page, artistId));
-    }
-  }, [artist.tracks.page, artist.tracks.total]);
-
-  const artistListRef = useBottomScrollListener(onEndReached);
 
   function handleFollowing() {
     if (artist.data.followingState) {
@@ -70,7 +65,7 @@ function Artist({
   }
 
   return (
-    <Content ref={artistListRef}>
+    <Content>
       {artist.loading && <LoadingSpinner size={120} loading={artist.loading} />}
 
       {!artist.loading && (
@@ -97,22 +92,37 @@ function Artist({
             </Buttons>
           </Header>
 
-          <Section>
-            <SectionTitle>
-              {artist.tracks.data.length > 0
-                ? 'Músicas'
-                : 'Nenhuma música disponível'}
-            </SectionTitle>
-            <TracksList>
-              {artist.tracks.data.map(data => (
-                <TrackItem
-                  key={data.id}
-                  data={data}
-                  style={{ marginBottom: 5 }}
-                />
-              ))}
-            </TracksList>
-          </Section>
+          {artist.tracks.data.length > 0 && (
+            <Section>
+              <SectionTitle>Músicas</SectionTitle>
+              <TracksList>
+                {artist.tracks.data.map(data => (
+                  <TrackItem
+                    key={data.id}
+                    data={data}
+                    style={{ marginBottom: 5 }}
+                  />
+                ))}
+              </TracksList>
+            </Section>
+          )}
+
+          {artist.albums.data.length > 0 && (
+            <Section>
+              <SectionTitle>Albums</SectionTitle>
+              <TracksList>
+                {artist.albums.data.map(data => (
+                  <AlbumItem
+                    big
+                    key={data.id}
+                    data={data}
+                    style={{ marginBottom: 5 }}
+                    onClick={() => history.push(`/albums/${data.id}`)}
+                  />
+                ))}
+              </TracksList>
+            </Section>
+          )}
         </React.Fragment>
       )}
     </Content>

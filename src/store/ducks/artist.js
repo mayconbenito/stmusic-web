@@ -1,20 +1,26 @@
 import { createActions, createReducer } from 'reduxsauce';
 
-export const { Types, Creators } = createActions({
-  fetchArtist: ['artistId'],
-  successArtist: ['data'],
-  failureArtist: ['error'],
-  fetchTracks: ['page', 'artistId'],
-  successTracks: ['data', 'total'],
-  failureTracks: ['error'],
-  clearArtist: [],
-  followArtist: ['artistId'],
-  unfollowArtist: ['artistId'],
-  successUnfollowArtist: ['data'],
-  successFollowArtist: ['data'],
-}, {
-  prefix: 'artist/',
-});
+export const { Types, Creators } = createActions(
+  {
+    fetchArtist: ['artistId'],
+    successArtist: ['data'],
+    failureArtist: ['error'],
+    fetchTracks: ['page', 'artistId'],
+    successTracks: ['data', 'total'],
+    failureTracks: ['error'],
+    fetchAlbums: ['page', 'artistId'],
+    successAlbums: ['data', 'total'],
+    failureAlbums: ['error'],
+    clearArtist: [],
+    followArtist: ['artistId'],
+    unfollowArtist: ['artistId'],
+    successUnfollowArtist: ['data'],
+    successFollowArtist: ['data'],
+  },
+  {
+    prefix: 'artist/',
+  }
+);
 
 const initialState = {
   loading: true,
@@ -26,6 +32,12 @@ const initialState = {
     followingState: true,
   },
   tracks: {
+    loading: true,
+    data: [],
+    total: 0,
+    page: 1,
+  },
+  albums: {
     loading: true,
     data: [],
     total: 0,
@@ -63,6 +75,26 @@ const successTracks = (state = initialState, action) => ({
 
 const failureTracks = (state = initialState) => ({ ...state, loading: false });
 
+const fetchAlbums = (state = initialState) => ({
+  ...state,
+  albums: {
+    ...state.albums,
+    loading: true,
+  },
+});
+
+const successAlbums = (state = initialState, action) => ({
+  ...state,
+  albums: {
+    loading: false,
+    data: [...state.albums.data, ...action.data],
+    total: action.total,
+    page: state.albums.page + 1,
+  },
+});
+
+const failureAlbums = (state = initialState) => ({ ...state, loading: false });
+
 const clearArtist = () => ({
   ...initialState,
 });
@@ -98,6 +130,9 @@ export default createReducer(initialState, {
   [Types.FETCH_TRACKS]: fetchTracks,
   [Types.SUCCESS_TRACKS]: successTracks,
   [Types.FAILURE_TRACKS]: failureTracks,
+  [Types.FETCH_ALBUMS]: fetchAlbums,
+  [Types.SUCCESS_ALBUMS]: successAlbums,
+  [Types.FAILURE_ALBUMS]: failureAlbums,
   [Types.CLEAR_ARTIST]: clearArtist,
   [Types.FOLLOW_ARTIST]: followArtist,
   [Types.UNFOLLOW_ARTIST]: unfollowArtist,
