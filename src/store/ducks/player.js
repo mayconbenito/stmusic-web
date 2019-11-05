@@ -1,16 +1,20 @@
 import { createActions, createReducer } from 'reduxsauce';
 
-export const { Types, Creators } = createActions({
-  fetchPlaylist: ['playlistId', 'playlistType'],
-  successPlaylist: ['playlist'],
-  play: ['track'],
-  pause: [],
-  resume: [],
-  stop: [],
-  next: [],
-}, {
-  prefix: 'player/',
-});
+export const { Types, Creators } = createActions(
+  {
+    fetchPlaylist: ['playlistId', 'playlistType'],
+    successPlaylist: ['playlist'],
+    play: ['track'],
+    pause: [],
+    resume: [],
+    stop: [],
+    prev: [],
+    next: [],
+  },
+  {
+    prefix: 'player/',
+  }
+);
 
 // const exampleState = {
 //   isPlaying: false,
@@ -62,11 +66,48 @@ const stop = (state = initialState) => ({
   isPlaying: 'STOPPED',
 });
 
-const next = (state = initialState) => ({
-  ...state,
-  isPlaying: 'PLAYING',
-  active: state.playlist.tracks[state.playlist.tracks.findIndex(i => parseInt(i.id) === parseInt(state.active.id)) + 1],
-});
+const prev = (state = initialState) => {
+  if (state.playlist) {
+    const activeTrackIndex = state.playlist.tracks.findIndex(
+      i => i.id === state.active.id
+    );
+    if (activeTrackIndex >= 1) {
+      return {
+        ...state,
+        isPlaying: 'PLAYING',
+        active:
+          state.playlist.tracks[
+            state.playlist.tracks.findIndex(
+              i => parseInt(i.id) === parseInt(state.active.id)
+            ) - 1
+          ],
+      };
+    }
+  }
+  return state;
+};
+
+const next = (state = initialState) => {
+  if (state.playlist) {
+    const activeTrackIndex = state.playlist.tracks.findIndex(
+      i => i.id === state.active.id
+    );
+
+    if (activeTrackIndex < state.playlist.tracks.length - 1) {
+      return {
+        ...state,
+        isPlaying: 'PLAYING',
+        active:
+          state.playlist.tracks[
+            state.playlist.tracks.findIndex(
+              i => parseInt(i.id) === parseInt(state.active.id)
+            ) + 1
+          ],
+      };
+    }
+  }
+  return state;
+};
 
 export default createReducer(initialState, {
   [Types.SUCCESS_PLAYLIST]: successPlaylist,
@@ -74,5 +115,6 @@ export default createReducer(initialState, {
   [Types.PAUSE]: pause,
   [Types.RESUME]: resume,
   [Types.STOP]: stop,
+  [Types.PREV]: prev,
   [Types.NEXT]: next,
 });

@@ -34,7 +34,7 @@ import {
 import Image from '../Image';
 
 function Player() {
-  const { pause, resume, stop, next } = PlayerActions;
+  const { pause, resume, stop, prev, next } = PlayerActions;
 
   const player = useSelector(state => state.player);
   const dispatch = useDispatch();
@@ -111,7 +111,7 @@ function Player() {
               {player.playlist && `Tocando: ${player.playlist.name}`}
             </Playing>
             <Controls>
-              <Control>
+              <Control onClick={() => dispatch(prev())}>
                 <MdSkipPrevious size={40} color="#d99207" />
               </Control>
               <Control>
