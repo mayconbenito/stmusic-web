@@ -60,7 +60,9 @@ function Genre({
               </HeaderInfo>
             </HeaderContainer>
             <Buttons>
-              <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
+              {genre.tracks.data.length > 0 && (
+                <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
+              )}
             </Buttons>
           </Header>
 

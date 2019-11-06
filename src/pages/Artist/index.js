@@ -91,7 +91,9 @@ function Artist({
                   {artist.data.followingState ? 'Seguindo' : 'Seguir'}
                 </Button>
               )}
-              <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
+              {artist.tracks.data.length > 0 && (
+                <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
+              )}
             </Buttons>
           </Header>
 
