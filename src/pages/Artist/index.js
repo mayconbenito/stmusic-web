@@ -60,6 +60,10 @@ function Artist({
     }
   }
 
+  useEffect(() => {
+    console.log(artist.data);
+  }, [artist]);
+
   function handlePlaylistPlay() {
     dispatch(PlayerActions.fetchPlaylist(artistId, 'artists'));
   }
@@ -67,7 +71,6 @@ function Artist({
   return (
     <Content>
       {artist.loading && <LoadingSpinner size={120} loading={artist.loading} />}
-
       {!artist.loading && (
         <React.Fragment>
           <Header>

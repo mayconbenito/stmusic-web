@@ -22,17 +22,22 @@ function* fetchArtist({ artistId }) {
   try {
     const response = yield call(api.get, `/app/artists/${artistId}`);
 
-    const followingState = yield call(
-      api.get,
-      `/app/me/following/artists/contains?artists=${artistId}`
-    );
+    let followingState;
+    if (localStorage.getItem('@STMusic:token')) {
+      followingState = yield call(
+        api.get,
+        `/app/me/following/artists/contains?artists=${artistId}`
+      );
+    }
 
     yield put(
       successArtist({
         ...response.data.artist,
-        followingState: followingState.data.artists.find(
-          itemId => itemId === parseInt(artistId)
-        ),
+        followingState: followingState
+          ? followingState.data.artists.find(
+              itemId => itemId === parseInt(artistId)
+            )
+          : false,
       })
     );
   } catch (err) {
