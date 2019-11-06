@@ -62,7 +62,9 @@ function Album({
               </HeaderInfo>
             </HeaderContainer>
             <Buttons>
-              <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
+              {album.tracks.data.length > 0 && (
+                <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
+              )}
             </Buttons>
           </Header>
 
