@@ -1,17 +1,21 @@
 import { createActions, createReducer } from 'reduxsauce';
 
-export const { Types, Creators } = createActions({
-  fetchSearch: ['query'],
-  successSearch: ['data'],
-  failureSearch: ['error'],
-  clearSearch: [],
-}, {
-  prefix: 'search/',
-});
+export const { Types, Creators } = createActions(
+  {
+    fetchSearch: ['query'],
+    successSearch: ['data'],
+    failureSearch: ['error'],
+    clearSearch: [],
+  },
+  {
+    prefix: 'search/',
+  }
+);
 
 const initialState = {
   data: {
     artists: [],
+    albums: [],
     tracks: [],
   },
   loading: false,
@@ -29,7 +33,7 @@ const failureSearch = (state = initialState) => ({ ...state, loading: false });
 
 const clearSearch = (state = initialState) => ({
   ...state,
-  data: { artists: [], tracks: [] },
+  data: { artists: [], albums: [], tracks: [] },
   loading: true,
 });
 

@@ -11,20 +11,23 @@ import libraryPlaylist from './libraryPlaylist';
 import playlist from './playlist';
 import artist from './artist';
 import genre from './genre';
+import album from './album';
 
 import playlistModal from './playlistModal';
 
-export default history => combineReducers({
-  router: connectRouter(history),
-  playlistModal,
-  genre,
-  artist,
-  playlist,
-  libraryArtist,
-  libraryPlaylist,
-  player,
-  browse,
-  search,
-  login,
-  signUp,
-});
+export default history =>
+  combineReducers({
+    router: connectRouter(history),
+    playlistModal,
+    album,
+    genre,
+    artist,
+    playlist,
+    libraryArtist,
+    libraryPlaylist,
+    player,
+    browse,
+    search,
+    login,
+    signUp,
+  });

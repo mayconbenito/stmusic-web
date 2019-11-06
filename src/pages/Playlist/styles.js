@@ -8,7 +8,8 @@ export const Content = styled.div`
   height: calc(100% - 100px);
   background-color: #141414;
   padding: 10px 15px;
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 export const Header = styled.div`
@@ -58,6 +59,7 @@ export const Button = styled.button`
 export const Section = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 30px;
 `;
 
 export const SectionTitle = styled.h2`
@@ -67,5 +69,6 @@ export const SectionTitle = styled.h2`
 
 export const TracksList = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  overflow-x: auto;
 `;

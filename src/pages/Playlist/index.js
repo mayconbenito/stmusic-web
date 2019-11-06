@@ -1,6 +1,5 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 
 import {
   Content,
@@ -47,51 +46,55 @@ function Playlist({
     };
   }, []);
 
-  const onEndReached = useCallback(
-    () => {
-      if (playlist.tracks.total > playlist.tracks.data.length) {
-        dispatch(fetchTracks(playlist.tracks.page, playlistId));
-      }
-    },
-    [playlist.tracks.page, playlist.tracks.total],
-  );
-
-  const artistListRef = useBottomScrollListener(onEndReached);
-
   function handlePlaylistPlay() {
     dispatch(PlayerActions.fetchPlaylist(playlistId, 'playlists'));
   }
 
   return (
-    <Content ref={artistListRef}>
-      {playlist.loading && <LoadingSpinner size={120} loading={playlist.loading} />}
+    <Content>
+      {playlist.loading && (
+        <LoadingSpinner size={120} loading={playlist.loading} />
+      )}
 
       {!playlist.loading && (
         <React.Fragment>
           <Header>
             <HeaderContainer>
-              <Image src={playlist.data.picture} style={{ width: 160, height: 90 }} />
+              <Image
+                src={playlist.data.picture}
+                style={{ width: 160, height: 90 }}
+              />
               <HeaderInfo>
                 <HeaderTitle>{playlist.data.name}</HeaderTitle>
                 <Meta>{`${playlist.data.tracks} Músicas`}</Meta>
               </HeaderInfo>
             </HeaderContainer>
             <Buttons>
-              <Button onClick={() => dispatch(requestDeletePlaylist(playlist.data.id))}>Excluir Playlist</Button>
-              <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
+              <Button
+                onClick={() =>
+                  dispatch(requestDeletePlaylist(playlist.data.id))
+                }
+              >
+                Excluir Playlist
+              </Button>
+              {playlist.tracks.data.length > 0 && (
+                <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
+              )}
             </Buttons>
           </Header>
 
-          <Section>
-            <SectionTitle>
-              {playlist.tracks.data.length > 0 ? 'Músicas' : 'Nenhuma música disponível'}
-            </SectionTitle>
-            <TracksList>
-              {playlist.tracks.data.map(data => (
-                <TrackItem key={data.id} data={data} />
-              ))}
-            </TracksList>
-          </Section>
+          {playlist.tracks.data.length > 0 ? (
+            <Section>
+              <SectionTitle>Músicas</SectionTitle>
+              <TracksList>
+                {playlist.tracks.data.map(data => (
+                  <TrackItem key={data.id} data={data} />
+                ))}
+              </TracksList>
+            </Section>
+          ) : (
+            <SectionTitle>Nenhuma música disponível</SectionTitle>
+          )}
         </React.Fragment>
       )}
     </Content>

@@ -1,25 +1,16 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import {
-  MdPlayArrow,
-  MdPlaylistAdd,
-} from 'react-icons/md';
+import { MdPlayArrow, MdPlaylistAdd } from 'react-icons/md';
 
-import {
-  Container,
-  Opacity,
-  PlayButton,
-  Title,
-  Artist,
-  ArtistName,
-  AddOnPlaylist,
-} from './styles';
+import { Container, Opacity, PlayButton, Title, AddOnPlaylist } from './styles';
 
 import Image from '../Image';
 
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
+
+import session from '../../services/session';
 
 function TrackItem({ data, style }) {
   const dispatch = useDispatch();
@@ -31,13 +22,13 @@ function TrackItem({ data, style }) {
         <MdPlayArrow size={80} color="#d99207" />
       </PlayButton>
       <Title>{data.name}</Title>
-      <Artist>
-        <Image src={data.artist.picture} style={{ width: 30, height: 30, borderRadius: '100%' }} />
-        <ArtistName>{data.artist.name}</ArtistName>
-      </Artist>
-      <AddOnPlaylist onClick={() => dispatch(PlaylistModalActions.openModal(data.id))}>
-        <MdPlaylistAdd size={30} color="#d99207" />
-      </AddOnPlaylist>
+      {session() && (
+        <AddOnPlaylist
+          onClick={() => dispatch(PlaylistModalActions.openModal(data.id))}
+        >
+          <MdPlaylistAdd size={30} color="#d99207" />
+        </AddOnPlaylist>
+      )}
     </Container>
   );
 }

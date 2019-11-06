@@ -18,59 +18,61 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
 import Image from '../../components/Image';
 
-import { Creators as GenreActions } from '../../store/ducks/genre';
+import { Creators as AlbumActions } from '../../store/ducks/album';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 
-function Genre({
+function Album({
   match: {
-    params: { genreId },
+    params: { albumId },
   },
 }) {
-  const { fetchGenre, fetchTracks, clearGenre } = GenreActions;
-  const genre = useSelector(state => state.genre);
+  const { fetchAlbum, fetchTracks, clearAlbum } = AlbumActions;
+  const album = useSelector(state => state.album);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchGenre(genreId));
-    dispatch(fetchTracks(1, genreId));
+    dispatch(fetchAlbum(albumId));
+    dispatch(fetchTracks(1, albumId));
 
     return () => {
-      dispatch(clearGenre());
+      dispatch(clearAlbum());
     };
   }, []);
 
   function handlePlaylistPlay() {
-    dispatch(PlayerActions.fetchPlaylist(genreId, 'genres'));
+    dispatch(PlayerActions.fetchPlaylist(albumId, 'albums'));
   }
+
+  console.log(album.data);
 
   return (
     <Content>
-      {genre.loading && <LoadingSpinner size={120} loading={genre.loading} />}
+      {album.loading && <LoadingSpinner size={120} loading={album.loading} />}
 
-      {!genre.loading && (
+      {!album.loading && (
         <React.Fragment>
           <Header>
             <HeaderContainer>
               <Image
-                src={genre.data.picture}
+                src={album.data.picture}
                 style={{ width: 100, height: 100, borderRadius: '100%' }}
               />
               <HeaderInfo>
-                <HeaderTitle>{genre.data.name}</HeaderTitle>
+                <HeaderTitle>{album.data.name}</HeaderTitle>
               </HeaderInfo>
             </HeaderContainer>
             <Buttons>
-              {genre.tracks.data.length > 0 && (
+              {album.tracks.data.length > 0 && (
                 <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
               )}
             </Buttons>
           </Header>
 
-          {genre.tracks.data.length > 0 ? (
+          {album.tracks.data.length > 0 ? (
             <Section>
               <SectionTitle>Músicas</SectionTitle>
               <TracksList>
-                {genre.tracks.data.map(data => (
+                {album.tracks.data.map(data => (
                   <TrackItem
                     key={data.id}
                     data={data}
@@ -88,4 +90,4 @@ function Genre({
   );
 }
 
-export default Genre;
+export default Album;

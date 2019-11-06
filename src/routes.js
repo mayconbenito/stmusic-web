@@ -14,6 +14,7 @@ import Library from './pages/Library';
 import Artist from './pages/Artist';
 import Playlist from './pages/Playlist';
 import Genre from './pages/Genre';
+import Album from './pages/Album';
 
 // Global Components
 import SideBar from './components/SideBar';
@@ -23,7 +24,7 @@ import session from './services/session';
 
 import PlaylistModal from './components/PlaylistModal';
 
-const PrivateRoute = (Component) => {
+const PrivateRoute = Component => {
   const playlistModal = useSelector(state => state.playlistModal);
 
   if (session()) {
@@ -32,11 +33,24 @@ const PrivateRoute = (Component) => {
         <SideBar history={history} />
         <Player />
         <Route {...Component} />
-        { playlistModal.open && <PlaylistModal /> }
+        {playlistModal.open && <PlaylistModal />}
       </React.Fragment>
     );
   }
-  return <Redirect to="/login" />;
+  return <Redirect to="/" />;
+};
+
+const AppRoute = Component => {
+  const playlistModal = useSelector(state => state.playlistModal);
+
+  return (
+    <React.Fragment>
+      <SideBar history={history} />
+      <Player />
+      <Route {...Component} />
+      {playlistModal.open && <PlaylistModal />}
+    </React.Fragment>
+  );
 };
 
 const Routes = () => (
@@ -44,12 +58,13 @@ const Routes = () => (
     <Switch>
       <Route path="/login" component={Login} />
       <Route path="/sign-up" component={SignUp} />
-      <PrivateRoute path="/" exact component={Home} />
-      <PrivateRoute path="/search" component={Search} />
+      <AppRoute path="/" exact component={Home} />
+      <AppRoute path="/search" component={Search} />
       <PrivateRoute path="/library" component={Library} />
-      <PrivateRoute path="/artists/:artistId" component={Artist} />
+      <AppRoute path="/artists/:artistId" component={Artist} />
       <PrivateRoute path="/playlists/:playlistId" component={Playlist} />
-      <PrivateRoute path="/genres/:genreId" component={Genre} />
+      <AppRoute path="/genres/:genreId" component={Genre} />
+      <AppRoute path="/albums/:albumId" component={Album} />
     </Switch>
   </ConnectedRouter>
 );
