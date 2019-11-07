@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { MdHome, MdSearch, MdFolder, MdAudiotrack } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 
-import { MdHome, MdSearch, MdFolder, MdAudiotrack } from 'react-icons/md';
-
+import session from '../../services/session';
+import { Creators as PlaylistActions } from '../../store/ducks/playlist';
 import {
   Container,
   Header,
@@ -17,9 +18,6 @@ import {
   Username,
   ProfileButton,
 } from './styles';
-
-import { Creators as PlaylistActions } from '../../store/ducks/playlist';
-import session from '../../services/session';
 
 function SideBar({ history }) {
   const dispatch = useDispatch();

@@ -1,11 +1,10 @@
 import { put, call, all, takeLatest } from 'redux-saga/effects';
 
+import api from '../../services/api';
 import {
   Types as ArtistTypes,
   Creators as ArtistActions,
 } from '../ducks/artist';
-
-import api from '../../services/api';
 
 const {
   successArtist,

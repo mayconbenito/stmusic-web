@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import ArtistItem from '../../components/ArtistItem';
+import TrackItem from '../../components/TrackItem';
+import { Creators as BrowseActions } from '../../store/ducks/browse';
 import {
   Content,
   ContentTitle,
@@ -11,11 +14,6 @@ import {
   GenreImage,
   GenreTitle,
 } from './styles';
-
-import { Creators as BrowseActions } from '../../store/ducks/browse';
-
-import TrackItem from '../../components/TrackItem';
-import ArtistItem from '../../components/ArtistItem';
 
 function Home({ history }) {
   const {
@@ -57,8 +55,13 @@ function Home({ history }) {
           <SectionItems>
             {browse.genres.map(data => (
               <GenreItem key={data.id}>
-                <GenreImage src={data.picture} style={{ width: 260, height: 129 }} />
-                <GenreTitle onClick={() => history.push(`/genres/${data.id}`)}>{data.name}</GenreTitle>
+                <GenreImage
+                  src={data.picture}
+                  style={{ width: 260, height: 129 }}
+                />
+                <GenreTitle onClick={() => history.push(`/genres/${data.id}`)}>
+                  {data.name}
+                </GenreTitle>
               </GenreItem>
             ))}
           </SectionItems>

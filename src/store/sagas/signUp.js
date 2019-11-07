@@ -1,15 +1,13 @@
-import {
-  put, call, all, takeLatest,
-} from 'redux-saga/effects';
 import { push } from 'connected-react-router';
-import { Types as SignUpTypes, Creators as SignUpActions } from '../ducks/signUp';
+import { put, call, all, takeLatest } from 'redux-saga/effects';
 
 import api from '../../services/api';
+import {
+  Types as SignUpTypes,
+  Creators as SignUpActions,
+} from '../ducks/signUp';
 
-const {
-  successSignUp,
-  failureSignUp,
-} = SignUpActions;
+const { successSignUp, failureSignUp } = SignUpActions;
 
 function* requestSignUp(action) {
   try {

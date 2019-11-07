@@ -1,19 +1,18 @@
-import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
+import { combineReducers } from 'redux';
 
-import player from './player';
+import album from './album';
+import artist from './artist';
 import browse from './browse';
-import search from './search';
-import login from './login';
-import signUp from './signUp';
+import genre from './genre';
 import libraryArtist from './libraryArtist';
 import libraryPlaylist from './libraryPlaylist';
+import login from './login';
+import player from './player';
 import playlist from './playlist';
-import artist from './artist';
-import genre from './genre';
-import album from './album';
-
 import playlistModal from './playlistModal';
+import search from './search';
+import signUp from './signUp';
 
 export default history =>
   combineReducers({

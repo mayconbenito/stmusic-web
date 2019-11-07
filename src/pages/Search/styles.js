@@ -31,7 +31,7 @@ export const SectionContainer = styled.div`
   flex-direction: column;
   width: 100%;
   justify-content: center;
-  padding: 10px 15px
+  padding: 10px 15px;
 `;
 
 export const Section = styled.div`

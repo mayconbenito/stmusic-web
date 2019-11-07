@@ -1,22 +1,25 @@
 import { createActions, createReducer } from 'reduxsauce';
 
-export const { Types, Creators } = createActions({
-  fetchPlaylist: ['playlistId'],
-  successPlaylist: ['data'],
-  failurePlaylist: ['error'],
-  fetchTracks: ['page', 'playlistId'],
-  successTracks: ['data', 'total'],
-  failureTracks: ['error'],
-  clearPlaylist: [],
-  requestDeletePlaylist: ['id'],
-  successDeletePlaylist: [],
-  failureDeletePlaylist: ['error'],
-  requestCreatePlaylist: ['name'],
-  successCreatePlaylist: [''],
-  failureCreatePlaylist: ['error'],
-}, {
-  prefix: 'playlist/',
-});
+export const { Types, Creators } = createActions(
+  {
+    fetchPlaylist: ['playlistId'],
+    successPlaylist: ['data'],
+    failurePlaylist: ['error'],
+    fetchTracks: ['page', 'playlistId'],
+    successTracks: ['data', 'total'],
+    failureTracks: ['error'],
+    clearPlaylist: [],
+    requestDeletePlaylist: ['id'],
+    successDeletePlaylist: [],
+    failureDeletePlaylist: ['error'],
+    requestCreatePlaylist: ['name'],
+    successCreatePlaylist: [''],
+    failureCreatePlaylist: ['error'],
+  },
+  {
+    prefix: 'playlist/',
+  }
+);
 
 const initialState = {
   loading: true,
@@ -41,7 +44,10 @@ const successPlaylist = (state = initialState, action) => ({
   loading: false,
 });
 
-const failurePlaylist = (state = initialState) => ({ ...state, loading: false });
+const failurePlaylist = (state = initialState) => ({
+  ...state,
+  loading: false,
+});
 
 const fetchTracks = (state = initialState) => ({
   ...state,

@@ -1,16 +1,19 @@
 import { createActions, createReducer } from 'reduxsauce';
 
-export const { Types, Creators } = createActions({
-  fetchGenre: ['genreId'],
-  successGenre: ['data'],
-  failureGenre: ['error'],
-  fetchTracks: ['page', 'genreId'],
-  successTracks: ['data', 'total'],
-  failureTracks: ['error'],
-  clearGenre: [],
-}, {
-  prefix: 'genre/',
-});
+export const { Types, Creators } = createActions(
+  {
+    fetchGenre: ['genreId'],
+    successGenre: ['data'],
+    failureGenre: ['error'],
+    fetchTracks: ['page', 'genreId'],
+    successTracks: ['data', 'total'],
+    failureTracks: ['error'],
+    clearGenre: [],
+  },
+  {
+    prefix: 'genre/',
+  }
+);
 
 const initialState = {
   loading: true,
@@ -60,7 +63,6 @@ const failureTracks = (state = initialState) => ({ ...state, loading: false });
 const clearGenre = () => ({
   ...initialState,
 });
-
 
 export default createReducer(initialState, {
   [Types.FETCH_GENRE]: fetchGenre,

@@ -1,16 +1,14 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useAlert } from 'react-alert';
-
+import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
+import logo from '../../images/logo.svg';
 import { Creators as LoginActions } from '../../store/ducks/login';
-
 import {
   GlobalStyle, Container, Title, Logo, Form, Input, Submit, Button, WarningBox,
 } from './styles';
 
-import logo from '../../images/logo.svg';
 
 const schema = yup.object().shape({
   email: yup

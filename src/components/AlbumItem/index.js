@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { Container, Details, AlbumName, ArtistsNames } from './styles';
-
 import Image from '../Image';
+import { Container, Details, AlbumName, ArtistsNames } from './styles';
 
 function AlbumItem({ data, big, onClick }) {
   return (

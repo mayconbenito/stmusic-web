@@ -1,28 +1,23 @@
-import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
-
+import React from 'react';
 import { useSelector } from 'react-redux';
-
-import { history } from './store';
-
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
-import Home from './pages/Home';
-import Search from './pages/Search';
-import Library from './pages/Library';
-import Artist from './pages/Artist';
-import Playlist from './pages/Playlist';
-import Genre from './pages/Genre';
-import Album from './pages/Album';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 // Global Components
-import SideBar from './components/SideBar';
 import Player from './components/Player';
-
-import session from './services/session';
-
 import PlaylistModal from './components/PlaylistModal';
+import SideBar from './components/SideBar';
+import Album from './pages/Album';
+import Artist from './pages/Artist';
+import Genre from './pages/Genre';
+import Home from './pages/Home';
+import Library from './pages/Library';
+import Login from './pages/Login';
+import Playlist from './pages/Playlist';
+import Search from './pages/Search';
+import SignUp from './pages/SignUp';
+import session from './services/session';
+import { history } from './store';
 
 const PrivateRoute = Component => {
   const playlistModal = useSelector(state => state.playlistModal);

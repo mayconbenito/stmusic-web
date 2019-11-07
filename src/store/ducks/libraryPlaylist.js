@@ -1,15 +1,18 @@
 import { createActions, createReducer } from 'reduxsauce';
 
-export const { Types, Creators } = createActions({
-  fetchPlaylists: ['page'],
-  successPlaylists: ['data', 'total'],
-  failurePlaylists: ['error'],
-  fetchArtists: ['page'],
-  clearPlaylists: [],
-  removePlaylist: ['id'],
-}, {
-  prefix: 'libraryPlaylist/',
-});
+export const { Types, Creators } = createActions(
+  {
+    fetchPlaylists: ['page'],
+    successPlaylists: ['data', 'total'],
+    failurePlaylists: ['error'],
+    fetchArtists: ['page'],
+    clearPlaylists: [],
+    removePlaylist: ['id'],
+  },
+  {
+    prefix: 'libraryPlaylist/',
+  }
+);
 
 const initialState = {
   data: [],

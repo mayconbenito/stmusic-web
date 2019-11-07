@@ -1,8 +1,7 @@
 import { put, call, all, takeLatest } from 'redux-saga/effects';
 
-import { Types as AlbumTypes, Creators as AlbumActions } from '../ducks/album';
-
 import api from '../../services/api';
+import { Types as AlbumTypes, Creators as AlbumActions } from '../ducks/album';
 
 const {
   successAlbum,
