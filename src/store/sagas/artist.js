@@ -5,6 +5,7 @@ import {
   Types as ArtistTypes,
   Creators as ArtistActions,
 } from '../ducks/artist';
+import { Creators as LibraryArtistActions } from '../ducks/libraryArtist';
 
 const {
   successArtist,
@@ -21,7 +22,7 @@ function* fetchArtist({ artistId }) {
   try {
     const response = yield call(api.get, `/app/artists/${artistId}`);
 
-    let followingState;
+    let followingState = false;
     if (localStorage.getItem('@STMusic:token')) {
       followingState = yield call(
         api.get,
@@ -32,11 +33,9 @@ function* fetchArtist({ artistId }) {
     yield put(
       successArtist({
         ...response.data.artist,
-        followingState: followingState
-          ? followingState.data.artists.find(
-              itemId => itemId === parseInt(artistId)
-            )
-          : false,
+        followingState: followingState.data.artists.find(
+          itemId => itemId === parseInt(artistId)
+        ),
       })
     );
   } catch (err) {
@@ -81,7 +80,11 @@ function* followArtist({ artistId }) {
     });
 
     if (response.status === 204) {
-      yield put(successFollowArtist());
+      yield all([
+        put(successFollowArtist()),
+        put(LibraryArtistActions.clearArtists()),
+        put(LibraryArtistActions.fetchArtists(1)),
+      ]);
     }
   } catch (err) {
     console.log(err);
@@ -97,10 +100,14 @@ function* unfollowArtist({ artistId }) {
     });
 
     if (response.status === 204) {
-      yield put(successUnfollowArtist());
+      yield all([
+        put(successUnfollowArtist()),
+        put(LibraryArtistActions.clearArtists()),
+        put(LibraryArtistActions.fetchArtists(1)),
+      ]);
     }
   } catch (err) {
-    console.log(err);
+    console.log('errrororor', err);
   }
 }
 
