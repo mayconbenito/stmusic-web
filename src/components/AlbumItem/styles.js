@@ -12,20 +12,23 @@ export const Container = styled.div`
 export const Details = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 3px;
 `;
 
-export const AlbumName = styled.span`
-  font-size: ${props => (props.big ? '18px' : '14px')};
+export const Name = styled.span`
+  font-size: ${props => (props.big ? '16px' : '14px')};
   color: #d99207;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 `;
 
-export const ArtistsNames = styled.span`
+export const TextList = styled.span`
   color: #606060;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  font-size: ${props => (props.big ? '14px' : '12px')};
+  font-size: ${props => (props.big ? '12px' : '10px')};
 `;
+
+export const Type = styled.span``;

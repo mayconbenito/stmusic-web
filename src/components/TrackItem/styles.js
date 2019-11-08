@@ -43,34 +43,13 @@ export const PlayButton = styled.div`
   }
 `;
 
-export const Title = styled.span`
-  font-size: 14px;
-  color: #d99207;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-weight: 500;
-  cursor: pointer;
-  text-align: center;
-`;
-
 export const Container = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
-  width: 260px;
-  height: 146px;
   margin-right: 5px;
   margin-bottom: 5px;
-  position: relative;
-
-  &:hover ${PlayButton} {
-    display: block;
-  }
-
-  &:hover ${Title} {
-    display: none;
-  }
+  cursor: pointer;
 `;
 
 export const AddOnPlaylist = styled.button`
@@ -80,4 +59,33 @@ export const AddOnPlaylist = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
+`;
+
+export const Details = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 3px;
+`;
+
+export const Type = styled.span`
+  color: #606060;
+`;
+
+export const Name = styled.span`
+  width: 150px;
+  color: #d99207;
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
+export const TextList = styled.span`
+  flex-direction: row;
+  color: #606060;
+  font-size: 10px;
+`;
+
+export const ArtistName = styled.span`
+  color: #606060;
 `;

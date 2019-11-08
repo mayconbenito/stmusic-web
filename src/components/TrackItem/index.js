@@ -1,9 +1,16 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { MdPlayArrow, MdPlaylistAdd } from 'react-icons/md';
+import { MdPlaylistAdd } from 'react-icons/md';
 
-import { Container, Opacity, PlayButton, Title, AddOnPlaylist } from './styles';
+import {
+  Container,
+  Details,
+  Name,
+  TextList,
+  Type,
+  AddOnPlaylist,
+} from './styles';
 
 import Image from '../Image';
 
@@ -15,13 +22,19 @@ import session from '../../services/session';
 function TrackItem({ data, style }) {
   const dispatch = useDispatch();
   return (
-    <Container style={style}>
-      <Opacity />
-      <Image src={data.picture} style={{ width: 260, height: 146 }} />
-      <PlayButton onClick={() => dispatch(PlayerActions.play(data))}>
-        <MdPlayArrow size={80} color="#d99207" />
-      </PlayButton>
-      <Title>{data.name}</Title>
+    <Container style={style} onClick={() => dispatch(PlayerActions.play(data))}>
+      <Image src={data.picture} style={{ width: 150, height: 150 }} />
+
+      <Details>
+        <Name>{data.name}</Name>
+        <TextList>
+          <Type>Música | </Type>
+          {data.artists.map(
+            (artist, index) => (index ? ', ' : '') + artist.name
+          )}
+        </TextList>
+      </Details>
+
       {session() && (
         <AddOnPlaylist
           onClick={() => dispatch(PlaylistModalActions.openModal(data.id))}
