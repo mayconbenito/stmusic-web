@@ -15,16 +15,12 @@ import {
 } from './styles';
 
 function LibraryArtists({ history }) {
-  const { fetchArtists, clearArtists } = LibraryArtistActions;
+  const { fetchArtists } = LibraryArtistActions;
   const libraryArtist = useSelector(state => state.libraryArtist);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchArtists());
-
-    return () => {
-      dispatch(clearArtists());
-    };
+    if (!libraryArtist.data.length > 0) dispatch(fetchArtists(1));
   }, []);
 
   const onEndReached = useCallback(() => {
