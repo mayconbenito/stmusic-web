@@ -1,12 +1,9 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import {
-  Content, FixedHeader, ContentTitle, Menu, MenuItem,
-} from './styles';
-
-import LibraryPlaylists from '../LibraryPlaylists';
 import LibraryArtists from '../LibraryArtists';
+import LibraryPlaylists from '../LibraryPlaylists';
+import { Content, FixedHeader, ContentTitle, Menu, MenuItem } from './styles';
 
 function Library({ location }) {
   return (
@@ -16,13 +13,17 @@ function Library({ location }) {
 
         <Menu>
           <MenuItem
-            underline={location.pathname === '/library/playlists' ? 'show' : 'false'}
+            underline={
+              location.pathname === '/library/playlists' ? 'show' : 'false'
+            }
             to="/library/playlists"
           >
             Suas Playlists
           </MenuItem>
           <MenuItem
-            underline={location.pathname === '/library/artists' ? 'show' : 'false'}
+            underline={
+              location.pathname === '/library/artists' ? 'show' : 'false'
+            }
             to="/library/artists"
           >
             Artistas que você segue

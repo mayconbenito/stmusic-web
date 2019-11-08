@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
-import { useSelector, useDispatch } from 'react-redux';
-
 import {
   MdPlayArrow,
   MdPause,
@@ -9,11 +6,11 @@ import {
   MdSkipNext,
   MdVolumeMute,
 } from 'react-icons/md';
-
+import { useSelector, useDispatch } from 'react-redux';
 import Sound from 'react-sound';
 
 import { Creators as PlayerActions } from '../../store/ducks/player';
-
+import Image from '../Image';
 import {
   Container,
   TrackInfo,
@@ -30,8 +27,6 @@ import {
   Volume,
   VolumeBar,
 } from './styles';
-
-import Image from '../Image';
 
 function Player() {
   const { pause, resume, stop, prev, next } = PlayerActions;

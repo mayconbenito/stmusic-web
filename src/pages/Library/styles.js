@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 export const Content = styled.div`
   position: fixed;
@@ -35,5 +35,6 @@ export const MenuItem = styled(Link)`
   font-size: 18px;
   font-weight: 500;
   margin-right: 5px;
-  border-bottom: ${props => (props.underline === 'show' ? '2px solid #d99207' : 'none')};
+  border-bottom: ${props =>
+    props.underline === 'show' ? '2px solid #d99207' : 'none'};
 `;

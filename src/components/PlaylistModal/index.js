@@ -1,8 +1,11 @@
 import React, { useEffect, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 import { MdClear } from 'react-icons/md';
+import { useSelector, useDispatch } from 'react-redux';
 
+import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
+import Image from '../Image';
+import LoadingSpinner from '../LoadingSpinner';
 import {
   Container,
   Modal,
@@ -18,11 +21,6 @@ import {
   PlaylistTracks,
   Warning,
 } from './styles';
-
-import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
-
-import Image from '../Image';
-import LoadingSpinner from '../LoadingSpinner';
 
 function PlaylistModal() {
   const {

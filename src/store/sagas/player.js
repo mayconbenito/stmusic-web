@@ -1,11 +1,10 @@
 import { put, call, all, takeLatest } from 'redux-saga/effects';
 
+import api from '../../services/api';
 import {
   Types as PlayerTypes,
   Creators as PlayerActions,
 } from '../ducks/player';
-
-import api from '../../services/api';
 
 const { successPlaylist } = PlayerActions;
 
