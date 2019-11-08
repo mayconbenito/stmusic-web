@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { Container, Details, Name, TextList, Type } from './styles';
+
 import Image from '../Image';
-import { Container, Details, AlbumName, ArtistsNames } from './styles';
 
 function AlbumItem({ data, big, onClick }) {
   return (
@@ -11,12 +12,16 @@ function AlbumItem({ data, big, onClick }) {
         style={big ? { width: 200, height: 200 } : { width: 150, height: 150 }}
       />
       <Details>
-        <AlbumName big={big}>{data.name}</AlbumName>
-        <ArtistsNames big={big}>
+        <Name big={big}>{data.name}</Name>
+        <TextList big={big}>
+          <Type>
+            {data.type.charAt(0).toUpperCase() + data.type.slice(1)}
+            {' | '}
+          </Type>
           {data.artists.map(
             (artist, index) => (index ? ', ' : '') + artist.name
           )}
-        </ArtistsNames>
+        </TextList>
       </Details>
     </Container>
   );

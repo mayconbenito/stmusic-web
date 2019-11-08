@@ -89,7 +89,7 @@ function Player() {
           <TrackInfo>
             <Image
               src={player.active.picture}
-              style={{ width: 130, height: 73 }}
+              style={{ width: 70, height: 70 }}
             />
             <TrackTexts>
               <TrackName>{player.active.name}</TrackName>
