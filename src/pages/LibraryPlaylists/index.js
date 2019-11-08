@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { Creators as LibraryPlaylistActions } from '../../store/ducks/libraryPlaylist';
-import { Creators as PlaylistActions } from '../../store/ducks/playlist';
 import {
   PlaylistList,
   PlaylistItem,
@@ -13,17 +12,16 @@ import {
   PlaylistMeta,
   PlaylistName,
   PlaylistTracks,
-  PlaylistButton,
   Warning,
 } from './styles';
 
 function LibraryPlaylists({ history }) {
   const { fetchPlaylists, clearPlaylists } = LibraryPlaylistActions;
-  const LibraryPlaylist = useSelector(state => state.libraryPlaylist);
+  const libraryPlaylist = useSelector(state => state.libraryPlaylist);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchPlaylists());
+    if (!libraryPlaylist.data.length > 0) dispatch(fetchPlaylists());
 
     return () => {
       dispatch(clearPlaylists());
@@ -31,22 +29,22 @@ function LibraryPlaylists({ history }) {
   }, []);
 
   const onEndReached = useCallback(() => {
-    if (LibraryPlaylist.total > LibraryPlaylist.data.length) {
-      dispatch(fetchPlaylists(LibraryPlaylist.page));
+    if (libraryPlaylist.total > libraryPlaylist.data.length) {
+      dispatch(fetchPlaylists(libraryPlaylist.page));
     }
-  }, [LibraryPlaylist.page, LibraryPlaylist.total]);
+  }, [libraryPlaylist.page, libraryPlaylist.total]);
 
   const playlistListRef = useBottomScrollListener(onEndReached);
 
   return (
     <PlaylistList ref={playlistListRef}>
-      {LibraryPlaylist.data.length === 0 && !LibraryPlaylist.loading && (
+      {libraryPlaylist.data.length === 0 && !libraryPlaylist.loading && (
         <Warning>Você ainda nao tem nenhuma playlist.</Warning>
       )}
-      {LibraryPlaylist.data.length === 0 && LibraryPlaylist.loading && (
-        <LoadingSpinner loading={LibraryPlaylist.loading} size={40} />
+      {libraryPlaylist.data.length === 0 && libraryPlaylist.loading && (
+        <LoadingSpinner loading={libraryPlaylist.loading} size={40} />
       )}
-      {LibraryPlaylist.data.map(playlist => (
+      {libraryPlaylist.data.map(playlist => (
         <PlaylistItem key={playlist.id}>
           <Image
             src={playlist.picture}
@@ -59,14 +57,6 @@ function LibraryPlaylists({ history }) {
               <PlaylistName>{playlist.name}</PlaylistName>
               <PlaylistTracks>{`${playlist.tracks} Músicas`}</PlaylistTracks>
             </PlaylistMeta>
-            <PlaylistButton
-              onClick={() =>
-                dispatch(PlaylistActions.requestDeletePlaylist(playlist.id))
-              }
-              type="button"
-            >
-              Deletar
-            </PlaylistButton>
           </PlaylistInfo>
         </PlaylistItem>
       ))}
