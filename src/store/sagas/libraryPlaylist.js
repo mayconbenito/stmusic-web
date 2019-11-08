@@ -1,18 +1,12 @@
-import {
-  put, call, all, takeLatest,
-} from 'redux-saga/effects';
+import { put, call, all, takeLatest } from 'redux-saga/effects';
 
+import api from '../../services/api';
 import {
   Types as LibraryPlaylistTypes,
   Creators as LibraryPlaylistActions,
 } from '../ducks/libraryPlaylist';
 
-import api from '../../services/api';
-
-const {
-  successPlaylists,
-  failurePlaylists,
-} = LibraryPlaylistActions;
+const { successPlaylists, failurePlaylists } = LibraryPlaylistActions;
 
 function* fetchPlaylists({ page = 1 }) {
   try {
@@ -24,14 +18,14 @@ function* fetchPlaylists({ page = 1 }) {
       },
     });
 
-    yield put(successPlaylists(response.data.playlists, response.data.meta.total));
+    yield put(
+      successPlaylists(response.data.playlists, response.data.meta.total)
+    );
   } catch (err) {
     yield put(failurePlaylists(err));
   }
 }
 
 export default function* librarySaga() {
-  yield all([
-    takeLatest(LibraryPlaylistTypes.FETCH_PLAYLISTS, fetchPlaylists),
-  ]);
+  yield all([takeLatest(LibraryPlaylistTypes.FETCH_PLAYLISTS, fetchPlaylists)]);
 }

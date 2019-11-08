@@ -1,6 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import AlbumItem from '../../components/AlbumItem';
+import Image from '../../components/Image';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import TrackItem from '../../components/TrackItem';
+import session from '../../services/session';
+import { Creators as ArtistActions } from '../../store/ducks/artist';
+import { Creators as PlayerActions } from '../../store/ducks/player';
 import {
   Content,
   Header,
@@ -14,16 +21,6 @@ import {
   SectionTitle,
   TracksList,
 } from './styles';
-
-import LoadingSpinner from '../../components/LoadingSpinner';
-import TrackItem from '../../components/TrackItem';
-import AlbumItem from '../../components/AlbumItem';
-import Image from '../../components/Image';
-
-import session from '../../services/session';
-
-import { Creators as ArtistActions } from '../../store/ducks/artist';
-import { Creators as PlayerActions } from '../../store/ducks/player';
 
 function Artist({
   match: {

@@ -1,16 +1,21 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useAlert } from 'react-alert';
-
+import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
-import { Creators as SignUpActions } from '../../store/ducks/signUp';
-
-import {
-  GlobalStyle, Container, Title, Logo, Form, Input, Submit, Button, WarningBox,
-} from './styles';
-
 import logo from '../../images/logo.svg';
+import { Creators as SignUpActions } from '../../store/ducks/signUp';
+import {
+  GlobalStyle,
+  Container,
+  Title,
+  Logo,
+  Form,
+  Input,
+  Submit,
+  Button,
+  WarningBox,
+} from './styles';
 
 const schema = yup.object().shape({
   name: yup.string().required('Nome é obrigatório'),
@@ -22,9 +27,7 @@ const schema = yup.object().shape({
 });
 
 function SignUp() {
-  const {
-    requestSignUp,
-  } = SignUpActions;
+  const { requestSignUp } = SignUpActions;
   const dispatch = useDispatch();
   const signUp = useSelector(state => state.signUp);
   const alert = useAlert();
@@ -32,14 +35,11 @@ function SignUp() {
   const [warning, setWarning] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', password: '' });
 
-  useLayoutEffect(
-    () => {
-      if (signUp.error.length > 0) {
-        alert.show(signUp.error);
-      }
-    },
-    [signUp.error],
-  );
+  useLayoutEffect(() => {
+    if (signUp.error.length > 0) {
+      alert.show(signUp.error);
+    }
+  }, [signUp.error]);
 
   function handleInputChange(event) {
     setForm({
@@ -58,7 +58,7 @@ function SignUp() {
       err.inner
         .slice(0)
         .reverse()
-        .forEach((error) => {
+        .forEach(error => {
           setWarning({ ...error });
         });
     }

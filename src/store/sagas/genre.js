@@ -1,8 +1,7 @@
 import { put, call, all, takeLatest } from 'redux-saga/effects';
 
-import { Types as GenreTypes, Creators as GenreActions } from '../ducks/genre';
-
 import api from '../../services/api';
+import { Types as GenreTypes, Creators as GenreActions } from '../ducks/genre';
 
 const {
   successGenre,

@@ -1,10 +1,10 @@
 import { put, call, all, takeLatest } from 'redux-saga/effects';
+
+import api from '../../services/api';
 import {
   Types as SearchTypes,
   Creators as SearchActions,
 } from '../ducks/search';
-
-import api from '../../services/api';
 
 const { successSearch, failureSearch } = SearchActions;
 

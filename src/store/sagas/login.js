@@ -1,17 +1,10 @@
-import {
-  put, call, all, takeLatest,
-} from 'redux-saga/effects';
 import { push } from 'connected-react-router';
-
-import { Types as LoginTypes, Creators as LoginActions } from '../ducks/login';
-
+import { put, call, all, takeLatest } from 'redux-saga/effects';
 
 import api from '../../services/api';
+import { Types as LoginTypes, Creators as LoginActions } from '../ducks/login';
 
-const {
-  failureLogin,
-  successLogin,
-} = LoginActions;
+const { failureLogin, successLogin } = LoginActions;
 
 export function* requestLogin({ form }) {
   try {

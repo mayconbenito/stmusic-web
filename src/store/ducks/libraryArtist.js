@@ -1,13 +1,16 @@
 import { createActions, createReducer } from 'reduxsauce';
 
-export const { Types, Creators } = createActions({
-  fetchArtists: ['page'],
-  successArtists: ['data', 'total'],
-  failureArtists: ['error'],
-  clearArtists: [],
-}, {
-  prefix: 'libraryArtist/',
-});
+export const { Types, Creators } = createActions(
+  {
+    fetchArtists: ['page'],
+    successArtists: ['data', 'total'],
+    failureArtists: ['error'],
+    clearArtists: [],
+  },
+  {
+    prefix: 'libraryArtist/',
+  }
+);
 
 const initialState = {
   data: [],

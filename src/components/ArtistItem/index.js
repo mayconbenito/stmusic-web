@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Container,
-  Opacity,
-  Image,
-  Name,
-} from './styles';
-
+import { Container, Opacity, Image, Name } from './styles';
 
 function ArtistItem({ data, onClick }) {
   return (

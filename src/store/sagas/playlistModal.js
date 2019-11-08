@@ -1,16 +1,10 @@
-import {
-  put,
-  call,
-  all,
-  takeLatest,
-} from 'redux-saga/effects';
+import { put, call, all, takeLatest } from 'redux-saga/effects';
 
+import api from '../../services/api';
 import {
   Types as PlaylistModalTypes,
   Creators as PlaylistModalActions,
 } from '../ducks/playlistModal';
-
-import api from '../../services/api';
 
 const {
   successAdd,
@@ -21,9 +15,13 @@ const {
 
 function* addTrack({ playlistId, trackId }) {
   try {
-    const response = yield call(api.post, `/app/playlists/${playlistId}/tracks`, {
-      tracks: [trackId],
-    });
+    const response = yield call(
+      api.post,
+      `/app/playlists/${playlistId}/tracks`,
+      {
+        tracks: [trackId],
+      }
+    );
 
     if (response.status === 204) {
       yield put(successAdd('ok'));
@@ -43,7 +41,9 @@ function* fetchPlaylists({ page = 1 }) {
       },
     });
 
-    yield put(successPlaylists(response.data.playlists, response.data.meta.total));
+    yield put(
+      successPlaylists(response.data.playlists, response.data.meta.total)
+    );
   } catch (err) {
     yield put(failurePlaylists(err));
   }

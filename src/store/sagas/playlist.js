@@ -1,15 +1,11 @@
-import {
-  put, call, all, takeLatest,
-} from 'redux-saga/effects';
-
 import { push } from 'connected-react-router';
+import { put, call, all, takeLatest } from 'redux-saga/effects';
 
+import api from '../../services/api';
 import {
   Types as PlaylistTypes,
   Creators as PlaylistActions,
 } from '../ducks/playlist';
-
-import api from '../../services/api';
 
 const {
   successPlaylist,
@@ -37,12 +33,16 @@ function* fetchPlaylist({ playlistId }) {
 function* fetchTracks({ page = 1, playlistId }) {
   try {
     const token = localStorage.getItem('@STMusic:token');
-    const response = yield call(api.get, `/app/playlists/${playlistId}/tracks`, {
-      headers: { Authorization: `Bearer ${token}` },
-      params: {
-        page,
-      },
-    });
+    const response = yield call(
+      api.get,
+      `/app/playlists/${playlistId}/tracks`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        params: {
+          page,
+        },
+      }
+    );
 
     yield put(successTracks(response.data.tracks, response.data.meta.total));
   } catch (err) {

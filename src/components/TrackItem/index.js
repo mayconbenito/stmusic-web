@@ -1,16 +1,12 @@
 import React from 'react';
+import { MdPlayArrow, MdPlaylistAdd } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 
-import { MdPlayArrow, MdPlaylistAdd } from 'react-icons/md';
-
-import { Container, Opacity, PlayButton, Title, AddOnPlaylist } from './styles';
-
-import Image from '../Image';
-
+import session from '../../services/session';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
-
-import session from '../../services/session';
+import Image from '../Image';
+import { Container, Opacity, PlayButton, Title, AddOnPlaylist } from './styles';
 
 function TrackItem({ data, style }) {
   const dispatch = useDispatch();
