@@ -2,6 +2,7 @@ import { push } from 'connected-react-router';
 import { put, call, all, takeLatest } from 'redux-saga/effects';
 
 import api from '../../services/api';
+import { Creators as LibraryPlaylistActions } from '../ducks/libraryPlaylist';
 import {
   Types as PlaylistTypes,
   Creators as PlaylistActions,
@@ -55,7 +56,11 @@ function* requestDeletePlaylist({ id }) {
     const response = yield call(api.delete, `/app/playlists/${id}`);
 
     if (response.status === 204) {
-      yield put(push('/library/playlists'));
+      yield all([
+        put(LibraryPlaylistActions.clearPlaylists()),
+        put(LibraryPlaylistActions.fetchPlaylists(1)),
+        put(push('/library/playlists')),
+      ]);
     }
   } catch (err) {
     if (err.response.status === 500) {
@@ -71,7 +76,11 @@ function* requestCreatePlaylist({ name }) {
     });
 
     if (response.status === 200) {
-      yield put(successCreatePlaylist());
+      yield all([
+        put(successCreatePlaylist()),
+        put(LibraryPlaylistActions.clearPlaylists()),
+        put(LibraryPlaylistActions.fetchPlaylists(1)),
+      ]);
     }
   } catch (err) {
     if (err.response.status === 500) {
