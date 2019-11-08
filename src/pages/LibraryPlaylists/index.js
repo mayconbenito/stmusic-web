@@ -48,7 +48,7 @@ function LibraryPlaylists({ history }) {
         <PlaylistItem key={playlist.id}>
           <Image
             src={playlist.picture}
-            style={{ width: 160, height: 90 }}
+            style={{ width: 90, height: 90 }}
             onClick={() => history.push(`/playlists/${playlist.id}`)}
           />
 

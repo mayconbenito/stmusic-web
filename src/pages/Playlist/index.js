@@ -60,7 +60,7 @@ function Playlist({
             <HeaderContainer>
               <Image
                 src={playlist.data.picture}
-                style={{ width: 160, height: 90 }}
+                style={{ width: 90, height: 90 }}
               />
               <HeaderInfo>
                 <HeaderTitle>{playlist.data.name}</HeaderTitle>
