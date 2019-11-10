@@ -5,6 +5,7 @@ import AlbumItem from '../../components/AlbumItem';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
+import fallback from '../../images/fallback.png';
 import session from '../../services/session';
 import { Creators as ArtistActions } from '../../store/ducks/artist';
 import { Creators as PlayerActions } from '../../store/ducks/player';
@@ -74,6 +75,7 @@ function Artist({
             <HeaderContainer>
               <Image
                 src={artist.data.picture}
+                fallback={fallback}
                 style={{ width: 100, height: 100, borderRadius: '100%' }}
               />
               <HeaderInfo>

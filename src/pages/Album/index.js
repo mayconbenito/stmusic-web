@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
+import fallback from '../../images/fallback.png';
 import { Creators as AlbumActions } from '../../store/ducks/album';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import {
@@ -53,6 +54,7 @@ function Album({
             <HeaderContainer>
               <Image
                 src={album.data.picture}
+                fallback={fallback}
                 style={{ width: 100, height: 100, borderRadius: '100%' }}
               />
               <HeaderInfo>
