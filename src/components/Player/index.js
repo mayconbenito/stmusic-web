@@ -9,7 +9,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import Sound from 'react-sound';
 
-import fallback from '../../images/fallback.png';
+import fallback from '../../assets/images/fallback.png';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import Image from '../Image';
 import {

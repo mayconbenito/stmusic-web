@@ -1,6 +1,6 @@
 import React from 'react';
 
-import fallback from '../../images/fallback.png';
+import fallback from '../../assets/images/fallback.png';
 import Image from '../Image';
 import { Container, Details, Name, TextList, Type } from './styles';
 
