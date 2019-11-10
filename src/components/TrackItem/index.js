@@ -19,14 +19,14 @@ import {
 function TrackItem({ data, style }) {
   const dispatch = useDispatch();
   return (
-    <Container style={style} onClick={() => dispatch(PlayerActions.play(data))}>
+    <Container style={style}>
       <Image
         src={data.picture}
         fallback={fallback}
         style={{ width: 150, height: 150 }}
       />
 
-      <Details>
+      <Details onClick={() => dispatch(PlayerActions.play(data))}>
         <Name>{data.name}</Name>
         <TextList>
           <Type>Música | </Type>
@@ -38,7 +38,9 @@ function TrackItem({ data, style }) {
 
       {session() && (
         <AddOnPlaylist
-          onClick={() => dispatch(PlaylistModalActions.openModal(data.id))}
+          onClick={() => {
+            dispatch(PlaylistModalActions.openModal(data.id));
+          }}
         >
           <MdPlaylistAdd size={30} color="#d99207" />
         </AddOnPlaylist>

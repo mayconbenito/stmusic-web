@@ -49,13 +49,13 @@ export const Container = styled.div`
   flex-direction: column;
   margin-right: 5px;
   margin-bottom: 5px;
-  cursor: pointer;
 `;
 
 export const AddOnPlaylist = styled.button`
   position: absolute;
   top: 5px;
   right: 5px;
+  z-index: 500;
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -65,6 +65,7 @@ export const Details = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 3px;
+  cursor: pointer;
 `;
 
 export const Type = styled.span`
