@@ -40,6 +40,12 @@ export const Form = styled.form`
   border-radius: 3px;
 `;
 
+export const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+`;
+
 export const Input = styled.input`
   min-width: 300px;
   height: 35px;
@@ -47,14 +53,18 @@ export const Input = styled.input`
   border: none;
   background-color: #141414;
   color: #d99207;
-  margin-bottom: 5px;
   border-radius: 3px;
   font-weight: 500;
-  border-bottom: ${props => (props.warning ? '1px solid #d99207' : 'none')};
 
   &::placeholder {
     color: #d99207;
   }
+`;
+
+export const InputMessage = styled.span`
+  font-size: 12px;
+  color: #d99207;
+  margin-top: 2px;
 `;
 
 export const Submit = styled.button`
@@ -64,7 +74,7 @@ export const Submit = styled.button`
   border: none;
   background-color: #141414;
   color: #d99207;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   border-radius: 3px;
   font-weight: 500;
   cursor: pointer;
@@ -81,34 +91,4 @@ export const Button = styled(Link)`
   cursor: pointer;
   border: none;
   align-self: flex-start;
-`;
-
-export const WarningBox = styled.div`
-  background-color: #141414;
-  border-radius: 3px;
-  padding: 5px 10px;
-  margin-top: 5px;
-  animation-name: fadeIn;
-  animation-duration: 0.5s;
-  animation-timing-function: ease-in-out;
-
-  span {
-    font-size: 12px;
-    color: #d99207;
-  }
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    40% {
-      opacity: 0.5;
-    }
-    80% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
 `;
