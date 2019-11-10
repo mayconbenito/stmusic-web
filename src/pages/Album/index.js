@@ -46,9 +46,11 @@ function Album({
 
   return (
     <Content>
-      {album.loading && <LoadingSpinner size={120} loading={album.loading} />}
+      {album.loading && album.tracks.loading && (
+        <LoadingSpinner size={120} loading={album.loading} />
+      )}
 
-      {!album.loading && (
+      {!album.loading && !album.tracks.loading && (
         <React.Fragment>
           <Header>
             <HeaderContainer>

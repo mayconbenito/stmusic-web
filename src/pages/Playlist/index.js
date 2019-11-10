@@ -51,11 +51,11 @@ function Playlist({
 
   return (
     <Content>
-      {playlist.loading && (
+      {playlist.loading && playlist.tracks.loading && (
         <LoadingSpinner size={120} loading={playlist.loading} />
       )}
 
-      {!playlist.loading && (
+      {!playlist.loading && !playlist.tracks.loading && (
         <React.Fragment>
           <Header>
             <HeaderContainer>

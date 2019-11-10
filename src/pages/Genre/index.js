@@ -44,9 +44,11 @@ function Genre({
 
   return (
     <Content>
-      {genre.loading && <LoadingSpinner size={120} loading={genre.loading} />}
+      {genre.loading && genre.tracks.loading && (
+        <LoadingSpinner size={120} loading={genre.loading} />
+      )}
 
-      {!genre.loading && (
+      {!genre.loading && !genre.tracks.loading && (
         <React.Fragment>
           <Header>
             <HeaderContainer>
