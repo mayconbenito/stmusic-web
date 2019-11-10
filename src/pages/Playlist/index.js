@@ -62,25 +62,28 @@ function Playlist({
               <Image
                 src={playlist.data.picture}
                 fallback={fallback}
-                style={{ width: 90, height: 90 }}
+                style={{ width: 100, height: 100, borderRadius: '100%' }}
               />
-              <HeaderInfo>
-                <HeaderTitle>{playlist.data.name}</HeaderTitle>
-                <Meta>{`${playlist.data.tracks} Músicas`}</Meta>
-              </HeaderInfo>
+              <HeaderTitle>{playlist.data.name}</HeaderTitle>
             </HeaderContainer>
-            <Buttons>
-              <Button
-                onClick={() =>
-                  dispatch(requestDeletePlaylist(playlist.data.id))
-                }
-              >
-                Excluir Playlist
-              </Button>
-              {playlist.tracks.data.length > 0 && (
-                <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
-              )}
-            </Buttons>
+
+            <HeaderInfo>
+              <div>
+                <Meta>{`${playlist.data.tracks} Músicas`}</Meta>
+              </div>
+              <Buttons>
+                <Button
+                  onClick={() =>
+                    dispatch(requestDeletePlaylist(playlist.data.id))
+                  }
+                >
+                  Excluir Playlist
+                </Button>
+                {playlist.tracks.data.length > 0 && (
+                  <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
+                )}
+              </Buttons>
+            </HeaderInfo>
           </Header>
 
           {playlist.tracks.data.length > 0 ? (

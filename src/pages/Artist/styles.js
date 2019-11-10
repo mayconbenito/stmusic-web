@@ -27,22 +27,24 @@ export const HeaderContainer = styled.div`
 export const HeaderTitle = styled.h2`
   color: #d99207;
   font-size: 26px;
+  margin-left: 5px;
 `;
 
 export const HeaderInfo = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 5px;
+  margin-top: 5px;
 `;
 
 export const Meta = styled.span`
   color: #d99207;
   font-size: 16px;
+  margin-right: 10px;
 `;
 
 export const Buttons = styled.div`
   display: flex;
-  margin-top: 10px;
+  margin-top: 5px;
 `;
 
 export const Button = styled.button`
