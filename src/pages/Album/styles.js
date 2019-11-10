@@ -48,11 +48,13 @@ export const Buttons = styled.div`
 export const Button = styled.button`
   border: none;
   background-color: #d99207;
-  padding: 5px;
-  border-radius: 3px;
+  padding: 5px 15px;
+  font-size: 12px;
+  border-radius: 15px;
   color: #000;
   margin-right: 5px;
-  font-weight: 500;
+  font-weight: bold;
+  font-family: Roboto;
   cursor: pointer;
 `;
 
