@@ -9,6 +9,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import Sound from 'react-sound';
 
+import fallback from '../../images/fallback.png';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import Image from '../Image';
 import {
@@ -89,6 +90,7 @@ function Player() {
           <TrackInfo>
             <Image
               src={player.active.picture}
+              fallback={fallback}
               style={{ width: 70, height: 70 }}
             />
             <TrackTexts>

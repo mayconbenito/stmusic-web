@@ -1,8 +1,12 @@
 import React from 'react';
+import { MdPlaylistAdd } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 
-import { MdPlaylistAdd } from 'react-icons/md';
-
+import fallback from '../../images/fallback.png';
+import session from '../../services/session';
+import { Creators as PlayerActions } from '../../store/ducks/player';
+import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
+import Image from '../Image';
 import {
   Container,
   Details,
@@ -12,18 +16,15 @@ import {
   AddOnPlaylist,
 } from './styles';
 
-import Image from '../Image';
-
-import { Creators as PlayerActions } from '../../store/ducks/player';
-import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
-
-import session from '../../services/session';
-
 function TrackItem({ data, style }) {
   const dispatch = useDispatch();
   return (
     <Container style={style} onClick={() => dispatch(PlayerActions.play(data))}>
-      <Image src={data.picture} style={{ width: 150, height: 150 }} />
+      <Image
+        src={data.picture}
+        fallback={fallback}
+        style={{ width: 150, height: 150 }}
+      />
 
       <Details>
         <Name>{data.name}</Name>
