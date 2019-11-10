@@ -1,6 +1,7 @@
 import { put, call, all, takeLatest } from 'redux-saga/effects';
 
 import api from '../../services/api';
+import session from '../../services/session';
 import {
   Types as ArtistTypes,
   Creators as ArtistActions,
@@ -23,19 +24,21 @@ function* fetchArtist({ artistId }) {
     const response = yield call(api.get, `/app/artists/${artistId}`);
 
     let followingState = false;
-    if (localStorage.getItem('@STMusic:token')) {
-      followingState = yield call(
+    if (session()) {
+      const followingArtists = yield call(
         api.get,
         `/app/me/following/artists/contains?artists=${artistId}`
+      );
+
+      followingState = followingArtists.data.artists.find(
+        itemId => itemId === parseInt(artistId)
       );
     }
 
     yield put(
       successArtist({
         ...response.data.artist,
-        followingState: followingState.data.artists.find(
-          itemId => itemId === parseInt(artistId)
-        ),
+        followingState,
       })
     );
   } catch (err) {
