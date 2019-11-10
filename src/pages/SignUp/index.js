@@ -11,10 +11,11 @@ import {
   Title,
   Logo,
   Form,
+  InputGroup,
   Input,
+  InputMessage,
   Submit,
   Button,
-  WarningBox,
 } from './styles';
 
 const schema = yup.object().shape({
@@ -55,12 +56,11 @@ function SignUp() {
       setWarning(false);
       dispatch(requestSignUp(isValid));
     } catch (err) {
-      err.inner
-        .slice(0)
-        .reverse()
-        .forEach(error => {
-          setWarning({ ...error });
-        });
+      const validationErrors = {};
+      err.inner.forEach(error => {
+        validationErrors[error.path] = error.message;
+      });
+      setWarning(validationErrors);
     }
   }
 
@@ -71,43 +71,43 @@ function SignUp() {
         <Form onSubmit={handleSubmit}>
           <Logo src={logo} />
           <Title>Registrar</Title>
-          <Input
-            warning={warning.path === 'name'}
-            name="name"
-            type="text"
-            placeholder="Seu nome completo"
-            value={form.name}
-            onChange={handleInputChange}
-          />
+          <InputGroup>
+            <Input
+              name="name"
+              type="text"
+              placeholder="Seu nome completo"
+              value={form.name}
+              onChange={handleInputChange}
+            />
+            <InputMessage>{warning.name}</InputMessage>
+          </InputGroup>
 
-          <Input
-            warning={warning.path === 'email'}
-            name="email"
-            type="email"
-            placeholder="Endereço de email"
-            value={form.email}
-            onChange={handleInputChange}
-          />
+          <InputGroup>
+            <Input
+              name="email"
+              placeholder="Endereço de email"
+              value={form.email}
+              onChange={handleInputChange}
+            />
+            <InputMessage>{warning.email}</InputMessage>
+          </InputGroup>
 
-          <Input
-            warning={warning.path === 'password'}
-            name="password"
-            type="password"
-            placeholder="Sua senha"
-            value={form.password}
-            onChange={handleInputChange}
-          />
+          <InputGroup>
+            <Input
+              name="password"
+              type="password"
+              placeholder="Sua senha"
+              value={form.password}
+              onChange={handleInputChange}
+            />
+            <InputMessage>{warning.password}</InputMessage>
+          </InputGroup>
 
           <Submit type="submit">
             {signUp.loading ? 'Carregando...' : 'Cadastrar'}
           </Submit>
 
           <Button to="/login">Fazer Login</Button>
-          {warning && (
-            <WarningBox>
-              <span>{warning.message}</span>
-            </WarningBox>
-          )}
         </Form>
       </Container>
     </React.Fragment>
