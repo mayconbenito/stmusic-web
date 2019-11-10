@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 import { useDispatch, useSelector } from 'react-redux';
 
+import fallback from '../../assets/images/fallback.png';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { Creators as LibraryPlaylistActions } from '../../store/ducks/libraryPlaylist';
@@ -48,6 +49,7 @@ function LibraryPlaylists({ history }) {
         <PlaylistItem key={playlist.id}>
           <Image
             src={playlist.picture}
+            fallback={fallback}
             style={{ width: 90, height: 90 }}
             onClick={() => history.push(`/playlists/${playlist.id}`)}
           />
