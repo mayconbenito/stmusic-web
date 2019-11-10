@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import fallback from '../../assets/images/fallback.png';
 import AlbumItem from '../../components/AlbumItem';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
-import fallback from '../../assets/images/fallback.png';
 import session from '../../services/session';
 import { Creators as ArtistActions } from '../../store/ducks/artist';
 import { Creators as PlayerActions } from '../../store/ducks/player';
@@ -78,22 +78,25 @@ function Artist({
                 fallback={fallback}
                 style={{ width: 100, height: 100, borderRadius: '100%' }}
               />
-              <HeaderInfo>
-                <HeaderTitle>{artist.data.name}</HeaderTitle>
+              <HeaderTitle>{artist.data.name}</HeaderTitle>
+            </HeaderContainer>
+
+            <HeaderInfo>
+              <div>
                 <Meta>{`${artist.data.followers} Seguidores`}</Meta>
                 <Meta>{`${artist.data.tracks} Músicas`}</Meta>
-              </HeaderInfo>
-            </HeaderContainer>
-            <Buttons>
-              {session() && (
-                <Button onClick={handleFollowing}>
-                  {artist.data.followingState ? 'Seguindo' : 'Seguir'}
-                </Button>
-              )}
-              {artist.tracks.data.length > 0 && (
-                <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
-              )}
-            </Buttons>
+              </div>
+              <Buttons>
+                {session() && (
+                  <Button onClick={handleFollowing}>
+                    {artist.data.followingState ? 'Seguindo' : 'Seguir'}
+                  </Button>
+                )}
+                {artist.tracks.data.length > 0 && (
+                  <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
+                )}
+              </Buttons>
+            </HeaderInfo>
           </Header>
 
           {artist.tracks.data.length > 0 && (
