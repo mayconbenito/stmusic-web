@@ -3,7 +3,7 @@ import { useAlert } from 'react-alert';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
-import logo from '../../images/logo.svg';
+import logo from '../../assets/images/logo.svg';
 import { Creators as SignUpActions } from '../../store/ducks/signUp';
 import {
   GlobalStyle,

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import fallback from '../../images/fallback.png';
+import fallback from '../../assets/images/fallback.png';
 import { Container, Opacity, Image, Name } from './styles';
 
 function ArtistItem({ data, onClick }) {

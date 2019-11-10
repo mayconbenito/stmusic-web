@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
-import fallback from '../../images/fallback.png';
+import fallback from '../../assets/images/fallback.png';
 import { Creators as GenreActions } from '../../store/ducks/genre';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import {

@@ -2,7 +2,7 @@ import React from 'react';
 import { MdPlaylistAdd } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 
-import fallback from '../../images/fallback.png';
+import fallback from '../../assets/images/fallback.png';
 import session from '../../services/session';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
