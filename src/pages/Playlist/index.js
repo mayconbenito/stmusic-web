@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import fallback from '../../assets/images/fallback.png';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
@@ -60,6 +61,7 @@ function Playlist({
             <HeaderContainer>
               <Image
                 src={playlist.data.picture}
+                fallback={fallback}
                 style={{ width: 90, height: 90 }}
               />
               <HeaderInfo>
