@@ -1,16 +1,22 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useAlert } from 'react-alert';
-
+import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
+import logo from '../../assets/images/logo.svg';
 import { Creators as SignUpActions } from '../../store/ducks/signUp';
-
 import {
-  GlobalStyle, Container, Title, Logo, Form, Input, Submit, Button, WarningBox,
+  GlobalStyle,
+  Container,
+  Title,
+  Logo,
+  Form,
+  InputGroup,
+  Input,
+  InputMessage,
+  Submit,
+  Button,
 } from './styles';
-
-import logo from '../../images/logo.svg';
 
 const schema = yup.object().shape({
   name: yup.string().required('Nome é obrigatório'),
@@ -22,9 +28,7 @@ const schema = yup.object().shape({
 });
 
 function SignUp() {
-  const {
-    requestSignUp,
-  } = SignUpActions;
+  const { requestSignUp } = SignUpActions;
   const dispatch = useDispatch();
   const signUp = useSelector(state => state.signUp);
   const alert = useAlert();
@@ -32,14 +36,11 @@ function SignUp() {
   const [warning, setWarning] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', password: '' });
 
-  useLayoutEffect(
-    () => {
-      if (signUp.error.length > 0) {
-        alert.show(signUp.error);
-      }
-    },
-    [signUp.error],
-  );
+  useLayoutEffect(() => {
+    if (signUp.error.length > 0) {
+      alert.show(signUp.error);
+    }
+  }, [signUp.error]);
 
   function handleInputChange(event) {
     setForm({
@@ -55,12 +56,11 @@ function SignUp() {
       setWarning(false);
       dispatch(requestSignUp(isValid));
     } catch (err) {
-      err.inner
-        .slice(0)
-        .reverse()
-        .forEach((error) => {
-          setWarning({ ...error });
-        });
+      const validationErrors = {};
+      err.inner.forEach(error => {
+        validationErrors[error.path] = error.message;
+      });
+      setWarning(validationErrors);
     }
   }
 
@@ -71,43 +71,43 @@ function SignUp() {
         <Form onSubmit={handleSubmit}>
           <Logo src={logo} />
           <Title>Registrar</Title>
-          <Input
-            warning={warning.path === 'name'}
-            name="name"
-            type="text"
-            placeholder="Seu nome completo"
-            value={form.name}
-            onChange={handleInputChange}
-          />
+          <InputGroup>
+            <Input
+              name="name"
+              type="text"
+              placeholder="Seu nome completo"
+              value={form.name}
+              onChange={handleInputChange}
+            />
+            <InputMessage>{warning.name}</InputMessage>
+          </InputGroup>
 
-          <Input
-            warning={warning.path === 'email'}
-            name="email"
-            type="email"
-            placeholder="Endereço de email"
-            value={form.email}
-            onChange={handleInputChange}
-          />
+          <InputGroup>
+            <Input
+              name="email"
+              placeholder="Endereço de email"
+              value={form.email}
+              onChange={handleInputChange}
+            />
+            <InputMessage>{warning.email}</InputMessage>
+          </InputGroup>
 
-          <Input
-            warning={warning.path === 'password'}
-            name="password"
-            type="password"
-            placeholder="Sua senha"
-            value={form.password}
-            onChange={handleInputChange}
-          />
+          <InputGroup>
+            <Input
+              name="password"
+              type="password"
+              placeholder="Sua senha"
+              value={form.password}
+              onChange={handleInputChange}
+            />
+            <InputMessage>{warning.password}</InputMessage>
+          </InputGroup>
 
           <Submit type="submit">
             {signUp.loading ? 'Carregando...' : 'Cadastrar'}
           </Submit>
 
           <Button to="/login">Fazer Login</Button>
-          {warning && (
-            <WarningBox>
-              <span>{warning.message}</span>
-            </WarningBox>
-          )}
         </Form>
       </Container>
     </React.Fragment>

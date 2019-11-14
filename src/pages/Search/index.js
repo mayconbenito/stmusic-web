@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import AlbumItem from '../../components/AlbumItem';
+import ArtistItem from '../../components/ArtistItem';
+import TrackItem from '../../components/TrackItem';
+import { Creators as SearchActions } from '../../store/ducks/search';
 import {
   Content,
   SearchInput,
@@ -9,12 +13,6 @@ import {
   SectionTitle,
   SectionItems,
 } from './styles';
-
-import TrackItem from '../../components/TrackItem';
-import AlbumItem from '../../components/AlbumItem';
-import ArtistItem from '../../components/ArtistItem';
-
-import { Creators as SearchActions } from '../../store/ducks/search';
 
 function Search({ history }) {
   const { fetchSearch, clearSearch } = SearchActions;

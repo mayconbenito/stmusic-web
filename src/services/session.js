@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
 
-export default function () {
+export default function() {
   const token = localStorage.getItem('@STMusic:token');
   if (!token) {
     return false;

@@ -1,16 +1,22 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useAlert } from 'react-alert';
-
+import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
+import logo from '../../assets/images/logo.svg';
 import { Creators as LoginActions } from '../../store/ducks/login';
-
 import {
-  GlobalStyle, Container, Title, Logo, Form, Input, Submit, Button, WarningBox,
+  GlobalStyle,
+  Container,
+  Title,
+  Logo,
+  Form,
+  InputGroup,
+  Input,
+  InputMessage,
+  Submit,
+  Button,
 } from './styles';
-
-import logo from '../../images/logo.svg';
 
 const schema = yup.object().shape({
   email: yup
@@ -29,14 +35,11 @@ function Login() {
   const [warning, setWarning] = useState(false);
   const [form, setForm] = useState({ email: '', password: '' });
 
-  useLayoutEffect(
-    () => {
-      if (login.error.length > 0) {
-        alert.show(login.error);
-      }
-    },
-    [login.error],
-  );
+  useLayoutEffect(() => {
+    if (login.error.length > 0) {
+      alert.show(login.error);
+    }
+  }, [login.error]);
 
   function handleInputChange(event) {
     setForm({
@@ -49,15 +52,16 @@ function Login() {
     try {
       e.preventDefault();
       const isValid = await schema.validate(form, { abortEarly: false });
-      setWarning(false);
-      dispatch(requestLogin(isValid));
+      if (isValid) {
+        setWarning(false);
+        dispatch(requestLogin(isValid));
+      }
     } catch (err) {
-      err.inner
-        .slice(0)
-        .reverse()
-        .forEach((error) => {
-          setWarning({ ...error });
-        });
+      const validationErrors = {};
+      err.inner.forEach(error => {
+        validationErrors[error.path] = error.message;
+      });
+      setWarning(validationErrors);
     }
   }
 
@@ -67,35 +71,33 @@ function Login() {
       <Container>
         <Form onSubmit={handleSubmit}>
           <Logo src={logo} />
-          <Title>Entrar</Title>
-          <Input
-            warning={warning.path === 'email'}
-            name="email"
-            type="email"
-            placeholder="Endereço de email"
-            value={form.email}
-            onChange={handleInputChange}
-          />
+          <Title>Fazer Login</Title>
+          <InputGroup>
+            <Input
+              name="email"
+              placeholder="Endereço de email"
+              value={form.email}
+              onChange={handleInputChange}
+            />
+            <InputMessage>{warning.email}</InputMessage>
+          </InputGroup>
 
-          <Input
-            warning={warning.path === 'password'}
-            name="password"
-            type="password"
-            placeholder="Sua senha"
-            value={form.password}
-            onChange={handleInputChange}
-          />
+          <InputGroup>
+            <Input
+              name="password"
+              type="password"
+              placeholder="Sua senha"
+              value={form.password}
+              onChange={handleInputChange}
+            />
+            <InputMessage>{warning.password}</InputMessage>
+          </InputGroup>
 
           <Submit type="submit">
-            { login.loading ? 'Carregando...' : 'Entrar' }
+            {login.loading ? 'Carregando...' : 'Entrar'}
           </Submit>
 
           <Button to="/sign-up">Cadastrar</Button>
-          {warning && (
-            <WarningBox>
-              <span>{warning.message}</span>
-            </WarningBox>
-          )}
         </Form>
       </Container>
     </React.Fragment>

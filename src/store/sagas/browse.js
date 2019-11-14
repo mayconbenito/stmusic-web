@@ -1,13 +1,10 @@
-import {
-  put, call, all, takeLatest,
-} from 'redux-saga/effects';
+import { put, call, all, takeLatest } from 'redux-saga/effects';
 
+import api from '../../services/api';
 import {
   Types as BrowseTypes,
   Creators as BrowseActions,
 } from '../ducks/browse';
-
-import api from '../../services/api';
 
 const {
   successGenres,

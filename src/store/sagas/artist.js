@@ -1,17 +1,20 @@
 import { put, call, all, takeLatest } from 'redux-saga/effects';
 
+import api from '../../services/api';
+import session from '../../services/session';
 import {
   Types as ArtistTypes,
   Creators as ArtistActions,
 } from '../ducks/artist';
-
-import api from '../../services/api';
+import { Creators as LibraryArtistActions } from '../ducks/libraryArtist';
 
 const {
   successArtist,
   failureArtist,
   successTracks,
   failureTracks,
+  successMostPlayedTracks,
+  failureMostPlayedTracks,
   successAlbums,
   failureAlbums,
   successFollowArtist,
@@ -22,22 +25,22 @@ function* fetchArtist({ artistId }) {
   try {
     const response = yield call(api.get, `/app/artists/${artistId}`);
 
-    let followingState;
-    if (localStorage.getItem('@STMusic:token')) {
-      followingState = yield call(
+    let followingState = false;
+    if (session()) {
+      const followingArtists = yield call(
         api.get,
         `/app/me/following/artists/contains?artists=${artistId}`
+      );
+
+      followingState = followingArtists.data.artists.find(
+        itemId => itemId === parseInt(artistId)
       );
     }
 
     yield put(
       successArtist({
         ...response.data.artist,
-        followingState: followingState
-          ? followingState.data.artists.find(
-              itemId => itemId === parseInt(artistId)
-            )
-          : false,
+        followingState,
       })
     );
   } catch (err) {
@@ -57,6 +60,27 @@ function* fetchTracks({ page = 1, artistId }) {
     yield put(successTracks(response.data.tracks, response.data.meta.total));
   } catch (err) {
     yield put(failureTracks(err));
+  }
+}
+
+function* fetchMostPlayedTracks({ page = 1, artistId }) {
+  try {
+    const response = yield call(
+      api.get,
+      `/app/artists/${artistId}/most-played-tracks`,
+      {
+        params: {
+          page,
+          limit: 100,
+        },
+      }
+    );
+
+    yield put(
+      successMostPlayedTracks(response.data.tracks, response.data.meta.total)
+    );
+  } catch (err) {
+    yield put(failureMostPlayedTracks(err));
   }
 }
 
@@ -82,7 +106,11 @@ function* followArtist({ artistId }) {
     });
 
     if (response.status === 204) {
-      yield put(successFollowArtist());
+      yield all([
+        put(successFollowArtist()),
+        put(LibraryArtistActions.clearArtists()),
+        put(LibraryArtistActions.fetchArtists(1)),
+      ]);
     }
   } catch (err) {
     console.log(err);
@@ -98,10 +126,14 @@ function* unfollowArtist({ artistId }) {
     });
 
     if (response.status === 204) {
-      yield put(successUnfollowArtist());
+      yield all([
+        put(successUnfollowArtist()),
+        put(LibraryArtistActions.clearArtists()),
+        put(LibraryArtistActions.fetchArtists(1)),
+      ]);
     }
   } catch (err) {
-    console.log(err);
+    console.log('errrororor', err);
   }
 }
 
@@ -109,6 +141,7 @@ export default function* artistSaga() {
   yield all([
     takeLatest(ArtistTypes.FETCH_ARTIST, fetchArtist),
     takeLatest(ArtistTypes.FETCH_TRACKS, fetchTracks),
+    takeLatest(ArtistTypes.FETCH_MOST_PLAYED_TRACKS, fetchMostPlayedTracks),
     takeLatest(ArtistTypes.FETCH_ALBUMS, fetchAlbums),
     takeLatest(ArtistTypes.FOLLOW_ARTIST, followArtist),
     takeLatest(ArtistTypes.UNFOLLOW_ARTIST, unfollowArtist),

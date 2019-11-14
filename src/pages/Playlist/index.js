@@ -1,6 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import fallback from '../../assets/images/fallback.png';
+import Image from '../../components/Image';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import TrackItem from '../../components/TrackItem';
+import { Creators as PlayerActions } from '../../store/ducks/player';
+import { Creators as PlaylistActions } from '../../store/ducks/playlist';
 import {
   Content,
   Header,
@@ -14,13 +20,6 @@ import {
   SectionTitle,
   TracksList,
 } from './styles';
-
-import { Creators as PlayerActions } from '../../store/ducks/player';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import TrackItem from '../../components/TrackItem';
-import Image from '../../components/Image';
-
-import { Creators as PlaylistActions } from '../../store/ducks/playlist';
 
 function Playlist({
   match: {
@@ -52,35 +51,39 @@ function Playlist({
 
   return (
     <Content>
-      {playlist.loading && (
+      {playlist.loading && playlist.tracks.loading && (
         <LoadingSpinner size={120} loading={playlist.loading} />
       )}
 
-      {!playlist.loading && (
+      {!playlist.loading && !playlist.tracks.loading && (
         <React.Fragment>
           <Header>
             <HeaderContainer>
               <Image
                 src={playlist.data.picture}
-                style={{ width: 160, height: 90 }}
+                fallback={fallback}
+                style={{ width: 100, height: 100, borderRadius: '100%' }}
               />
-              <HeaderInfo>
-                <HeaderTitle>{playlist.data.name}</HeaderTitle>
-                <Meta>{`${playlist.data.tracks} Músicas`}</Meta>
-              </HeaderInfo>
+              <HeaderTitle>{playlist.data.name}</HeaderTitle>
             </HeaderContainer>
-            <Buttons>
-              <Button
-                onClick={() =>
-                  dispatch(requestDeletePlaylist(playlist.data.id))
-                }
-              >
-                Excluir Playlist
-              </Button>
-              {playlist.tracks.data.length > 0 && (
-                <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
-              )}
-            </Buttons>
+
+            <HeaderInfo>
+              <div>
+                <Meta>{`${playlist.data.tracks} Músicas`}</Meta>
+              </div>
+              <Buttons>
+                <Button
+                  onClick={() =>
+                    dispatch(requestDeletePlaylist(playlist.data.id))
+                  }
+                >
+                  Excluir Playlist
+                </Button>
+                {playlist.tracks.data.length > 0 && (
+                  <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
+                )}
+              </Buttons>
+            </HeaderInfo>
           </Header>
 
           {playlist.tracks.data.length > 0 ? (

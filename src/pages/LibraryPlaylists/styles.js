@@ -36,17 +36,6 @@ export const PlaylistTracks = styled.span`
   font-size: 10px;
 `;
 
-export const PlaylistButton = styled.button`
-  width: 70px;
-  padding: 5px;
-  background-color: #d99207;
-  border: none;
-  color: #000;
-  font-weight: 500;
-  border-radius: 3px;
-  cursor: pointer;
-`;
-
 export const Warning = styled.span`
   color: #d99207;
   font-weight: 500;

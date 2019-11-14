@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
-import { useSelector, useDispatch } from 'react-redux';
-
 import {
   MdPlayArrow,
   MdPause,
@@ -9,11 +6,13 @@ import {
   MdSkipNext,
   MdVolumeMute,
 } from 'react-icons/md';
-
+import { useSelector, useDispatch } from 'react-redux';
 import Sound from 'react-sound';
 
+import fallback from '../../assets/images/fallback.png';
+import api from '../../services/api';
 import { Creators as PlayerActions } from '../../store/ducks/player';
-
+import Image from '../Image';
 import {
   Container,
   TrackInfo,
@@ -31,8 +30,6 @@ import {
   VolumeBar,
 } from './styles';
 
-import Image from '../Image';
-
 function Player() {
   const { pause, resume, stop, prev, next } = PlayerActions;
 
@@ -41,12 +38,22 @@ function Player() {
 
   const [currentTime, setCurrentTime] = useState();
   const [duration, setDuration] = useState();
+  const [playCountStatus, setPlayCountStatus] = useState(false);
   const [volume, setVolume] = useState(60);
 
   useEffect(() => {
     setCurrentTime(0);
     setDuration(0);
+    setPlayCountStatus(false);
   }, [player.active]);
+
+  async function handleSetPlayCount() {
+    try {
+      await api.post(`/app/tracks/plays/${player.active.id}`);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   function formatTime(millis = 0) {
     const minutes = Math.floor(millis / 60000);
@@ -58,6 +65,12 @@ function Player() {
   function handleOnPlaying({ position, duration: totalDuration }) {
     setCurrentTime(position);
     setDuration(totalDuration);
+
+    const percentage = Math.round((currentTime * 100) / duration || 0);
+    if (!playCountStatus && percentage >= 45) {
+      handleSetPlayCount();
+      setPlayCountStatus(true);
+    }
   }
 
   function handleVolumeChange(e) {
@@ -94,7 +107,8 @@ function Player() {
           <TrackInfo>
             <Image
               src={player.active.picture}
-              style={{ width: 130, height: 73 }}
+              fallback={fallback}
+              style={{ width: 70, height: 70 }}
             />
             <TrackTexts>
               <TrackName>{player.active.name}</TrackName>

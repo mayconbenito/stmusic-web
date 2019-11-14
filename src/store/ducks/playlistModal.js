@@ -1,18 +1,21 @@
 import { createActions, createReducer } from 'reduxsauce';
 
-export const { Types, Creators } = createActions({
-  openModal: ['trackId'],
-  closeModal: [],
-  fetchPlaylists: ['page'],
-  successPlaylists: ['data', 'total'],
-  failurePlaylists: ['error'],
-  addTrack: ['playlistId', 'trackId'],
-  successAdd: ['data'],
-  failureAdd: ['error'],
-  clearState: [],
-}, {
-  prefix: 'playlistModal/',
-});
+export const { Types, Creators } = createActions(
+  {
+    openModal: ['trackId'],
+    closeModal: [],
+    fetchPlaylists: ['page'],
+    successPlaylists: ['data', 'total'],
+    failurePlaylists: ['error'],
+    addTrack: ['playlistId', 'trackId'],
+    successAdd: ['data'],
+    failureAdd: ['error'],
+    clearState: [],
+  },
+  {
+    prefix: 'playlistModal/',
+  }
+);
 
 const initialState = {
   open: false,
@@ -51,7 +54,10 @@ const successPlaylists = (state = initialState, action) => ({
   },
 });
 
-const failurePlaylists = (state = initialState) => ({ ...state, playlists: { loading: false } });
+const failurePlaylists = (state = initialState) => ({
+  ...state,
+  playlists: { loading: false },
+});
 
 const addTrack = (state = initialState) => ({ ...state, open: false });
 

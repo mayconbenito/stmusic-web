@@ -1,19 +1,26 @@
 import { createActions, createReducer } from 'reduxsauce';
 
-export const { Types, Creators } = createActions({
-  requestLogin: ['form'],
-  successLogin: [],
-  failureLogin: ['error'],
-}, {
-  prefix: 'login/',
-});
+export const { Types, Creators } = createActions(
+  {
+    requestLogin: ['form'],
+    successLogin: [],
+    failureLogin: ['error'],
+  },
+  {
+    prefix: 'login/',
+  }
+);
 
 const initialState = {
   loading: false,
   error: '',
 };
 
-const requestLogin = (state = initialState) => ({ ...state, loading: true, error: '' });
+const requestLogin = (state = initialState) => ({
+  ...state,
+  loading: true,
+  error: '',
+});
 
 const successLogin = (state = initialState) => ({
   ...state,

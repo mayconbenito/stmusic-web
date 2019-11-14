@@ -1,7 +1,10 @@
 import React, { useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
+import { useDispatch, useSelector } from 'react-redux';
 
+import Image from '../../components/Image';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import { Creators as LibraryArtistActions } from '../../store/ducks/libraryArtist';
 import {
   ArtistList,
   ArtistItem,
@@ -11,21 +14,13 @@ import {
   Warning,
 } from './styles';
 
-import { Creators as LibraryArtistActions } from '../../store/ducks/libraryArtist';
-import Image from '../../components/Image';
-import LoadingSpinner from '../../components/LoadingSpinner';
-
 function LibraryArtists({ history }) {
-  const { fetchArtists, clearArtists } = LibraryArtistActions;
+  const { fetchArtists } = LibraryArtistActions;
   const libraryArtist = useSelector(state => state.libraryArtist);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchArtists());
-
-    return () => {
-      dispatch(clearArtists());
-    };
+    if (!libraryArtist.data.length > 0) dispatch(fetchArtists(1));
   }, []);
 
   const onEndReached = useCallback(() => {
@@ -38,20 +33,27 @@ function LibraryArtists({ history }) {
 
   return (
     <ArtistList ref={artistListRef}>
-      { libraryArtist.data.length === 0 && !libraryArtist.loading && <Warning>Você ainda nao segue nenhum artista.</Warning> }
-      {
-        libraryArtist.data.length === 0 && libraryArtist.loading && <LoadingSpinner loading={libraryArtist.loading} size={40} />
-      }
-      {
-        libraryArtist.data.map(data => (
-          <ArtistItem key={data.id}>
-            <Image src={data.picture} style={{ width: 80, height: 80, borderRadius: '100%' }} onClick={() => history.push(`/artists/${data.id}`)} />
-            <ArtistInfo>
-              <ArtistName onClick={() => history.push(`/artists/${data.id}`)}>{data.name}</ArtistName>
-              <ArtistFollowers>{`${data.followers} Seguidores`}</ArtistFollowers>
-            </ArtistInfo>
-          </ArtistItem>
-        ))}
+      {libraryArtist.data.length === 0 && !libraryArtist.loading && (
+        <Warning>Você ainda nao segue nenhum artista.</Warning>
+      )}
+      {libraryArtist.data.length === 0 && libraryArtist.loading && (
+        <LoadingSpinner loading={libraryArtist.loading} size={40} />
+      )}
+      {libraryArtist.data.map(data => (
+        <ArtistItem key={data.id}>
+          <Image
+            src={data.picture}
+            style={{ width: 80, height: 80, borderRadius: '100%' }}
+            onClick={() => history.push(`/artists/${data.id}`)}
+          />
+          <ArtistInfo>
+            <ArtistName onClick={() => history.push(`/artists/${data.id}`)}>
+              {data.name}
+            </ArtistName>
+            <ArtistFollowers>{`${data.followers} Seguidores`}</ArtistFollowers>
+          </ArtistInfo>
+        </ArtistItem>
+      ))}
     </ArtistList>
   );
 }

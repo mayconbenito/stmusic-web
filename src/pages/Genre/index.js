@@ -1,6 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import Image from '../../components/Image';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import TrackItem from '../../components/TrackItem';
+import fallback from '../../assets/images/fallback.png';
+import { Creators as GenreActions } from '../../store/ducks/genre';
+import { Creators as PlayerActions } from '../../store/ducks/player';
 import {
   Content,
   Header,
@@ -13,13 +19,6 @@ import {
   SectionTitle,
   TracksList,
 } from './styles';
-
-import LoadingSpinner from '../../components/LoadingSpinner';
-import TrackItem from '../../components/TrackItem';
-import Image from '../../components/Image';
-
-import { Creators as GenreActions } from '../../store/ducks/genre';
-import { Creators as PlayerActions } from '../../store/ducks/player';
 
 function Genre({
   match: {
@@ -45,14 +44,17 @@ function Genre({
 
   return (
     <Content>
-      {genre.loading && <LoadingSpinner size={120} loading={genre.loading} />}
+      {genre.loading && genre.tracks.loading && (
+        <LoadingSpinner size={120} loading={genre.loading} />
+      )}
 
-      {!genre.loading && (
+      {!genre.loading && !genre.tracks.loading && (
         <React.Fragment>
           <Header>
             <HeaderContainer>
               <Image
                 src={genre.data.picture}
+                fallback={fallback}
                 style={{ width: 100, height: 100, borderRadius: '100%' }}
               />
               <HeaderInfo>

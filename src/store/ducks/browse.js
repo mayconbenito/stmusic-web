@@ -1,24 +1,27 @@
 import { createActions, createReducer } from 'reduxsauce';
 
-export const { Types, Creators } = createActions({
-  fetchGenres: [],
-  successGenres: ['data'],
-  failureGenres: ['error'],
-  fetchRecentlyPlayed: [],
-  successRecentlyPlayed: ['data'],
-  failureRecentlyPlayed: ['error'],
-  fetchTrending: [],
-  successTrending: ['data'],
-  failureTrending: ['error'],
-  fetchMostPlayed: [],
-  successMostPlayed: ['data'],
-  failureMostPlayed: ['error'],
-  fetchMostFollowed: [],
-  successMostFollowed: ['data'],
-  failureMostFollowed: ['error'],
-}, {
-  prefix: 'browse/',
-});
+export const { Types, Creators } = createActions(
+  {
+    fetchGenres: [],
+    successGenres: ['data'],
+    failureGenres: ['error'],
+    fetchRecentlyPlayed: [],
+    successRecentlyPlayed: ['data'],
+    failureRecentlyPlayed: ['error'],
+    fetchTrending: [],
+    successTrending: ['data'],
+    failureTrending: ['error'],
+    fetchMostPlayed: [],
+    successMostPlayed: ['data'],
+    failureMostPlayed: ['error'],
+    fetchMostFollowed: [],
+    successMostFollowed: ['data'],
+    failureMostFollowed: ['error'],
+  },
+  {
+    prefix: 'browse/',
+  }
+);
 
 const initialState = {
   genres: [],
@@ -33,7 +36,10 @@ const initialState = {
   loadingMostFollowed: false,
 };
 
-const fetchGenres = (state = initialState) => ({ ...state, loadingGenres: true });
+const fetchGenres = (state = initialState) => ({
+  ...state,
+  loadingGenres: true,
+});
 
 const successGenres = (state = initialState, action) => ({
   ...state,
@@ -41,7 +47,10 @@ const successGenres = (state = initialState, action) => ({
   loadingGenres: false,
 });
 
-const failureGenres = (state = initialState) => ({ ...state, loadingGenres: false });
+const failureGenres = (state = initialState) => ({
+  ...state,
+  loadingGenres: false,
+});
 
 const fetchRecentlyPlayed = (state = initialState) => ({
   ...state,
@@ -59,7 +68,10 @@ const failureRecentlyPlayed = (state = initialState) => ({
   loadingRecentlyPlayed: false,
 });
 
-const fetchTrending = (state = initialState) => ({ ...state, loadingTrending: true });
+const fetchTrending = (state = initialState) => ({
+  ...state,
+  loadingTrending: true,
+});
 
 const successTrending = (state = initialState, action) => ({
   ...state,
@@ -67,9 +79,15 @@ const successTrending = (state = initialState, action) => ({
   loadingTrending: false,
 });
 
-const failureTrending = (state = initialState) => ({ ...state, loadingTrending: false });
+const failureTrending = (state = initialState) => ({
+  ...state,
+  loadingTrending: false,
+});
 
-const fetchMostPlayed = (state = initialState) => ({ ...state, loadingMostPlayed: true });
+const fetchMostPlayed = (state = initialState) => ({
+  ...state,
+  loadingMostPlayed: true,
+});
 
 const successMostPlayed = (state = initialState, action) => ({
   ...state,

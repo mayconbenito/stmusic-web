@@ -1,18 +1,12 @@
-import {
-  put, call, all, takeLatest,
-} from 'redux-saga/effects';
+import { put, call, all, takeLatest } from 'redux-saga/effects';
 
+import api from '../../services/api';
 import {
   Types as LibraryArtistTypes,
   Creators as LibraryArtistActions,
 } from '../ducks/libraryArtist';
 
-import api from '../../services/api';
-
-const {
-  successArtists,
-  failureArtists,
-} = LibraryArtistActions;
+const { successArtists, failureArtists } = LibraryArtistActions;
 
 function* fetchArtists({ page = 1 }) {
   try {
@@ -31,7 +25,5 @@ function* fetchArtists({ page = 1 }) {
 }
 
 export default function* libraryArtistSaga() {
-  yield all([
-    takeLatest(LibraryArtistTypes.FETCH_ARTISTS, fetchArtists),
-  ]);
+  yield all([takeLatest(LibraryArtistTypes.FETCH_ARTISTS, fetchArtists)]);
 }
