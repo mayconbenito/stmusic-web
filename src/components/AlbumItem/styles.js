@@ -5,7 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
   margin-right: 5px;
   margin-bottom: 5px;
-  width: ${props => (props.big ? '200px' : '150px')};
+  width: 150px;
   cursor: pointer;
 `;
 
@@ -16,7 +16,7 @@ export const Details = styled.div`
 `;
 
 export const Name = styled.span`
-  font-size: ${props => (props.big ? '16px' : '14px')};
+  font-size: 14px;
   color: #d99207;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -28,7 +28,7 @@ export const TextList = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  font-size: ${props => (props.big ? '12px' : '10px')};
+  font-size: 10px;
 `;
 
 export const Type = styled.span``;

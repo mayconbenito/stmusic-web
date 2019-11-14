@@ -107,7 +107,6 @@ function Artist({
               <TracksList>
                 {artist.albums.data.map(data => (
                   <AlbumItem
-                    big
                     key={data.id}
                     data={data}
                     style={{ marginBottom: 5 }}
