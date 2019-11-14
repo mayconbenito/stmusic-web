@@ -8,6 +8,9 @@ export const { Types, Creators } = createActions(
     fetchTracks: ['page', 'artistId'],
     successTracks: ['data', 'total'],
     failureTracks: ['error'],
+    fetchMostPlayedTracks: ['page', 'artistId'],
+    successMostPlayedTracks: ['data', 'total'],
+    failureMostPlayedTracks: ['error'],
     fetchAlbums: ['page', 'artistId'],
     successAlbums: ['data', 'total'],
     failureAlbums: ['error'],
@@ -32,6 +35,12 @@ const initialState = {
     followingState: true,
   },
   tracks: {
+    loading: true,
+    data: [],
+    total: 0,
+    page: 1,
+  },
+  mostPlayedTracks: {
     loading: true,
     data: [],
     total: 0,
@@ -74,6 +83,29 @@ const successTracks = (state = initialState, action) => ({
 });
 
 const failureTracks = (state = initialState) => ({ ...state, loading: false });
+
+const fetchMostPlayedTracks = (state = initialState) => ({
+  ...state,
+  mostPlayedTracks: {
+    ...state.mostPlayedTracks,
+    loading: true,
+  },
+});
+
+const successMostPlayedTracks = (state = initialState, action) => ({
+  ...state,
+  mostPlayedTracks: {
+    loading: false,
+    data: [...state.mostPlayedTracks.data, ...action.data],
+    total: action.total,
+    page: state.mostPlayedTracks.page + 1,
+  },
+});
+
+const failureMostPlayedTracks = (state = initialState) => ({
+  ...state,
+  loading: false,
+});
 
 const fetchAlbums = (state = initialState) => ({
   ...state,
@@ -130,6 +162,9 @@ export default createReducer(initialState, {
   [Types.FETCH_TRACKS]: fetchTracks,
   [Types.SUCCESS_TRACKS]: successTracks,
   [Types.FAILURE_TRACKS]: failureTracks,
+  [Types.FETCH_MOST_PLAYED_TRACKS]: fetchMostPlayedTracks,
+  [Types.SUCCESS_MOST_PLAYED_TRACKS]: successMostPlayedTracks,
+  [Types.FAILURE_MOST_PLAYED_TRACKS]: failureMostPlayedTracks,
   [Types.FETCH_ALBUMS]: fetchAlbums,
   [Types.SUCCESS_ALBUMS]: successAlbums,
   [Types.FAILURE_ALBUMS]: failureAlbums,
