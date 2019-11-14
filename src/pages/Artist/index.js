@@ -32,6 +32,7 @@ function Artist({
   const {
     fetchArtist,
     fetchTracks,
+    fetchMostPlayedTracks,
     fetchAlbums,
     clearArtist,
     followArtist,
@@ -43,6 +44,7 @@ function Artist({
   useEffect(() => {
     dispatch(fetchArtist(artistId));
     dispatch(fetchTracks(1, artistId));
+    dispatch(fetchMostPlayedTracks(1, artistId));
     dispatch(fetchAlbums(1, artistId));
 
     return () => {
@@ -99,21 +101,6 @@ function Artist({
             </HeaderInfo>
           </Header>
 
-          {artist.tracks.data.length > 0 && (
-            <Section>
-              <SectionTitle>Músicas</SectionTitle>
-              <TracksList>
-                {artist.tracks.data.map(data => (
-                  <TrackItem
-                    key={data.id}
-                    data={data}
-                    style={{ marginBottom: 5 }}
-                  />
-                ))}
-              </TracksList>
-            </Section>
-          )}
-
           {artist.albums.data.length > 0 && (
             <Section>
               <SectionTitle>Albums</SectionTitle>
@@ -125,6 +112,36 @@ function Artist({
                     data={data}
                     style={{ marginBottom: 5 }}
                     onClick={() => history.push(`/albums/${data.id}`)}
+                  />
+                ))}
+              </TracksList>
+            </Section>
+          )}
+
+          {artist.mostPlayedTracks.data.length > 0 && (
+            <Section>
+              <SectionTitle>Músicas mais tocadas</SectionTitle>
+              <TracksList>
+                {artist.mostPlayedTracks.data.map(data => (
+                  <TrackItem
+                    key={data.id}
+                    data={data}
+                    style={{ marginBottom: 5 }}
+                  />
+                ))}
+              </TracksList>
+            </Section>
+          )}
+
+          {artist.tracks.data.length > 0 && (
+            <Section>
+              <SectionTitle>Todas as Músicas</SectionTitle>
+              <TracksList>
+                {artist.tracks.data.map(data => (
+                  <TrackItem
+                    key={data.id}
+                    data={data}
+                    style={{ marginBottom: 5 }}
                   />
                 ))}
               </TracksList>
