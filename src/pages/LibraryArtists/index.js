@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 import { useDispatch, useSelector } from 'react-redux';
 
+import fallback from '../../assets/images/fallback.png';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { Creators as LibraryArtistActions } from '../../store/ducks/libraryArtist';
@@ -43,6 +44,7 @@ function LibraryArtists({ history }) {
         <ArtistItem key={data.id}>
           <Image
             src={data.picture}
+            fallback={fallback}
             style={{ width: 80, height: 80, borderRadius: '100%' }}
             onClick={() => history.push(`/artists/${data.id}`)}
           />
