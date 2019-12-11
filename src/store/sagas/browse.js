@@ -1,6 +1,7 @@
 import { put, call, all, takeLatest } from 'redux-saga/effects';
 
 import api from '../../services/api';
+import session from '../../services/session';
 import {
   Types as BrowseTypes,
   Creators as BrowseActions,
@@ -34,9 +35,10 @@ function* fetchGenres() {
 
 function* fetchRecentlyPlayed() {
   try {
-    const token = localStorage.getItem('@STMusic:token');
+    if (!session()) {
+      return;
+    }
     const response = yield call(api.get, '/app/me/recently-played', {
-      headers: { Authorization: `Bearer ${token}` },
       params: {
         page: 1,
         limit: 100,
