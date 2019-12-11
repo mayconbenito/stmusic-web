@@ -12,10 +12,7 @@ const {
 
 function* fetchGenre({ genreId }) {
   try {
-    const token = localStorage.getItem('@STMusic:token');
-    const response = yield call(api.get, `/app/genres/${genreId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = yield call(api.get, `/app/genres/${genreId}`);
 
     yield put(successGenre(response.data.genre));
   } catch (err) {
@@ -25,9 +22,7 @@ function* fetchGenre({ genreId }) {
 
 function* fetchTracks({ page = 1, genreId }) {
   try {
-    const token = localStorage.getItem('@STMusic:token');
     const response = yield call(api.get, `/app/genres/${genreId}/tracks`, {
-      headers: { Authorization: `Bearer ${token}` },
       params: {
         page,
         limit: 100,

@@ -10,9 +10,7 @@ const { successArtists, failureArtists } = LibraryArtistActions;
 
 function* fetchArtists({ page = 1 }) {
   try {
-    const token = localStorage.getItem('@STMusic:token');
     const response = yield call(api.get, '/app/me/following/artists', {
-      headers: { Authorization: `Bearer ${token}` },
       params: {
         page,
       },
