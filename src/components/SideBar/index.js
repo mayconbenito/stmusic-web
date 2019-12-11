@@ -84,10 +84,7 @@ function SideBar({ history }) {
       <Profile>
         {session() ? (
           <>
-            <Username href="#">
-              Bem Vindo,
-              <strong>{` ${user.name}`}</strong>
-            </Username>
+            <Username href="#">{user.name}</Username>
             <ProfileButton onClick={logout} href="#">
               Sair
             </ProfileButton>
