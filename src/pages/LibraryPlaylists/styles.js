@@ -29,6 +29,7 @@ export const PlaylistMeta = styled.div`
 
 export const PlaylistName = styled.span`
   color: #d99207;
+  cursor: pointer;
 `;
 
 export const PlaylistTracks = styled.span`
