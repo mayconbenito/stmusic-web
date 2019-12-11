@@ -10,9 +10,7 @@ const { successPlaylists, failurePlaylists } = LibraryPlaylistActions;
 
 function* fetchPlaylists({ page = 1 }) {
   try {
-    const token = localStorage.getItem('@STMusic:token');
     const response = yield call(api.get, '/app/me/playlists', {
-      headers: { Authorization: `Bearer ${token}` },
       params: {
         page,
       },

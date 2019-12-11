@@ -22,10 +22,7 @@ const {
 
 function* fetchGenres() {
   try {
-    const token = localStorage.getItem('@STMusic:token');
-    const response = yield call(api.get, '/app/genres', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = yield call(api.get, '/app/genres');
 
     yield put(successGenres(response.data.genres));
   } catch (err) {
@@ -53,9 +50,7 @@ function* fetchRecentlyPlayed() {
 
 function* fetchTrending() {
   try {
-    const token = localStorage.getItem('@STMusic:token');
     const response = yield call(api.get, '/app/browse/tracks/trending', {
-      headers: { Authorization: `Bearer ${token}` },
       params: {
         page: 1,
         limit: 100,
@@ -70,9 +65,7 @@ function* fetchTrending() {
 
 function* fetchMostPlayed() {
   try {
-    const token = localStorage.getItem('@STMusic:token');
     const response = yield call(api.get, '/app/browse/tracks/most-played', {
-      headers: { Authorization: `Bearer ${token}` },
       params: {
         page: 1,
         limit: 100,
@@ -87,9 +80,7 @@ function* fetchMostPlayed() {
 
 function* fetchMostFollowed() {
   try {
-    const token = localStorage.getItem('@STMusic:token');
     const response = yield call(api.get, '/app/browse/artists/most-followed', {
-      headers: { Authorization: `Bearer ${token}` },
       params: {
         page: 1,
         limit: 15,

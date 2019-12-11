@@ -20,10 +20,7 @@ const {
 
 function* fetchPlaylist({ playlistId }) {
   try {
-    const token = localStorage.getItem('@STMusic:token');
-    const response = yield call(api.get, `/app/playlists/${playlistId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = yield call(api.get, `/app/playlists/${playlistId}`);
 
     yield put(successPlaylist(response.data.playlist));
   } catch (err) {
@@ -33,12 +30,10 @@ function* fetchPlaylist({ playlistId }) {
 
 function* fetchTracks({ page = 1, playlistId }) {
   try {
-    const token = localStorage.getItem('@STMusic:token');
     const response = yield call(
       api.get,
       `/app/playlists/${playlistId}/tracks`,
       {
-        headers: { Authorization: `Bearer ${token}` },
         params: {
           page,
         },
