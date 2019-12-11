@@ -1,6 +1,7 @@
 import { put, call, all, takeLatest } from 'redux-saga/effects';
 
 import api from '../../services/api';
+import session from '../../services/session';
 import {
   Types as BrowseTypes,
   Creators as BrowseActions,
@@ -21,10 +22,7 @@ const {
 
 function* fetchGenres() {
   try {
-    const token = localStorage.getItem('@STMusic:token');
-    const response = yield call(api.get, '/app/genres', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = yield call(api.get, '/app/genres');
 
     yield put(successGenres(response.data.genres));
   } catch (err) {
@@ -34,9 +32,10 @@ function* fetchGenres() {
 
 function* fetchRecentlyPlayed() {
   try {
-    const token = localStorage.getItem('@STMusic:token');
+    if (!session()) {
+      return;
+    }
     const response = yield call(api.get, '/app/me/recently-played', {
-      headers: { Authorization: `Bearer ${token}` },
       params: {
         page: 1,
         limit: 100,
@@ -51,9 +50,7 @@ function* fetchRecentlyPlayed() {
 
 function* fetchTrending() {
   try {
-    const token = localStorage.getItem('@STMusic:token');
     const response = yield call(api.get, '/app/browse/tracks/trending', {
-      headers: { Authorization: `Bearer ${token}` },
       params: {
         page: 1,
         limit: 100,
@@ -68,9 +65,7 @@ function* fetchTrending() {
 
 function* fetchMostPlayed() {
   try {
-    const token = localStorage.getItem('@STMusic:token');
     const response = yield call(api.get, '/app/browse/tracks/most-played', {
-      headers: { Authorization: `Bearer ${token}` },
       params: {
         page: 1,
         limit: 100,
@@ -85,9 +80,7 @@ function* fetchMostPlayed() {
 
 function* fetchMostFollowed() {
   try {
-    const token = localStorage.getItem('@STMusic:token');
     const response = yield call(api.get, '/app/browse/artists/most-followed', {
-      headers: { Authorization: `Bearer ${token}` },
       params: {
         page: 1,
         limit: 15,

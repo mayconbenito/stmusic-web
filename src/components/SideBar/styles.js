@@ -100,10 +100,13 @@ export const Profile = styled.div`
 `;
 
 export const Username = styled.span`
-  min-width: 100px;
   font-family: Roboto;
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: bold;
   color: #d99207;
+  align-items: center;
+  align-self: center;
+  margin-bottom: 10px;
 `;
 
 export const ProfileButton = styled.button`

@@ -10,9 +10,7 @@ const { successSearch, failureSearch } = SearchActions;
 
 function* fetchSearch({ query }) {
   try {
-    const token = localStorage.getItem('@STMusic:token');
     const response = yield call(api.get, `/app/search/${query}`, {
-      headers: { Authorization: `Bearer ${token}` },
       params: {
         limit: 50,
         type: 'artist,album,track',

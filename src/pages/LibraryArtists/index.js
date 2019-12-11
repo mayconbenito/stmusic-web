@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 import { useDispatch, useSelector } from 'react-redux';
 
+import fallback from '../../assets/images/fallback.png';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { Creators as LibraryArtistActions } from '../../store/ducks/libraryArtist';
@@ -39,18 +40,24 @@ function LibraryArtists({ history }) {
       {libraryArtist.data.length === 0 && libraryArtist.loading && (
         <LoadingSpinner loading={libraryArtist.loading} size={40} />
       )}
-      {libraryArtist.data.map(data => (
-        <ArtistItem key={data.id}>
+      {libraryArtist.data.map(artist => (
+        <ArtistItem key={artist.id}>
           <Image
-            src={data.picture}
-            style={{ width: 80, height: 80, borderRadius: '100%' }}
-            onClick={() => history.push(`/artists/${data.id}`)}
+            src={artist.picture}
+            fallback={fallback}
+            style={{
+              width: 80,
+              height: 80,
+              borderRadius: '100%',
+              cursor: 'pointer',
+            }}
+            onClick={() => history.push(`/artists/${artist.id}`)}
           />
           <ArtistInfo>
-            <ArtistName onClick={() => history.push(`/artists/${data.id}`)}>
-              {data.name}
+            <ArtistName onClick={() => history.push(`/artists/${artist.id}`)}>
+              {artist.name}
             </ArtistName>
-            <ArtistFollowers>{`${data.followers} Seguidores`}</ArtistFollowers>
+            <ArtistFollowers>{`${artist.followers} Seguidores`}</ArtistFollowers>
           </ArtistInfo>
         </ArtistItem>
       ))}
