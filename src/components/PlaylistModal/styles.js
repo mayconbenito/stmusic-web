@@ -48,14 +48,7 @@ export const Body = styled.div`
   height: 100%;
   flex: 1;
   padding-top: 5px;
-`;
-
-export const Playlists = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
+  overflow: auto;
 `;
 
 export const PlaylistOpacity = styled.div`

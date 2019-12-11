@@ -4,7 +4,6 @@ import { MdClear } from 'react-icons/md';
 import { useSelector, useDispatch } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
-
 import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
 import Image from '../Image';
 import LoadingSpinner from '../LoadingSpinner';
@@ -15,7 +14,6 @@ import {
   HeaderTitle,
   HeaderButton,
   Body,
-  Playlists,
   PlaylistItem,
   PlaylistOpacity,
   PlaylistInfo,
@@ -71,43 +69,41 @@ function PlaylistModal() {
             <MdClear size={18} color="#d99207" />
           </HeaderButton>
         </Header>
-        <Body>
-          <Playlists ref={playlistListRef}>
-            {playlistModal.playlists.data.length === 0 &&
-              !playlistModal.playlists.loading && (
-                <Warning>Você ainda não tem nenhuma playlist.</Warning>
-              )}
-            {playlistModal.playlists.loading &&
-              playlistModal.playlists.data.length === 0 && (
-                <LoadingSpinner
-                  size={48}
-                  loading={playlistModal.playlists.loading}
-                />
-              )}
-            {playlistModal.playlists.data.map(playlist => (
-              <PlaylistItem
-                key={playlist.id}
-                onClick={() => handleAddTrack(playlist.id)}
-              >
-                <PlaylistOpacity />
-                <Image
-                  src={playlist.picture}
-                  fallback={fallback}
-                  style={{
-                    borderWidth: 1,
-                    borderColor: '#141414',
-                    borderStyle: 'solid',
-                    width: 90,
-                    height: 90,
-                  }}
-                />
-                <PlaylistInfo>
-                  <PlaylistTitle>{playlist.name}</PlaylistTitle>
-                  <PlaylistTracks>{`${playlist.tracks} Músicas`}</PlaylistTracks>
-                </PlaylistInfo>
-              </PlaylistItem>
-            ))}
-          </Playlists>
+        <Body ref={playlistListRef}>
+          {playlistModal.playlists.data.length === 0 &&
+            !playlistModal.playlists.loading && (
+              <Warning>Você ainda não tem nenhuma playlist.</Warning>
+            )}
+          {playlistModal.playlists.loading &&
+            playlistModal.playlists.data.length === 0 && (
+              <LoadingSpinner
+                size={48}
+                loading={playlistModal.playlists.loading}
+              />
+            )}
+          {playlistModal.playlists.data.map(playlist => (
+            <PlaylistItem
+              key={playlist.id}
+              onClick={() => handleAddTrack(playlist.id)}
+            >
+              <PlaylistOpacity />
+              <Image
+                src={playlist.picture}
+                fallback={fallback}
+                style={{
+                  borderWidth: 1,
+                  borderColor: '#141414',
+                  borderStyle: 'solid',
+                  width: 90,
+                  height: 90,
+                }}
+              />
+              <PlaylistInfo>
+                <PlaylistTitle>{playlist.name}</PlaylistTitle>
+                <PlaylistTracks>{`${playlist.tracks} Músicas`}</PlaylistTracks>
+              </PlaylistInfo>
+            </PlaylistItem>
+          ))}
         </Body>
       </Modal>
     </Container>
