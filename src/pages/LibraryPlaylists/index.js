@@ -50,13 +50,17 @@ function LibraryPlaylists({ history }) {
           <Image
             src={playlist.picture}
             fallback={fallback}
-            style={{ width: 90, height: 90 }}
+            style={{ width: 90, height: 90, cursor: 'pointer' }}
             onClick={() => history.push(`/playlists/${playlist.id}`)}
           />
 
           <PlaylistInfo>
             <PlaylistMeta>
-              <PlaylistName>{playlist.name}</PlaylistName>
+              <PlaylistName
+                onClick={() => history.push(`/playlists/${playlist.id}`)}
+              >
+                {playlist.name}
+              </PlaylistName>
               <PlaylistTracks>{`${playlist.tracks} Músicas`}</PlaylistTracks>
             </PlaylistMeta>
           </PlaylistInfo>
