@@ -8977,10 +8977,10 @@ react-icons@^3.8.0:
   dependencies:
     camelcase "^5.0.0"
 
-react-image@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/react-image/-/react-image-2.2.1.tgz#2aa7832be93023e918adae66b0d1b37d06eed293"
-  integrity sha512-fUlwjOmEQU8JBe5jsTnFiLbZy0IyiYx6sOUVMlz9os2+rZexiOJoC0WV4vycvnEgFVxsSYnS8YIhEi+X/NqP8g==
+react-image@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/react-image/-/react-image-2.2.2.tgz#603452970b7d86a23c56cd2cd1f4f6b797b902d8"
+  integrity sha512-ZaVqZD9ZBGSpZwBftIbTVGyfYahqF7SjFpfT522SO6vJm+xoUCGK3z04aHV9rZUsaEU382auCM+wMyW5sh+lbg==
   dependencies:
     prop-types "15.7.2"
 
