@@ -3,8 +3,8 @@ import styled from 'styled-components';
 export const Opacity = styled.div`
   display: none;
   background: rgba(0, 0, 0, 0.4);
-  width: 60px;
-  height: 60px;
+  width: 150px;
+  height: 150px;
   border-radius: 100%;
   top: -0%;
   overflow: hidden;
@@ -43,8 +43,8 @@ export const Container = styled.div`
 `;
 
 export const Image = styled.img`
-  width: 60px;
-  height: 60px;
+  width: 150px;
+  height: 150px;
   border-radius: 100%;
 `;
 
