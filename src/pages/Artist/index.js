@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
 import AlbumItem from '../../components/AlbumItem';
+import Carrousel from '../../components/Carrousel';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
@@ -19,8 +20,6 @@ import {
   Buttons,
   Button,
   Section,
-  SectionTitle,
-  TracksList,
 } from './styles';
 
 function Artist({
@@ -103,8 +102,10 @@ function Artist({
 
           {artist.albums.data.length > 0 && (
             <Section>
-              <SectionTitle>Albums</SectionTitle>
-              <TracksList>
+              <Carrousel
+                carrouselName="Albums"
+                totalItems={artist.albums.data.length}
+              >
                 {artist.albums.data.map(data => (
                   <AlbumItem
                     key={data.id}
@@ -113,14 +114,16 @@ function Artist({
                     onClick={() => history.push(`/albums/${data.id}`)}
                   />
                 ))}
-              </TracksList>
+              </Carrousel>
             </Section>
           )}
 
           {artist.mostPlayedTracks.data.length > 0 && (
             <Section>
-              <SectionTitle>Músicas mais tocadas</SectionTitle>
-              <TracksList>
+              <Carrousel
+                carrouselName="Músicas mais tocadas"
+                totalItems={artist.mostPlayedTracks.data.length}
+              >
                 {artist.mostPlayedTracks.data.map(data => (
                   <TrackItem
                     key={data.id}
@@ -128,14 +131,16 @@ function Artist({
                     style={{ marginBottom: 5 }}
                   />
                 ))}
-              </TracksList>
+              </Carrousel>
             </Section>
           )}
 
           {artist.tracks.data.length > 0 && (
             <Section>
-              <SectionTitle>Todas as Músicas</SectionTitle>
-              <TracksList>
+              <Carrousel
+                carrouselName="Todas as músicas"
+                totalItems={artist.tracks.data.length}
+              >
                 {artist.tracks.data.map(data => (
                   <TrackItem
                     key={data.id}
@@ -143,7 +148,7 @@ function Artist({
                     style={{ marginBottom: 5 }}
                   />
                 ))}
-              </TracksList>
+              </Carrousel>
             </Section>
           )}
         </React.Fragment>
