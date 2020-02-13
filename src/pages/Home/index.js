@@ -2,14 +2,13 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ArtistItem from '../../components/ArtistItem';
+import Carrousel from '../../components/Carrousel';
 import TrackItem from '../../components/TrackItem';
 import { Creators as BrowseActions } from '../../store/ducks/browse';
 import {
   Content,
   ContentTitle,
   Section,
-  SectionTitle,
-  SectionItems,
   GenreItem,
   GenreImage,
   GenreTitle,
@@ -40,19 +39,20 @@ function Home({ history }) {
 
       {browse.recentlyPlayed.length > 0 && (
         <Section>
-          <SectionTitle>Tocadas recentemente</SectionTitle>
-          <SectionItems>
+          <Carrousel
+            carrouselName="Tocadas recentemente"
+            totalItems={browse.recentlyPlayed.length}
+          >
             {browse.recentlyPlayed.map(data => (
               <TrackItem key={data.id} data={data} />
             ))}
-          </SectionItems>
+          </Carrousel>
         </Section>
       )}
 
       {browse.genres.length > 0 && (
         <Section>
-          <SectionTitle>Gêneros</SectionTitle>
-          <SectionItems>
+          <Carrousel carrouselName="Gêneros" totalItems={browse.genres.length}>
             {browse.genres.map(data => (
               <GenreItem key={data.id}>
                 <GenreImage
@@ -64,36 +64,42 @@ function Home({ history }) {
                 </GenreTitle>
               </GenreItem>
             ))}
-          </SectionItems>
+          </Carrousel>
         </Section>
       )}
 
       {browse.trending.length > 0 && (
         <Section>
-          <SectionTitle>Em alta</SectionTitle>
-          <SectionItems>
+          <Carrousel
+            carrouselName="Em alta"
+            totalItems={browse.trending.length}
+          >
             {browse.trending.map(data => (
               <TrackItem key={data.id} data={data} />
             ))}
-          </SectionItems>
+          </Carrousel>
         </Section>
       )}
 
       {browse.mostPlayed.length > 0 && (
         <Section>
-          <SectionTitle>Mais tocadas</SectionTitle>
-          <SectionItems>
+          <Carrousel
+            carrouselName="Mais tocadas"
+            totalItems={browse.mostPlayed.length}
+          >
             {browse.mostPlayed.map(data => (
               <TrackItem key={data.id} data={data} />
             ))}
-          </SectionItems>
+          </Carrousel>
         </Section>
       )}
 
       {browse.mostFollowed.length > 0 && (
         <Section>
-          <SectionTitle>Artistas mais seguidos</SectionTitle>
-          <SectionItems>
+          <Carrousel
+            carrouselName="Artistas mais seguidos"
+            totalItems={browse.mostFollowed.length}
+          >
             {browse.mostFollowed.map(data => (
               <ArtistItem
                 key={data.id}
@@ -101,7 +107,7 @@ function Home({ history }) {
                 onClick={() => history.push(`/artists/${data.id}`)}
               />
             ))}
-          </SectionItems>
+          </Carrousel>
         </Section>
       )}
     </Content>

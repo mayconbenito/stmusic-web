@@ -61,18 +61,26 @@ export const Button = styled.button`
 `;
 
 export const Section = styled.div`
-  display: flex;
-  flex-direction: column;
   margin-bottom: 30px;
-`;
+  animation-name: fadeIn;
+  animation-duration: 0.7s;
+  animation-timing-function: ease-in-out;
 
-export const SectionTitle = styled.h2`
-  color: #d99207;
-  font-size: 24px;
-`;
-
-export const TracksList = styled.div`
-  display: flex;
-  flex-direction: row;
-  overflow-x: auto;
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    15% {
+      opacity: 0.15;
+    }
+    30% {
+      opacity: 0.3;
+    }
+    80% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 `;

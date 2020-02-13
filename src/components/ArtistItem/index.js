@@ -5,8 +5,8 @@ import { Container, Opacity, Image, Name } from './styles';
 
 function ArtistItem({ data, onClick }) {
   return (
-    <Container onClick={onClick}>
-      <Opacity />
+    <Container>
+      <Opacity onClick={onClick} />
       <Image src={data.picture} fallback={fallback} />
       <Name>{data.name}</Name>
     </Container>

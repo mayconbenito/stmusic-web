@@ -17,7 +17,6 @@ export const ContentTitle = styled.h2`
 `;
 
 export const Section = styled.div`
-  max-width: 100%;
   margin-bottom: 30px;
   animation-name: fadeIn;
   animation-duration: 0.7s;
@@ -40,16 +39,6 @@ export const Section = styled.div`
       opacity: 1;
     }
   }
-`;
-
-export const SectionTitle = styled.span`
-  font-size: 24px;
-  color: #d99207;
-`;
-
-export const SectionItems = styled.div`
-  display: flex;
-  overflow-x: auto;
 `;
 
 export const GenreTitle = styled.span`

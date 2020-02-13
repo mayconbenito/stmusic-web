@@ -8,6 +8,10 @@ export default createGlobalStyle`
     outline: 0;
   }
 
+  img {
+    pointer-events: none
+  }
+
   span {
     font-family: Roboto, sans-serif;
   }
@@ -36,5 +40,13 @@ export default createGlobalStyle`
 
   ::-webkit-scrollbar-thumb {
     background-color: #d99207;
+  }
+
+  .slick-slide {
+    /* width: auto !important; */
+  }
+
+  .slick-track {
+    margin-left: 0 !important
   }
 `;
