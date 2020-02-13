@@ -24,7 +24,7 @@
     "react-spinners": "^0.5.4",
     "react-transition-group": "^4.1.1",
     "react-virtualized": "^9.21.2",
-    "redux": "^4.0.4",
+    "redux": "^4.0.5",
     "redux-saga": "^1.0.3",
     "reduxsauce": "^1.1.1",
     "slick-carousel": "^1.8.1",
