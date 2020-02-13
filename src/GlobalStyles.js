@@ -37,4 +37,8 @@ export default createGlobalStyle`
   ::-webkit-scrollbar-thumb {
     background-color: #d99207;
   }
+
+  .slick-track {
+    margin-left: 0 !important
+  }
 `;

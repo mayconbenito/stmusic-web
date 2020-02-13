@@ -49,6 +49,7 @@ export const Container = styled.div`
   flex-direction: column;
   margin-right: 5px;
   margin-bottom: 5px;
+  max-width: 150px;
 `;
 
 export const AddOnPlaylist = styled.button`
