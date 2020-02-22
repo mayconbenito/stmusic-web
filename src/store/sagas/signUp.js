@@ -18,11 +18,11 @@ function* requestSignUp(action) {
     yield put(push('/'));
   } catch (err) {
     if (err.response.data.error.code === 'EmailAlreadyUsed') {
-      yield put(failureSignUp('Endereço de email em uso'));
+      yield put(failureSignUp('signup.email_already_used'));
     }
 
     if (err.response.status === 500) {
-      yield put(failureSignUp('Erro interno no servidor'));
+      yield put(failureSignUp('commons.internal_server_error'));
     }
   }
 }

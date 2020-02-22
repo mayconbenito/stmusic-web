@@ -15,11 +15,11 @@ export function* requestLogin({ form }) {
     yield put(push('/'));
   } catch (err) {
     if (err.response.status === 401) {
-      yield put(failureLogin('Email ou senha incorretos'));
+      yield put(failureLogin('login.email_or_password_invalid'));
     }
 
     if (err.response.status === 500) {
-      yield put(failureLogin('Erro interno no servidor'));
+      yield put(failureLogin('commons.internal_server_error'));
     }
   }
 }

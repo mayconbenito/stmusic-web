@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ArtistItem from '../../components/ArtistItem';
@@ -24,6 +25,7 @@ function Home({ history }) {
   } = BrowseActions;
   const browse = useSelector(state => state.browse);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(fetchGenres());
@@ -35,12 +37,12 @@ function Home({ history }) {
 
   return (
     <Content>
-      <ContentTitle>Ínicio</ContentTitle>
+      <ContentTitle>{t('home.title')}</ContentTitle>
 
       {browse.recentlyPlayed.length > 0 && (
         <Section>
           <Carrousel
-            carrouselName="Tocadas recentemente"
+            carrouselName={t('home.recently_played')}
             totalItems={browse.recentlyPlayed.length}
           >
             {browse.recentlyPlayed.map(data => (
@@ -52,7 +54,10 @@ function Home({ history }) {
 
       {browse.genres.length > 0 && (
         <Section>
-          <Carrousel carrouselName="Gêneros" totalItems={browse.genres.length}>
+          <Carrousel
+            carrouselName={t('home.genres')}
+            totalItems={browse.genres.length}
+          >
             {browse.genres.map(data => (
               <GenreItem key={data.id}>
                 <GenreImage
@@ -71,7 +76,7 @@ function Home({ history }) {
       {browse.trending.length > 0 && (
         <Section>
           <Carrousel
-            carrouselName="Em alta"
+            carrouselName={t('home.trending')}
             totalItems={browse.trending.length}
           >
             {browse.trending.map(data => (
@@ -84,7 +89,7 @@ function Home({ history }) {
       {browse.mostPlayed.length > 0 && (
         <Section>
           <Carrousel
-            carrouselName="Mais tocadas"
+            carrouselName={t('home.most_played_tracks')}
             totalItems={browse.mostPlayed.length}
           >
             {browse.mostPlayed.map(data => (
@@ -97,7 +102,7 @@ function Home({ history }) {
       {browse.mostFollowed.length > 0 && (
         <Section>
           <Carrousel
-            carrouselName="Artistas mais seguidos"
+            carrouselName={t('home.most_followed_artists')}
             totalItems={browse.mostFollowed.length}
           >
             {browse.mostFollowed.map(data => (

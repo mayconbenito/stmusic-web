@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom';
 
 import App from './App';
 
+import './config/i18n';
+
 const options = {
   position: positions.BOTTOM_CENTER,
   timeout: 5000,

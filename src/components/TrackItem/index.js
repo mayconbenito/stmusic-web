@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { MdPlaylistAdd } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 
@@ -18,6 +19,7 @@ import {
 
 function TrackItem({ data, style }) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   return (
     <Container style={style}>
       <Image
@@ -29,7 +31,7 @@ function TrackItem({ data, style }) {
       <Details onClick={() => dispatch(PlayerActions.play(data))}>
         <Name>{data.name}</Name>
         <TextList>
-          <Type>Música | </Type>
+          <Type>{t('commons.track')} | </Type>
           {data.artists.map(
             (artist, index) => (index ? ', ' : '') + artist.name
           )}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AlbumItem from '../../components/AlbumItem';
@@ -18,6 +19,7 @@ function Search({ history }) {
   const { fetchSearch, clearSearch } = SearchActions;
   const search = useSelector(state => state.search);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const [query, setQuery] = useState('');
 
@@ -39,13 +41,13 @@ function Search({ history }) {
       <SearchInput
         autoFocus
         onChange={handleInput}
-        placeholder="Buscar artistas, albums e músicas."
+        placeholder={t('search.input')}
       />
 
       <SectionContainer>
         {search.data.artists.length > 0 && (
           <Section>
-            <SectionTitle>Artistas</SectionTitle>
+            <SectionTitle>{t('commons.artists')}</SectionTitle>
             <SectionItems>
               {search.data.artists.map(data => (
                 <ArtistItem
@@ -60,7 +62,7 @@ function Search({ history }) {
 
         {search.data.albums.length > 0 && (
           <Section>
-            <SectionTitle>Albums</SectionTitle>
+            <SectionTitle>{t('commons.albums')}</SectionTitle>
             <SectionItems>
               {search.data.albums.map(data => (
                 <AlbumItem
@@ -75,7 +77,7 @@ function Search({ history }) {
 
         {search.data.tracks.length > 0 && (
           <Section>
-            <SectionTitle>Músicas</SectionTitle>
+            <SectionTitle>{t('commons.tracks')}</SectionTitle>
             <SectionItems>
               {search.data.tracks.map(data => (
                 <TrackItem key={data.id} data={data} />

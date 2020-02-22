@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import fallback from '../../assets/images/fallback.png';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
-import fallback from '../../assets/images/fallback.png';
 import { Creators as AlbumActions } from '../../store/ducks/album';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import {
@@ -28,6 +29,7 @@ function Album({
   const { fetchAlbum, fetchTracks, clearAlbum } = AlbumActions;
   const album = useSelector(state => state.album);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(fetchAlbum(albumId));
@@ -41,8 +43,6 @@ function Album({
   function handlePlaylistPlay() {
     dispatch(PlayerActions.fetchPlaylist(albumId, 'albums'));
   }
-
-  console.log(album.data);
 
   return (
     <Content>
@@ -65,14 +65,16 @@ function Album({
             </HeaderContainer>
             <Buttons>
               {album.tracks.data.length > 0 && (
-                <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
+                <Button onClick={handlePlaylistPlay}>
+                  {t('commons.play_tracks_button')}
+                </Button>
               )}
             </Buttons>
           </Header>
 
           {album.tracks.data.length > 0 ? (
             <Section>
-              <SectionTitle>Músicas</SectionTitle>
+              <SectionTitle>{t('commons.tracks')}</SectionTitle>
               <TracksList>
                 {album.tracks.data.map(data => (
                   <TrackItem
@@ -84,7 +86,7 @@ function Album({
               </TracksList>
             </Section>
           ) : (
-            <SectionTitle>Nenhuma música disponível</SectionTitle>
+            <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
           )}
         </React.Fragment>
       )}

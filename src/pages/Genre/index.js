@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import fallback from '../../assets/images/fallback.png';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
-import fallback from '../../assets/images/fallback.png';
 import { Creators as GenreActions } from '../../store/ducks/genre';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import {
@@ -28,6 +29,7 @@ function Genre({
   const { fetchGenre, fetchTracks, clearGenre } = GenreActions;
   const genre = useSelector(state => state.genre);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(fetchGenre(genreId));
@@ -63,14 +65,16 @@ function Genre({
             </HeaderContainer>
             <Buttons>
               {genre.tracks.data.length > 0 && (
-                <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
+                <Button onClick={handlePlaylistPlay}>
+                  {t('commons.play_tracks_button')}
+                </Button>
               )}
             </Buttons>
           </Header>
 
           {genre.tracks.data.length > 0 ? (
             <Section>
-              <SectionTitle>Músicas</SectionTitle>
+              <SectionTitle>{t('commons.tracks')}</SectionTitle>
               <TracksList>
                 {genre.tracks.data.map(data => (
                   <TrackItem
@@ -82,7 +86,7 @@ function Genre({
               </TracksList>
             </Section>
           ) : (
-            <SectionTitle>Nenhuma música disponível</SectionTitle>
+            <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
           )}
         </React.Fragment>
       )}
