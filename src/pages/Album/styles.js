@@ -71,6 +71,6 @@ export const SectionTitle = styled.h2`
 
 export const TracksList = styled.div`
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
-  overflow-x: auto;
 `;
