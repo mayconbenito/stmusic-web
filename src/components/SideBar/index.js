@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MdHome, MdSearch, MdFolder, MdAudiotrack } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 
@@ -21,6 +22,7 @@ import {
 
 function SideBar({ history }) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [playlistInput, setPlaylistInput] = useState('');
   const { user } = session();
 
@@ -49,19 +51,21 @@ function SideBar({ history }) {
           <div>
             <MenuItem>
               <MdHome size={36} color="#d99207" />
-              <MenuText to="/">Ínicio</MenuText>
+              <MenuText to="/">{t('sidebar.home')}</MenuText>
             </MenuItem>
 
             {session() && (
               <MenuItem>
                 <MdFolder size={36} color="#d99207" />
-                <MenuText to="/library/playlists">Biblioteca</MenuText>
+                <MenuText to="/library/playlists">
+                  {t('sidebar.library')}
+                </MenuText>
               </MenuItem>
             )}
 
             <MenuItem>
               <MdSearch size={36} color="#d99207" />
-              <MenuText to="/search">Buscar</MenuText>
+              <MenuText to="/search">{t('sidebar.search')}</MenuText>
             </MenuItem>
           </div>
         </Menu>
@@ -73,10 +77,10 @@ function SideBar({ history }) {
             id="playlistInput"
             value={playlistInput}
             onChange={handlePlaylistName}
-            placeholder="Nome da playlist"
+            placeholder={t('sidebar.playlist_input')}
           />
           <CreatePlaylistButton onClick={handleSubmitPlaylist}>
-            Criar Playlist
+            {t('sidebar.create_playlist_button')}
           </CreatePlaylistButton>
         </CreatePlaylist>
       )}
@@ -86,12 +90,12 @@ function SideBar({ history }) {
           <>
             <Username href="#">{user.name}</Username>
             <ProfileButton onClick={logout} href="#">
-              Sair
+              {t('sidebar.logout_button')}
             </ProfileButton>
           </>
         ) : (
           <ProfileButton onClick={() => history.push('/login')} href="#">
-            Fazer Login
+            {t('sidebar.login_button')}
           </ProfileButton>
         )}
       </Profile>

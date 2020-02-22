@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   MdPlayArrow,
   MdPause,
@@ -35,6 +36,7 @@ function Player() {
 
   const player = useSelector(state => state.player);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const [currentTime, setCurrentTime] = useState();
   const [duration, setDuration] = useState();
@@ -122,7 +124,8 @@ function Player() {
 
           <TrackMiddle>
             <Playing>
-              {player.playlist && `Tocando: ${player.playlist.name}`}
+              {player.playlist &&
+                `${t('player.playing')}: ${player.playlist.name}`}
             </Playing>
             <Controls>
               <Control onClick={() => dispatch(prev())}>

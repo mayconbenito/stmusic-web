@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
@@ -39,6 +40,7 @@ function Artist({
   } = ArtistActions;
   const artist = useSelector(state => state.artist);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(fetchArtist(artistId));
@@ -58,10 +60,6 @@ function Artist({
       dispatch(followArtist(artistId));
     }
   }
-
-  useEffect(() => {
-    console.log(artist.data);
-  }, [artist]);
 
   function handlePlaylistPlay() {
     dispatch(PlayerActions.fetchPlaylist(artistId, 'artists'));
@@ -84,17 +82,23 @@ function Artist({
 
             <HeaderInfo>
               <div>
-                <Meta>{`${artist.data.followers} Seguidores`}</Meta>
-                <Meta>{`${artist.data.tracks} Músicas`}</Meta>
+                <Meta>{`${artist.data.followers} ${t(
+                  'commons.followers'
+                )}`}</Meta>
+                <Meta>{`${artist.data.tracks} ${t('commons.tracks')}`}</Meta>
               </div>
               <Buttons>
                 {session() && (
                   <Button onClick={handleFollowing}>
-                    {artist.data.followingState ? 'Seguindo' : 'Seguir'}
+                    {artist.data.followingState
+                      ? t('commons.following')
+                      : t('commons.follow')}
                   </Button>
                 )}
                 {artist.tracks.data.length > 0 && (
-                  <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
+                  <Button onClick={handlePlaylistPlay}>
+                    {t('commons.play_tracks_button')}
+                  </Button>
                 )}
               </Buttons>
             </HeaderInfo>
@@ -103,7 +107,7 @@ function Artist({
           {artist.albums.data.length > 0 && (
             <Section>
               <Carrousel
-                carrouselName="Albums"
+                carrouselName={t('commons.albums')}
                 totalItems={artist.albums.data.length}
               >
                 {artist.albums.data.map(data => (
@@ -121,7 +125,7 @@ function Artist({
           {artist.mostPlayedTracks.data.length > 0 && (
             <Section>
               <Carrousel
-                carrouselName="Músicas mais tocadas"
+                carrouselName={t('artist.most_played_tracks')}
                 totalItems={artist.mostPlayedTracks.data.length}
               >
                 {artist.mostPlayedTracks.data.map(data => (
@@ -138,7 +142,7 @@ function Artist({
           {artist.tracks.data.length > 0 && (
             <Section>
               <Carrousel
-                carrouselName="Todas as músicas"
+                carrouselName={t('artist.all_artist_tracks')}
                 totalItems={artist.tracks.data.length}
               >
                 {artist.tracks.data.map(data => (

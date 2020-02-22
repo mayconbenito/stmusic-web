@@ -1,5 +1,6 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { useAlert } from 'react-alert';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
@@ -19,12 +20,12 @@ import {
 } from './styles';
 
 const schema = yup.object().shape({
-  name: yup.string().required('Nome é obrigatório'),
+  name: yup.string().required('signup.name_is_required'),
   email: yup
     .string()
-    .email('Formato de email invalido')
-    .required('Email é obrigatório'),
-  password: yup.string().required('Senha é obrigatória'),
+    .email('signup.invalid_email_format')
+    .required('signup.email_is_required'),
+  password: yup.string().required('signup.password_is_required'),
 });
 
 function SignUp() {
@@ -32,13 +33,14 @@ function SignUp() {
   const dispatch = useDispatch();
   const signUp = useSelector(state => state.signUp);
   const alert = useAlert();
+  const { t } = useTranslation();
 
   const [warning, setWarning] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', password: '' });
 
   useLayoutEffect(() => {
     if (signUp.error.length > 0) {
-      alert.show(signUp.error);
+      alert.show(t(signUp.error));
     }
   }, [signUp.error]);
 
@@ -70,44 +72,44 @@ function SignUp() {
       <Container>
         <Form onSubmit={handleSubmit}>
           <Logo src={logo} />
-          <Title>Registrar</Title>
+          <Title>{t('signup.title')}</Title>
           <InputGroup>
             <Input
               name="name"
               type="text"
-              placeholder="Seu nome completo"
+              placeholder={t('signup.name_input')}
               value={form.name}
               onChange={handleInputChange}
             />
-            <InputMessage>{warning.name}</InputMessage>
+            <InputMessage>{t(warning.name)}</InputMessage>
           </InputGroup>
 
           <InputGroup>
             <Input
               name="email"
-              placeholder="Endereço de email"
+              placeholder={t('signup.email_input')}
               value={form.email}
               onChange={handleInputChange}
             />
-            <InputMessage>{warning.email}</InputMessage>
+            <InputMessage>{t(warning.email)}</InputMessage>
           </InputGroup>
 
           <InputGroup>
             <Input
               name="password"
               type="password"
-              placeholder="Sua senha"
+              placeholder={t('signup.password_input')}
               value={form.password}
               onChange={handleInputChange}
             />
-            <InputMessage>{warning.password}</InputMessage>
+            <InputMessage>{t(warning.password)}</InputMessage>
           </InputGroup>
 
           <Submit type="submit">
-            {signUp.loading ? 'Carregando...' : 'Cadastrar'}
+            {signUp.loading ? t('signup.loading') : t('signup.sign_up')}
           </Submit>
 
-          <Button to="/login">Fazer Login</Button>
+          <Button to="/login">{t('signup.sign_in_button')}</Button>
         </Form>
       </Container>
     </React.Fragment>
