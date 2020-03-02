@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
@@ -35,6 +36,7 @@ function Playlist({
 
   const playlist = useSelector(state => state.playlist);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(fetchPlaylist(playlistId));
@@ -69,7 +71,7 @@ function Playlist({
 
             <HeaderInfo>
               <div>
-                <Meta>{`${playlist.data.tracks} Músicas`}</Meta>
+                <Meta>{`${playlist.data.tracks} ${t('commons.tracks')}`}</Meta>
               </div>
               <Buttons>
                 <Button
@@ -77,10 +79,12 @@ function Playlist({
                     dispatch(requestDeletePlaylist(playlist.data.id))
                   }
                 >
-                  Excluir Playlist
+                  {t('playlist.delete_playlist_button')}
                 </Button>
                 {playlist.tracks.data.length > 0 && (
-                  <Button onClick={handlePlaylistPlay}>Tocar Músicas</Button>
+                  <Button onClick={handlePlaylistPlay}>
+                    {t('commons.play_tracks_button')}
+                  </Button>
                 )}
               </Buttons>
             </HeaderInfo>
@@ -88,7 +92,7 @@ function Playlist({
 
           {playlist.tracks.data.length > 0 ? (
             <Section>
-              <SectionTitle>Músicas</SectionTitle>
+              <SectionTitle>{t('commons.tracks')}</SectionTitle>
               <TracksList>
                 {playlist.tracks.data.map(data => (
                   <TrackItem key={data.id} data={data} />
@@ -96,7 +100,7 @@ function Playlist({
               </TracksList>
             </Section>
           ) : (
-            <SectionTitle>Nenhuma música disponível</SectionTitle>
+            <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
           )}
         </React.Fragment>
       )}

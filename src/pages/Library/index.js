@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Switch, Route } from 'react-router-dom';
 
 import LibraryArtists from '../LibraryArtists';
@@ -6,10 +7,11 @@ import LibraryPlaylists from '../LibraryPlaylists';
 import { Content, FixedHeader, ContentTitle, Menu, MenuItem } from './styles';
 
 function Library({ location }) {
+  const { t } = useTranslation();
   return (
     <Content>
       <FixedHeader>
-        <ContentTitle>Biblioteca</ContentTitle>
+        <ContentTitle>{t('library.title')}</ContentTitle>
 
         <Menu>
           <MenuItem
@@ -18,7 +20,7 @@ function Library({ location }) {
             }
             to="/library/playlists"
           >
-            Suas Playlists
+            {t('library.your_playlists')}
           </MenuItem>
           <MenuItem
             underline={
@@ -26,7 +28,7 @@ function Library({ location }) {
             }
             to="/library/artists"
           >
-            Artistas que você segue
+            {t('library.artists_you_follow')}
           </MenuItem>
         </Menu>
       </FixedHeader>

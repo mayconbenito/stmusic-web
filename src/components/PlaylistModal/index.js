@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
+import { useTranslation } from 'react-i18next';
 import { MdClear } from 'react-icons/md';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -31,6 +32,7 @@ function PlaylistModal() {
   } = PlaylistModalActions;
   const playlistModal = useSelector(state => state.playlistModal);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(fetchPlaylists());
@@ -64,7 +66,7 @@ function PlaylistModal() {
     <Container id="container" onClick={handleCloseModalFromContainer}>
       <Modal>
         <Header>
-          <HeaderTitle>Salvar em</HeaderTitle>
+          <HeaderTitle>{t('playlist_modal.title')}</HeaderTitle>
           <HeaderButton onClick={handleCloseModal}>
             <MdClear size={18} color="#d99207" />
           </HeaderButton>
@@ -72,7 +74,7 @@ function PlaylistModal() {
         <Body ref={playlistListRef}>
           {playlistModal.playlists.data.length === 0 &&
             !playlistModal.playlists.loading && (
-              <Warning>Você ainda não tem nenhuma playlist.</Warning>
+              <Warning>{t('commons.you_dont_have_any_playlist')}</Warning>
             )}
           {playlistModal.playlists.loading &&
             playlistModal.playlists.data.length === 0 && (
@@ -100,7 +102,9 @@ function PlaylistModal() {
               />
               <PlaylistInfo>
                 <PlaylistTitle>{playlist.name}</PlaylistTitle>
-                <PlaylistTracks>{`${playlist.tracks} Músicas`}</PlaylistTracks>
+                <PlaylistTracks>{`${playlist.tracks} ${t(
+                  'commons.tracks'
+                )}`}</PlaylistTracks>
               </PlaylistInfo>
             </PlaylistItem>
           ))}

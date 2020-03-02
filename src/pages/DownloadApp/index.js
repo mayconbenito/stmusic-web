@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import logo from '../../assets/images/logo.svg';
 import {
@@ -12,6 +13,7 @@ import {
 
 export default function DownloadApp() {
   const [downloadInfo, setDownloadInfo] = useState({});
+  const { t } = useTranslation();
   useEffect(() => {
     async function fetchDownloadInfo() {
       const response = await axios.get(
@@ -31,15 +33,15 @@ export default function DownloadApp() {
   return (
     <Container>
       <Logo src={logo} />
-      <Description>
-        Baixe nosso aplicativo e ouça milhares de músicas gratuitamente em
-        qualquer lugar.
-      </Description>
+      <Description>{t('download_app.description')}</Description>
       <DownloadButton onClick={redirectToDownload}>
-        Baixar aplicativo
+        {t('download_app.download_button')}
       </DownloadButton>
       {downloadInfo.tag_name && (
-        <AppVersion>Versão {downloadInfo.tag_name}</AppVersion>
+        <AppVersion>
+          {t('download_app.version')}
+          {downloadInfo.tag_name}
+        </AppVersion>
       )}
     </Container>
   );

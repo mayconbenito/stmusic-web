@@ -1,6 +1,8 @@
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
+
 import 'slick-carousel/slick/slick-theme.css';
 
 import { CarrouselHeader, Title, Buttons, Button } from './styles';
@@ -46,6 +48,7 @@ const settings = {
 
 export default function Carrousel({ totalItems, carrouselName, children }) {
   const sliderRef = useRef();
+  const { t } = useTranslation();
 
   function next() {
     sliderRef.current.slickNext();
@@ -62,10 +65,10 @@ export default function Carrousel({ totalItems, carrouselName, children }) {
         {totalItems > 5 && (
           <Buttons>
             <Button type="button" onClick={prev}>
-              Anterior
+              {t('carrousel.arrow_prev')}
             </Button>
             <Button type="button" onClick={next}>
-              Proximo
+              {t('carrousel.arrow_next')}
             </Button>
           </Buttons>
         )}

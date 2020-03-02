@@ -1,5 +1,6 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { useAlert } from 'react-alert';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
@@ -21,9 +22,9 @@ import {
 const schema = yup.object().shape({
   email: yup
     .string()
-    .email('Formato de email invalido')
-    .required('Email é obrigatório'),
-  password: yup.string().required('Senha é obrigatória'),
+    .email('login.invalid_email_format')
+    .required('login.email_is_required'),
+  password: yup.string().required('login.password_is_required'),
 });
 
 function Login() {
@@ -32,12 +33,13 @@ function Login() {
   const login = useSelector(state => state.login);
   const alert = useAlert();
 
+  const { t } = useTranslation();
   const [warning, setWarning] = useState(false);
   const [form, setForm] = useState({ email: '', password: '' });
 
   useLayoutEffect(() => {
     if (login.error.length > 0) {
-      alert.show(login.error);
+      alert.show(t(login.error));
     }
   }, [login.error]);
 
@@ -71,15 +73,15 @@ function Login() {
       <Container>
         <Form onSubmit={handleSubmit}>
           <Logo src={logo} />
-          <Title>Fazer Login</Title>
+          <Title>{t('login.title')}</Title>
           <InputGroup>
             <Input
               name="email"
-              placeholder="Endereço de email"
+              placeholder={t('login.email_input')}
               value={form.email}
               onChange={handleInputChange}
             />
-            <InputMessage>{warning.email}</InputMessage>
+            <InputMessage>{t(warning.email)}</InputMessage>
           </InputGroup>
 
           <InputGroup>
@@ -90,14 +92,14 @@ function Login() {
               value={form.password}
               onChange={handleInputChange}
             />
-            <InputMessage>{warning.password}</InputMessage>
+            <InputMessage>{t(warning.password)}</InputMessage>
           </InputGroup>
 
           <Submit type="submit">
-            {login.loading ? 'Carregando...' : 'Entrar'}
+            {login.loading ? t('login.loading') : t('login.sign_in')}
           </Submit>
 
-          <Button to="/sign-up">Cadastrar</Button>
+          <Button to="/sign-up">{t('login.sign_up_button')}</Button>
         </Form>
       </Container>
     </React.Fragment>

@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
@@ -20,6 +21,7 @@ function LibraryPlaylists({ history }) {
   const { fetchPlaylists, clearPlaylists } = LibraryPlaylistActions;
   const libraryPlaylist = useSelector(state => state.libraryPlaylist);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!libraryPlaylist.data.length > 0) dispatch(fetchPlaylists());
@@ -40,7 +42,7 @@ function LibraryPlaylists({ history }) {
   return (
     <PlaylistList ref={playlistListRef}>
       {libraryPlaylist.data.length === 0 && !libraryPlaylist.loading && (
-        <Warning>Você ainda nao tem nenhuma playlist.</Warning>
+        <Warning>{t('commons.you_dont_have_any_playlist')}</Warning>
       )}
       {libraryPlaylist.data.length === 0 && libraryPlaylist.loading && (
         <LoadingSpinner loading={libraryPlaylist.loading} size={40} />
@@ -61,7 +63,9 @@ function LibraryPlaylists({ history }) {
               >
                 {playlist.name}
               </PlaylistName>
-              <PlaylistTracks>{`${playlist.tracks} Músicas`}</PlaylistTracks>
+              <PlaylistTracks>{`${playlist.tracks} ${t(
+                'commons.tracks'
+              )}`}</PlaylistTracks>
             </PlaylistMeta>
           </PlaylistInfo>
         </PlaylistItem>
