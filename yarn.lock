@@ -8941,10 +8941,10 @@ react-alert-template-basic@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-alert-template-basic/-/react-alert-template-basic-1.0.0.tgz#89bcf35095faf5ebdd25e1e7c300e6b4234b5ba1"
   integrity sha512-6x5Us0oc+jj8BDNkvSWfQMESk5SdyGKitXdLb7CwIlIlecyATjCTKSWpLABg8tpKAPOSJu4Dv/fYUqxXEio/XA==
 
-react-alert@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/react-alert/-/react-alert-6.0.0.tgz#892405f87b1e8c51de00a2cf9c92a72ca32814cc"
-  integrity sha512-Y9zbMUlE70VmW87R8T4DHnEecWVFyl0ITkDf93XOO/2U38etAYheUlihileVnNYFvlrWE4SpPJk4AWLOvAqYPg==
+react-alert@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/react-alert/-/react-alert-6.0.1.tgz#712cfd88ce437a014358d3c096415f724f29ac70"
+  integrity sha512-TC5J8eLvn4wQaxW++K4pzGGdOJLL/wdYNhkReUSh/sJz3W6YZeXaFwSpUtDGIUXpAptAqg+iM3kcxC3KagRNCw==
   dependencies:
     "@testing-library/jest-dom" "^4.1.2"
     "@testing-library/react" "^9.3.0"
