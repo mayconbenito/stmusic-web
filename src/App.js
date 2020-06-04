@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { isMobile } from 'react-device-detect';
+import { useTranslation } from 'react-i18next';
 import { IconContext } from 'react-icons';
 import { Provider } from 'react-redux';
 
@@ -9,6 +10,12 @@ import Routes from './routes';
 import store from './store';
 
 function App() {
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    document.title = t('page.title');
+  }, []);
+
   return (
     <Provider store={store}>
       <GlobalStyles />
