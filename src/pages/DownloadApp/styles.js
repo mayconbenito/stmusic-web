@@ -41,3 +41,9 @@ export const AppVersion = styled.span`
   font-size: 14px;
   margin-top: 3px;
 `;
+
+export const AppVersionTag = styled.span`
+  color: #606060;
+  font-size: 14px;
+  margin-left: 3px;
+`;
