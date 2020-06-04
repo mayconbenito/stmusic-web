@@ -1,5 +1,8 @@
 {
   "translation": {
+    "page": {
+      "title": "STMusic - Listen to thousands of songs for free."
+    },
     "login": {
       "title": "Sign In",
       "sign_in": "Sign In",
@@ -51,7 +54,7 @@
       "input": "Search artists, albums and tracks."
     },
     "download_app": {
-      "description": "Download our app and listen to thousands of songs anywhere for free.",
+      "description": "Download our app and listen to thousands of songs for free.",
       "download_button": "Download App",
       "version": "Version"
     },

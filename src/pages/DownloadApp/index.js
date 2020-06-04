@@ -9,6 +9,7 @@ import {
   Description,
   DownloadButton,
   AppVersion,
+  AppVersionTag,
 } from './styles';
 
 export default function DownloadApp() {
@@ -37,12 +38,12 @@ export default function DownloadApp() {
       <DownloadButton onClick={redirectToDownload}>
         {t('download_app.download_button')}
       </DownloadButton>
-      {downloadInfo.tag_name && (
-        <AppVersion>
-          {t('download_app.version')}
-          {downloadInfo.tag_name}
-        </AppVersion>
-      )}
+      <AppVersion>
+        {t('download_app.version')}
+        <AppVersionTag>
+          {downloadInfo.tag_name ? downloadInfo.tag_name : 'v1.0.0'}
+        </AppVersionTag>
+      </AppVersion>
     </Container>
   );
 }
