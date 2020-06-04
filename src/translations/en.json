@@ -1,5 +1,8 @@
 {
   "translation": {
+    "page": {
+      "title": "STMusic - Listen to thousands of songs for free."
+    },
     "login": {
       "title": "Sign In",
       "sign_in": "Sign In",
