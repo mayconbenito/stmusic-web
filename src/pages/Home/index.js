@@ -16,104 +16,99 @@ import {
 } from './styles';
 
 function Home({ history }) {
-  const {
-    fetchGenres,
-    fetchRecentlyPlayed,
-    fetchTrending,
-    fetchMostPlayed,
-    fetchMostFollowed,
-  } = BrowseActions;
   const browse = useSelector(state => state.browse);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   useEffect(() => {
-    dispatch(fetchGenres());
-    dispatch(fetchRecentlyPlayed());
-    dispatch(fetchTrending());
-    dispatch(fetchMostPlayed());
-    dispatch(fetchMostFollowed());
+    dispatch(BrowseActions.fetchBrowse());
   }, []);
 
   return (
     <Content>
       <ContentTitle>{t('home.title')}</ContentTitle>
 
-      {browse.recentlyPlayed.length > 0 && (
-        <Section>
-          <Carrousel
-            carrouselName={t('home.recently_played')}
-            totalItems={browse.recentlyPlayed.length}
-          >
-            {browse.recentlyPlayed.map(data => (
-              <TrackItem key={data.id} data={data} />
-            ))}
-          </Carrousel>
-        </Section>
-      )}
+      {!browse.loading && (
+        <>
+          {browse.recentlyPlayed.length > 0 && (
+            <Section>
+              <Carrousel
+                carrouselName={t('home.recently_played')}
+                totalItems={browse.recentlyPlayed.length}
+              >
+                {browse.recentlyPlayed.map(data => (
+                  <TrackItem key={data.id} data={data} />
+                ))}
+              </Carrousel>
+            </Section>
+          )}
 
-      {browse.genres.length > 0 && (
-        <Section>
-          <Carrousel
-            carrouselName={t('home.genres')}
-            totalItems={browse.genres.length}
-          >
-            {browse.genres.map(data => (
-              <GenreItem key={data.id}>
-                <GenreImage
-                  src={data.picture}
-                  style={{ width: 260, height: 129 }}
-                />
-                <GenreTitle onClick={() => history.push(`/genres/${data.id}`)}>
-                  {data.name}
-                </GenreTitle>
-              </GenreItem>
-            ))}
-          </Carrousel>
-        </Section>
-      )}
+          {browse.genres.length > 0 && (
+            <Section>
+              <Carrousel
+                carrouselName={t('home.genres')}
+                totalItems={browse.genres.length}
+              >
+                {browse.genres.map(data => (
+                  <GenreItem key={data.id}>
+                    <GenreImage
+                      src={data.picture}
+                      style={{ width: 260, height: 129 }}
+                    />
+                    <GenreTitle
+                      onClick={() => history.push(`/genres/${data.id}`)}
+                    >
+                      {data.name}
+                    </GenreTitle>
+                  </GenreItem>
+                ))}
+              </Carrousel>
+            </Section>
+          )}
 
-      {browse.trending.length > 0 && (
-        <Section>
-          <Carrousel
-            carrouselName={t('home.trending')}
-            totalItems={browse.trending.length}
-          >
-            {browse.trending.map(data => (
-              <TrackItem key={data.id} data={data} />
-            ))}
-          </Carrousel>
-        </Section>
-      )}
+          {browse.trending.length > 0 && (
+            <Section>
+              <Carrousel
+                carrouselName={t('home.trending')}
+                totalItems={browse.trending.length}
+              >
+                {browse.trending.map(data => (
+                  <TrackItem key={data.id} data={data} />
+                ))}
+              </Carrousel>
+            </Section>
+          )}
 
-      {browse.mostPlayed.length > 0 && (
-        <Section>
-          <Carrousel
-            carrouselName={t('home.most_played_tracks')}
-            totalItems={browse.mostPlayed.length}
-          >
-            {browse.mostPlayed.map(data => (
-              <TrackItem key={data.id} data={data} />
-            ))}
-          </Carrousel>
-        </Section>
-      )}
+          {browse.mostPlayed.length > 0 && (
+            <Section>
+              <Carrousel
+                carrouselName={t('home.most_played_tracks')}
+                totalItems={browse.mostPlayed.length}
+              >
+                {browse.mostPlayed.map(data => (
+                  <TrackItem key={data.id} data={data} />
+                ))}
+              </Carrousel>
+            </Section>
+          )}
 
-      {browse.mostFollowed.length > 0 && (
-        <Section>
-          <Carrousel
-            carrouselName={t('home.most_followed_artists')}
-            totalItems={browse.mostFollowed.length}
-          >
-            {browse.mostFollowed.map(data => (
-              <ArtistItem
-                key={data.id}
-                data={data}
-                onClick={() => history.push(`/artists/${data.id}`)}
-              />
-            ))}
-          </Carrousel>
-        </Section>
+          {browse.mostFollowed.length > 0 && (
+            <Section>
+              <Carrousel
+                carrouselName={t('home.most_followed_artists')}
+                totalItems={browse.mostFollowed.length}
+              >
+                {browse.mostFollowed.map(data => (
+                  <ArtistItem
+                    key={data.id}
+                    data={data}
+                    onClick={() => history.push(`/artists/${data.id}`)}
+                  />
+                ))}
+              </Carrousel>
+            </Section>
+          )}
+        </>
       )}
     </Content>
   );
