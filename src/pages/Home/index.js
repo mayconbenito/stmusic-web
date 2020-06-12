@@ -21,7 +21,9 @@ function Home({ history }) {
   const { t } = useTranslation();
 
   useEffect(() => {
-    dispatch(BrowseActions.fetchBrowse());
+    if (!browse.isFetched) {
+      dispatch(BrowseActions.fetchBrowse());
+    }
   }, []);
 
   return (
