@@ -14,6 +14,7 @@ export const { Types, Creators } = createActions(
 const initialState = {
   loading: false,
   error: false,
+  isFetched: false,
   genres: [],
   recentlyPlayed: [],
   trending: [],
@@ -27,6 +28,7 @@ const setList = (state = initialState, action) => {
       ...state,
       recentlyPlayed: action.data,
       loading: false,
+      isFetched: true,
     };
   }
 
@@ -35,6 +37,7 @@ const setList = (state = initialState, action) => {
       ...state,
       trending: action.data,
       loading: false,
+      isFetched: true,
     };
   }
 
@@ -43,6 +46,7 @@ const setList = (state = initialState, action) => {
       ...state,
       genres: action.data,
       loading: false,
+      isFetched: true,
     };
   }
 
@@ -51,6 +55,7 @@ const setList = (state = initialState, action) => {
       ...state,
       mostPlayed: action.data,
       loading: false,
+      isFetched: true,
     };
   }
 
@@ -59,6 +64,7 @@ const setList = (state = initialState, action) => {
       ...state,
       mostFollowed: action.data,
       loading: false,
+      isFetched: true,
     };
   }
 
