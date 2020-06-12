@@ -25,6 +25,7 @@ const initialState = {
 
 const successPlaylist = (state = initialState, action) => ({
   ...state,
+  showPlayer: true,
   isPlaying: 'PLAYING',
   active: action.playlist.tracks[0],
   playlist: action.playlist,
