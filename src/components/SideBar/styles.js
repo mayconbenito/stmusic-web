@@ -5,12 +5,14 @@ export const Container = styled.div`
   position: fixed;
   left: 0;
   width: 180px;
-  height: calc(100% - 100px);
+  height: ${props => (props.theme.showPlayer ? 'calc(100% - 100px)' : '100%')};
   background-color: #000;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  transition: height 0.3s ease;
+  z-index: 2;
 `;
 
 export const Header = styled.div`

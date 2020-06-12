@@ -88,7 +88,7 @@ function Login() {
             <Input
               name="password"
               type="password"
-              placeholder="Sua senha"
+              placeholder={t('login.password_input')}
               value={form.password}
               onChange={handleInputChange}
             />
