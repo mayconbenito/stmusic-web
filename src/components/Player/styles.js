@@ -12,6 +12,27 @@ export const Container = styled.div`
   background-color: #141414;
   border-top: 3px solid #000;
   padding: 15px;
+  animation-name: fadeIn;
+  animation-duration: 0.6s;
+  animation-timing-function: ease-in;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    15% {
+      opacity: 0.15;
+    }
+    30% {
+      opacity: 0.3;
+    }
+    80% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 `;
 
 export const TrackInfo = styled.div`

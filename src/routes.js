@@ -1,7 +1,8 @@
 import { ConnectedRouter } from 'connected-react-router';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { ThemeContext } from 'styled-components';
 
 // Global Components
 import Player from './components/Player';
@@ -21,6 +22,7 @@ import { history } from './store';
 
 const AppRoute = Component => {
   const playlistModal = useSelector(state => state.playlistModal);
+  const themeContext = useContext(ThemeContext);
 
   if (Component.auth) {
     if (!session()) {
@@ -31,7 +33,7 @@ const AppRoute = Component => {
   return (
     <React.Fragment>
       <SideBar history={history} />
-      <Player />
+      {themeContext.showPlayer && <Player />}
       <Route {...Component} />
       {playlistModal.open && <PlaylistModal />}
     </React.Fragment>

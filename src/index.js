@@ -2,8 +2,10 @@ import React from 'react';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 
 import App from './App';
+import store from './store';
 
 import './config/i18n';
 
@@ -15,9 +17,11 @@ const options = {
 };
 
 const Root = () => (
-  <AlertProvider template={AlertTemplate} {...options}>
-    <App />
-  </AlertProvider>
+  <Provider store={store}>
+    <AlertProvider template={AlertTemplate} {...options}>
+      <App />
+    </AlertProvider>
+  </Provider>
 );
 
 ReactDOM.render(<Root />, document.getElementById('root'));

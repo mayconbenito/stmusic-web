@@ -16,22 +16,8 @@ export const { Types, Creators } = createActions(
   }
 );
 
-// const exampleState = {
-//   isPlaying: false,
-//   active: {
-//     id: 52,
-//     name: 'Song name',
-//     picture: 'https://i.ytimg.com/vi/VY1eFxgRR-k/hqdefault.jpg',
-//     youtubeId: '',
-//     artist: {
-//       name: 'Artist name',
-//       picture: 'https://yt3.ggpht.com/a/AGF-l7_rwqSxaKtyb--b-sr4p_bhHgjEPaxsLVpyvw=s88-mo-c-c0xffffffff-rj-k-no',
-//     },
-//   },
-//   playlist: false,
-// };
-
 const initialState = {
+  showPlayer: false,
   isPlaying: 'STOPPED',
   active: false,
   playlist: false,
@@ -46,6 +32,7 @@ const successPlaylist = (state = initialState, action) => ({
 
 const play = (state = initialState, action) => ({
   ...state,
+  showPlayer: true,
   isPlaying: 'PLAYING',
   playlist: false,
   active: action.track,
