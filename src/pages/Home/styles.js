@@ -9,6 +9,10 @@ export const Content = styled.div`
   background-color: #141414;
   padding: 10px 15px;
   overflow-y: scroll;
+
+  @media (max-width: 780px) {
+    width: 100%;
+  }
 `;
 
 export const ContentTitle = styled.h2`

@@ -13,6 +13,32 @@ export const Container = styled.div`
   align-items: center;
   transition: height 0.3s ease;
   z-index: 2;
+
+  animation-name: fadeIn;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    15% {
+      opacity: 0.15;
+    }
+    30% {
+      opacity: 0.3;
+    }
+    80% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 780px) {
+    display: none;
+  }
 `;
 
 export const Header = styled.div`
