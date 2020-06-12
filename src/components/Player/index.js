@@ -41,7 +41,7 @@ function Player() {
   const [currentTime, setCurrentTime] = useState();
   const [duration, setDuration] = useState();
   const [playCountStatus, setPlayCountStatus] = useState(false);
-  const [volume, setVolume] = useState(60);
+  const [volume, setVolume] = useState(20);
 
   useEffect(() => {
     setCurrentTime(0);

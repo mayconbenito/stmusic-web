@@ -1,4 +1,4 @@
-import { put, call, all, takeLatest } from 'redux-saga/effects';
+import { put, all, takeLatest } from 'redux-saga/effects';
 
 import api from '../../services/api';
 import session from '../../services/session';
@@ -7,98 +7,65 @@ import {
   Creators as BrowseActions,
 } from '../ducks/browse';
 
-const {
-  successGenres,
-  failureGenres,
-  successRecentlyPlayed,
-  failureRecentlyPlayed,
-  successTrending,
-  failureTrending,
-  successMostPlayed,
-  failureMostPlayed,
-  successMostFollowed,
-  failureMostFollowed,
-} = BrowseActions;
+const { failure, setList } = BrowseActions;
 
-function* fetchGenres() {
-  try {
-    const response = yield call(api.get, '/app/genres');
-
-    yield put(successGenres(response.data.genres));
-  } catch (err) {
-    yield put(failureGenres(err));
-  }
-}
-
-function* fetchRecentlyPlayed() {
-  try {
-    if (!session()) {
-      return;
+function* fetchBrowse() {
+  function fetchRecentlyPlayed() {
+    if (session()) {
+      return api.get('/app/me/recently-played', {
+        params: {
+          page: 1,
+          limit: 100,
+        },
+      });
     }
-    const response = yield call(api.get, '/app/me/recently-played', {
-      params: {
-        page: 1,
-        limit: 100,
-      },
-    });
 
-    yield put(successRecentlyPlayed(response.data.tracks));
-  } catch (err) {
-    yield put(failureRecentlyPlayed(err));
+    return Promise.resolve();
   }
-}
 
-function* fetchTrending() {
   try {
-    const response = yield call(api.get, '/app/browse/tracks/trending', {
-      params: {
-        page: 1,
-        limit: 100,
-      },
-    });
+    const [
+      recentlyPlayed,
+      trending,
+      genres,
+      mostPlayed,
+      mostFollowed,
+    ] = yield Promise.all([
+      fetchRecentlyPlayed(),
+      api.get('/app/browse/tracks/trending', {
+        params: {
+          page: 1,
+          limit: 100,
+        },
+      }),
+      api.get('/app/genres'),
+      api.get('/app/browse/tracks/most-played', {
+        params: {
+          page: 1,
+          limit: 100,
+        },
+      }),
+      api.get('/app/browse/artists/most-followed', {
+        params: {
+          page: 1,
+          limit: 60,
+        },
+      }),
+    ]);
 
-    yield put(successTrending(response.data.tracks));
+    if (recentlyPlayed) {
+      yield put(setList(recentlyPlayed.data.tracks, 'recentlyPlayed'));
+    }
+
+    yield put(setList(trending.data.tracks, 'trending'));
+    yield put(setList(genres.data.genres, 'genres'));
+    yield put(setList(mostPlayed.data.tracks, 'mostPlayed'));
+    yield put(setList(mostFollowed.data.artists, 'mostFollowed'));
   } catch (err) {
-    yield put(failureTrending(err));
-  }
-}
-
-function* fetchMostPlayed() {
-  try {
-    const response = yield call(api.get, '/app/browse/tracks/most-played', {
-      params: {
-        page: 1,
-        limit: 100,
-      },
-    });
-
-    yield put(successMostPlayed(response.data.tracks));
-  } catch (err) {
-    yield put(failureMostPlayed(err));
-  }
-}
-
-function* fetchMostFollowed() {
-  try {
-    const response = yield call(api.get, '/app/browse/artists/most-followed', {
-      params: {
-        page: 1,
-        limit: 15,
-      },
-    });
-
-    yield put(successMostFollowed(response.data.artists));
-  } catch (err) {
-    yield put(failureMostFollowed(err));
+    yield put(failure(err));
   }
 }
 
 export default function* browseSaga() {
-  yield all([
-    takeLatest(BrowseTypes.FETCH_GENRES, fetchGenres),
-    takeLatest(BrowseTypes.FETCH_RECENTLY_PLAYED, fetchRecentlyPlayed),
-    takeLatest(BrowseTypes.FETCH_TRENDING, fetchTrending),
-    takeLatest(BrowseTypes.FETCH_MOST_PLAYED, fetchMostPlayed),
-    takeLatest(BrowseTypes.FETCH_MOST_FOLLOWED, fetchMostFollowed),
-  ]);
+  yield all([takeLatest(BrowseTypes.FETCH_BROWSE, fetchBrowse)]);
 }

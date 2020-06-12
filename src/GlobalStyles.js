@@ -8,6 +8,10 @@ export default createGlobalStyle`
     outline: 0;
   }
 
+  body {
+    background-color: #141414;
+  }
+
   span {
     font-family: Roboto, sans-serif;
   }

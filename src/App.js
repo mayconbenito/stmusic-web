@@ -1,28 +1,39 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useTranslation } from 'react-i18next';
 import { IconContext } from 'react-icons';
-import { Provider } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { ThemeProvider } from 'styled-components';
 
 import GlobalStyles from './GlobalStyles';
 import DownloadApp from './pages/DownloadApp';
 import Routes from './routes';
-import store from './store';
 
 function App() {
+  const player = useSelector(state => state.player);
   const { t } = useTranslation();
+
+  const [theme, setTheme] = useState({
+    showPlayer: false,
+  });
 
   useEffect(() => {
     document.title = t('page.title');
   }, []);
 
+  useEffect(() => {
+    setTheme({
+      showPlayer: player.active ? player.showPlayer : false,
+    });
+  }, [player.active]);
+
   return (
-    <Provider store={store}>
+    <ThemeProvider theme={theme}>
       <GlobalStyles />
       <IconContext.Provider value={{ style: { verticalAlign: 'middle' } }}>
         {isMobile ? <DownloadApp /> : <Routes />}
       </IconContext.Provider>
-    </Provider>
+    </ThemeProvider>
   );
 }
 

@@ -12,6 +12,27 @@ export const Container = styled.div`
   background-color: #141414;
   border-top: 3px solid #000;
   padding: 15px;
+  animation-name: fadeIn;
+  animation-duration: 0.6s;
+  animation-timing-function: ease-in;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    15% {
+      opacity: 0.15;
+    }
+    30% {
+      opacity: 0.3;
+    }
+    80% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 `;
 
 export const TrackInfo = styled.div`
@@ -110,12 +131,13 @@ export const VolumeBar = styled.input`
   width: 100px;
   height: 5px;
   border-radius: 5px;
+  background: ${props =>
+    `linear-gradient(90deg, #d99207 ${props.value}%, #fff ${props.value}%)`};
 
   &::-webkit-slider-runnable-track {
     width: 100%;
     height: 5px;
     border-radius: 5px;
-    background-color: #fff;
   }
 
   &::-webkit-slider-thumb {
