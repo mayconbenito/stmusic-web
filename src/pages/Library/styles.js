@@ -6,9 +6,13 @@ export const Content = styled.div`
   width: calc(100% - 180px);
   right: 0;
   top: 0;
-  height: calc(100% - 100px);
+  height: ${props => (props.theme.showPlayer ? 'calc(100% - 100px)' : '100%')};
   background-color: #141414;
   padding: 10px 15px;
+
+  @media (max-width: 780px) {
+    width: 100%;
+  }
 `;
 
 export const FixedHeader = styled.div`

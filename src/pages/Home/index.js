@@ -4,24 +4,20 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import ArtistItem from '../../components/ArtistItem';
 import Carrousel from '../../components/Carrousel';
+import GenreItem from '../../components/GenreItem';
 import TrackItem from '../../components/TrackItem';
 import { Creators as BrowseActions } from '../../store/ducks/browse';
-import {
-  Content,
-  ContentTitle,
-  Section,
-  GenreItem,
-  GenreImage,
-  GenreTitle,
-} from './styles';
+import { Content, ContentTitle, Section } from './styles';
 
 function Home({ history }) {
-  const browse = useSelector(state => state.browse);
+  const browse = useSelector((state) => state.browse);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   useEffect(() => {
-    dispatch(BrowseActions.fetchBrowse());
+    if (!browse.isFetched) {
+      dispatch(BrowseActions.fetchBrowse());
+    }
   }, []);
 
   return (
@@ -36,7 +32,7 @@ function Home({ history }) {
                 carrouselName={t('home.recently_played')}
                 totalItems={browse.recentlyPlayed.length}
               >
-                {browse.recentlyPlayed.map(data => (
+                {browse.recentlyPlayed.map((data) => (
                   <TrackItem key={data.id} data={data} />
                 ))}
               </Carrousel>
@@ -49,18 +45,12 @@ function Home({ history }) {
                 carrouselName={t('home.genres')}
                 totalItems={browse.genres.length}
               >
-                {browse.genres.map(data => (
-                  <GenreItem key={data.id}>
-                    <GenreImage
-                      src={data.picture}
-                      style={{ width: 260, height: 129 }}
-                    />
-                    <GenreTitle
-                      onClick={() => history.push(`/genres/${data.id}`)}
-                    >
-                      {data.name}
-                    </GenreTitle>
-                  </GenreItem>
+                {browse.genres.map((data) => (
+                  <GenreItem
+                    key={data.id}
+                    data={data}
+                    onClick={() => history.push(`/genres/${data.id}`)}
+                  />
                 ))}
               </Carrousel>
             </Section>
@@ -72,7 +62,7 @@ function Home({ history }) {
                 carrouselName={t('home.trending')}
                 totalItems={browse.trending.length}
               >
-                {browse.trending.map(data => (
+                {browse.trending.map((data) => (
                   <TrackItem key={data.id} data={data} />
                 ))}
               </Carrousel>
@@ -85,7 +75,7 @@ function Home({ history }) {
                 carrouselName={t('home.most_played_tracks')}
                 totalItems={browse.mostPlayed.length}
               >
-                {browse.mostPlayed.map(data => (
+                {browse.mostPlayed.map((data) => (
                   <TrackItem key={data.id} data={data} />
                 ))}
               </Carrousel>
@@ -98,7 +88,7 @@ function Home({ history }) {
                 carrouselName={t('home.most_followed_artists')}
                 totalItems={browse.mostFollowed.length}
               >
-                {browse.mostFollowed.map(data => (
+                {browse.mostFollowed.map((data) => (
                   <ArtistItem
                     key={data.id}
                     data={data}
