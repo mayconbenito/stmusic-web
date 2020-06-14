@@ -15,6 +15,7 @@ function Home({ history }) {
   const { t } = useTranslation();
 
   useEffect(() => {
+    console.log('Render');
     if (!browse.isFetched) {
       dispatch(BrowseActions.fetchBrowse());
     }
