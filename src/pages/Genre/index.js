@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
+import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import TrackItem from '../../components/TrackItem';
+import SmallTrackItem from '../../components/SmallTrackItem';
 import { Creators as GenreActions } from '../../store/ducks/genre';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import {
   Content,
   Header,
-  HeaderContainer,
   HeaderInfo,
+  HeaderType,
   HeaderTitle,
   Buttons,
   Button,
@@ -27,9 +28,17 @@ function Genre({
   },
 }) {
   const { fetchGenre, fetchTracks, clearGenre } = GenreActions;
-  const genre = useSelector(state => state.genre);
+  const genre = useSelector((state) => state.genre);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+
+  function handleEndReached() {
+    if (genre.tracks.total > genre.tracks.data.length) {
+      dispatch(fetchTracks(genre.tracks.page, genreId));
+    }
+  }
+
+  const containerRef = useBottomScrollListener(handleEndReached);
 
   useEffect(() => {
     dispatch(fetchGenre(genreId));
@@ -45,24 +54,21 @@ function Genre({
   }
 
   return (
-    <Content>
+    <Content ref={containerRef}>
       {genre.loading && genre.tracks.loading && (
         <LoadingSpinner size={120} loading={genre.loading} />
       )}
 
-      {!genre.loading && !genre.tracks.loading && (
-        <React.Fragment>
-          <Header>
-            <HeaderContainer>
-              <Image
-                src={genre.data.picture}
-                fallback={fallback}
-                style={{ width: 100, height: 100, borderRadius: '100%' }}
-              />
-              <HeaderInfo>
-                <HeaderTitle>{genre.data.name}</HeaderTitle>
-              </HeaderInfo>
-            </HeaderContainer>
+      <React.Fragment>
+        <Header>
+          <Image
+            src={genre.data.picture}
+            fallback={fallback}
+            style={{ width: 100, height: 100 }}
+          />
+          <HeaderInfo>
+            <HeaderType>{t('commons.genre')}</HeaderType>
+            <HeaderTitle>{genre.data.name}</HeaderTitle>
             <Buttons>
               {genre.tracks.data.length > 0 && (
                 <Button onClick={handlePlaylistPlay}>
@@ -70,26 +76,26 @@ function Genre({
                 </Button>
               )}
             </Buttons>
-          </Header>
+          </HeaderInfo>
+        </Header>
 
-          {genre.tracks.data.length > 0 ? (
-            <Section>
-              <SectionTitle>{t('commons.tracks')}</SectionTitle>
-              <TracksList>
-                {genre.tracks.data.map(data => (
-                  <TrackItem
-                    key={data.id}
-                    data={data}
-                    style={{ marginBottom: 5 }}
-                  />
-                ))}
-              </TracksList>
-            </Section>
-          ) : (
-            <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
-          )}
-        </React.Fragment>
-      )}
+        {genre.tracks.data.length > 0 ? (
+          <Section>
+            <SectionTitle>{t('commons.tracks')}</SectionTitle>
+            <TracksList>
+              {genre.tracks.data.map((data) => (
+                <SmallTrackItem
+                  key={data.id}
+                  data={data}
+                  style={{ marginBottom: 5 }}
+                />
+              ))}
+            </TracksList>
+          </Section>
+        ) : (
+          <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
+        )}
+      </React.Fragment>
     </Content>
   );
 }

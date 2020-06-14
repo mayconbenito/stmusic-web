@@ -79,7 +79,7 @@
     },
     "commons": {
       "internal_server_error": "Internal server error",
-      "play_tracks_button": "Play Tracks",
+      "play_tracks_button": "Play",
       "no_track_available": "No track available",
       "you_dont_have_any_playlist": "You don't have any playlist.",
       "tracks": "Tracks",
@@ -88,7 +88,9 @@
       "artists": "Artists",
       "following": "Following",
       "followers": "Followers",
-      "follow": "Follow"
+      "follow": "Follow",
+      "genre": "Genre",
+      "album": "Album"
     }
   }
 }

@@ -6,7 +6,6 @@ export const Container = styled.div`
   margin-right: 5px;
   margin-bottom: 5px;
   width: 150px;
-  cursor: pointer;
 `;
 
 export const Details = styled.div`
@@ -21,6 +20,7 @@ export const Name = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  cursor: pointer;
 `;
 
 export const TextList = styled.span`

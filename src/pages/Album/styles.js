@@ -5,7 +5,8 @@ export const Content = styled.div`
   width: calc(100% - 180px);
   right: 0;
   top: 0;
-  height: ${props => (props.theme.showPlayer ? 'calc(100% - 100px)' : '100%')};
+  height: ${(props) =>
+    props.theme.showPlayer ? 'calc(100% - 100px)' : '100%'};
   background-color: #141414;
   padding: 10px 15px;
   overflow-y: auto;
@@ -18,30 +19,28 @@ export const Content = styled.div`
 
 export const Header = styled.div`
   display: flex;
-  flex-direction: column;
   width: 100%;
   border-bottom: 1px solid #d99207;
   padding-bottom: 5px;
 `;
 
-export const HeaderContainer = styled.div`
-  display: flex;
+export const HeaderType = styled.span`
+  color: #d99207;
+  font-size: 14px;
+  text-transform: uppercase;
 `;
 
 export const HeaderTitle = styled.h2`
   color: #d99207;
-  font-size: 26px;
+  font-size: 27px;
+  font-weight: 300;
 `;
 
 export const HeaderInfo = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   margin-left: 5px;
-`;
-
-export const Meta = styled.span`
-  color: #d99207;
-  font-size: 16px;
 `;
 
 export const Buttons = styled.div`
@@ -65,16 +64,15 @@ export const Button = styled.button`
 export const Section = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
 `;
 
-export const SectionTitle = styled.h2`
+export const SectionTitle = styled.span`
   color: #d99207;
   font-size: 24px;
 `;
 
 export const TracksList = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
+  flex-direction: column;
+  padding: 5px 0px;
 `;

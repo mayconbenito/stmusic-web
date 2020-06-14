@@ -79,7 +79,7 @@
     },
     "commons": {
       "internal_server_error": "Erro interno no servidor",
-      "play_tracks_button": "Tocar Músicas",
+      "play_tracks_button": "Tocar",
       "no_track_available": "Nenhuma música disponível",
       "you_dont_have_any_playlist": "Você ainda nao tem nenhuma playlist.",
       "tracks": "Músicas",
@@ -88,7 +88,9 @@
       "artists": "Artistas",
       "following": "Seguindo",
       "followers": "Seguidores",
-      "follow": "Seguir"
+      "follow": "Seguir",
+      "genre": "Genêro",
+      "album": "Album"
     }
   }
 }

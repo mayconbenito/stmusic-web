@@ -6,14 +6,15 @@ import { Container, Details, Name, TextList, Type } from './styles';
 
 function AlbumItem({ data, onClick }) {
   return (
-    <Container onClick={onClick}>
+    <Container>
       <Image
+        onClick={onClick}
         src={data.picture}
         fallback={fallback}
-        style={{ width: 150, height: 150 }}
+        style={{ width: 150, height: 150, cursor: 'pointer' }}
       />
       <Details>
-        <Name>{data.name}</Name>
+        <Name onClick={onClick}>{data.name}</Name>
         <TextList>
           <Type>
             {data.type.charAt(0).toUpperCase() + data.type.slice(1)}

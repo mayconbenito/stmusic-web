@@ -25,7 +25,7 @@ function* fetchTracks({ page = 1, genreId }) {
     const response = yield call(api.get, `/app/genres/${genreId}/tracks`, {
       params: {
         page,
-        limit: 100,
+        limit: 10,
       },
     });
 
