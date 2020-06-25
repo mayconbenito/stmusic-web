@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Sound from 'react-sound';
 
 import fallback from '../../assets/images/fallback.png';
+import usePersistedState from '../../helpers/usePersistedState';
 import api from '../../services/api';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import Image from '../Image';
@@ -41,7 +42,7 @@ function Player() {
   const [currentTime, setCurrentTime] = useState();
   const [duration, setDuration] = useState();
   const [playCountStatus, setPlayCountStatus] = useState(false);
-  const [volume, setVolume] = useState(20);
+  const [volume, setVolume] = usePersistedState('@stmusic:playerVolume', 20);
 
   useEffect(() => {
     setCurrentTime(0);
