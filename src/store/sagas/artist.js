@@ -10,20 +10,45 @@ import { Creators as LibraryArtistActions } from '../ducks/libraryArtist';
 
 const {
   successArtist,
+  setFollowingState,
   failureArtist,
   successTracks,
-  failureTracks,
   successMostPlayedTracks,
-  failureMostPlayedTracks,
   successAlbums,
-  failureAlbums,
   successFollowArtist,
   successUnfollowArtist,
 } = ArtistActions;
 
 function* fetchArtist({ artistId }) {
   try {
-    const response = yield call(api.get, `/app/artists/${artistId}`);
+    const [artist, albums, tracks, mostPlayedTracks] = yield Promise.all([
+      api.get(
+        `/app/artists/${artistId}`),
+      api.get(`/app/artists/${artistId}/albums`, {
+        page: 1,
+        limit: 100
+      }),
+      api.get(`/app/artists/${artistId}/tracks`, {
+        page: 1,
+        limit: 15
+      }),
+      api.get(
+        `/app/artists/${artistId}/most-played-tracks`, {
+        page: 1,
+        limit: 15
+      })
+    ])
+
+    yield all([
+      put(
+        successArtist(artist.data.artist)
+      ),
+      put(successAlbums(albums.data.albums, albums.data.meta.total)),
+      put(successTracks(tracks.data.tracks, tracks.data.meta.total)),
+      put(
+        successMostPlayedTracks(mostPlayedTracks.data.tracks, mostPlayedTracks.data.meta.total)
+      )
+    ]);
 
     let followingState = false;
     if (session()) {
@@ -37,65 +62,10 @@ function* fetchArtist({ artistId }) {
       );
     }
 
-    yield put(
-      successArtist({
-        ...response.data.artist,
-        followingState,
-      })
-    );
+    yield put(setFollowingState(followingState))
+
   } catch (err) {
     yield put(failureArtist(err));
-  }
-}
-
-function* fetchTracks({ page = 1, artistId }) {
-  try {
-    const response = yield call(api.get, `/app/artists/${artistId}/tracks`, {
-      params: {
-        page,
-        limit: 100,
-      },
-    });
-
-    yield put(successTracks(response.data.tracks, response.data.meta.total));
-  } catch (err) {
-    yield put(failureTracks(err));
-  }
-}
-
-function* fetchMostPlayedTracks({ page = 1, artistId }) {
-  try {
-    const response = yield call(
-      api.get,
-      `/app/artists/${artistId}/most-played-tracks`,
-      {
-        params: {
-          page,
-          limit: 100,
-        },
-      }
-    );
-
-    yield put(
-      successMostPlayedTracks(response.data.tracks, response.data.meta.total)
-    );
-  } catch (err) {
-    yield put(failureMostPlayedTracks(err));
-  }
-}
-
-function* fetchAlbums({ page = 1, artistId }) {
-  try {
-    const response = yield call(api.get, `/app/artists/${artistId}/albums`, {
-      params: {
-        page,
-        limit: 100,
-      },
-    });
-
-    yield put(successAlbums(response.data.albums, response.data.meta.total));
-  } catch (err) {
-    yield put(failureAlbums(err));
   }
 }
 
@@ -133,16 +103,13 @@ function* unfollowArtist({ artistId }) {
       ]);
     }
   } catch (err) {
-    console.log('errrororor', err);
+    console.log(err);
   }
 }
 
 export default function* artistSaga() {
   yield all([
     takeLatest(ArtistTypes.FETCH_ARTIST, fetchArtist),
-    takeLatest(ArtistTypes.FETCH_TRACKS, fetchTracks),
-    takeLatest(ArtistTypes.FETCH_MOST_PLAYED_TRACKS, fetchMostPlayedTracks),
-    takeLatest(ArtistTypes.FETCH_ALBUMS, fetchAlbums),
     takeLatest(ArtistTypes.FOLLOW_ARTIST, followArtist),
     takeLatest(ArtistTypes.UNFOLLOW_ARTIST, unfollowArtist),
   ]);

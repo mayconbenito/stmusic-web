@@ -42,7 +42,6 @@ function Genre({
 
   useEffect(() => {
     dispatch(fetchGenre(genreId));
-    dispatch(fetchTracks(1, genreId));
 
     return () => {
       dispatch(clearGenre());
@@ -55,47 +54,50 @@ function Genre({
 
   return (
     <Content ref={containerRef}>
-      {genre.loading && genre.tracks.loading && (
+      {genre.loading && (
         <LoadingSpinner size={120} loading={genre.loading} />
       )}
 
-      <React.Fragment>
-        <Header>
-          <Image
-            src={genre.data.picture}
-            fallback={fallback}
-            style={{ width: 100, height: 100 }}
-          />
-          <HeaderInfo>
-            <HeaderType>{t('commons.genre')}</HeaderType>
-            <HeaderTitle>{genre.data.name}</HeaderTitle>
-            <Buttons>
-              {genre.tracks.data.length > 0 && (
-                <Button onClick={handlePlaylistPlay}>
-                  {t('commons.play_tracks_button')}
-                </Button>
-              )}
-            </Buttons>
-          </HeaderInfo>
-        </Header>
 
-        {genre.tracks.data.length > 0 ? (
-          <Section>
-            <SectionTitle>{t('commons.tracks')}</SectionTitle>
-            <TracksList>
-              {genre.tracks.data.map((data) => (
-                <SmallTrackItem
-                  key={data.id}
-                  data={data}
-                  style={{ marginBottom: 5 }}
-                />
-              ))}
-            </TracksList>
-          </Section>
-        ) : (
-          <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
-        )}
-      </React.Fragment>
+      {!genre.loading && (
+        <>
+          <Header>
+            <Image
+              src={genre.data.picture}
+              fallback={fallback}
+              style={{ width: 100, height: 100 }}
+            />
+            <HeaderInfo>
+              <HeaderType>{t('commons.genre')}</HeaderType>
+              <HeaderTitle>{genre.data.name}</HeaderTitle>
+              <Buttons>
+                {genre.tracks.data.length > 0 && (
+                  <Button onClick={handlePlaylistPlay}>
+                    {t('commons.play_tracks_button')}
+                  </Button>
+                )}
+              </Buttons>
+            </HeaderInfo>
+          </Header>
+
+          {genre.tracks.data.length > 0 ? (
+            <Section>
+              <SectionTitle>{t('commons.tracks')}</SectionTitle>
+              <TracksList>
+                {genre.tracks.data.map((data) => (
+                  <SmallTrackItem
+                    key={data.id}
+                    data={data}
+                    style={{ marginBottom: 5 }}
+                  />
+                ))}
+              </TracksList>
+            </Section>
+          ) : (
+              <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
+            )}
+        </>
+      )}
     </Content>
   );
 }

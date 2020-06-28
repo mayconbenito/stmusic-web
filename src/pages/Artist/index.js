@@ -32,9 +32,6 @@ function Artist({
 }) {
   const {
     fetchArtist,
-    fetchTracks,
-    fetchMostPlayedTracks,
-    fetchAlbums,
     clearArtist,
     followArtist,
     unfollowArtist,
@@ -45,9 +42,6 @@ function Artist({
 
   useEffect(() => {
     dispatch(fetchArtist(artistId));
-    dispatch(fetchTracks(1, artistId));
-    dispatch(fetchMostPlayedTracks(1, artistId));
-    dispatch(fetchAlbums(1, artistId));
 
     return () => {
       dispatch(clearArtist());
@@ -69,6 +63,7 @@ function Artist({
   return (
     <Content>
       {artist.loading && <LoadingSpinner size={120} loading={artist.loading} />}
+
       {!artist.loading && (
         <>
           <Header>

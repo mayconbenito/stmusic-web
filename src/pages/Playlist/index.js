@@ -43,7 +43,6 @@ function Playlist({
 
   useEffect(() => {
     dispatch(fetchPlaylist(playlistId));
-    dispatch(fetchTracks(1, playlistId));
 
     return () => {
       dispatch(clearPlaylist());
@@ -60,42 +59,45 @@ function Playlist({
         <LoadingSpinner size={120} loading={playlist.loading} />
       )}
 
-      <React.Fragment>
-        <Header>
-          <Image
-            src={playlist.data.picture}
-            fallback={fallback}
-            style={{ width: 100, height: 100 }}
-          />
+      {!playlist.loading && (
 
-          <HeaderInfo>
-            <HeaderTitle>{playlist.data.name}</HeaderTitle>
-            <div>
-              <Meta>{`${playlist.data.tracks} ${t('commons.tracks')}`}</Meta>
-            </div>
-            <Buttons>
-              {playlist.tracks.data.length > 0 && (
-                <Button onClick={handlePlaylistPlay}>
-                  {t('commons.play_tracks_button')}
-                </Button>
-              )}
-            </Buttons>
-          </HeaderInfo>
-        </Header>
+        <>
+          <Header>
+            <Image
+              src={playlist.data.picture}
+              fallback={fallback}
+              style={{ width: 100, height: 100 }}
+            />
 
-        {playlist.tracks.data.length > 0 ? (
-          <Section>
-            <SectionTitle>{t('commons.tracks')}</SectionTitle>
-            <TracksList>
-              {playlist.tracks.data.map((data) => (
-                <SmallTrackItem key={data.id} data={data} />
-              ))}
-            </TracksList>
-          </Section>
-        ) : (
-          <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
-        )}
-      </React.Fragment>
+            <HeaderInfo>
+              <HeaderTitle>{playlist.data.name}</HeaderTitle>
+              <div>
+                <Meta>{`${playlist.data.tracks} ${t('commons.tracks')}`}</Meta>
+              </div>
+              <Buttons>
+                {playlist.tracks.data.length > 0 && (
+                  <Button onClick={handlePlaylistPlay}>
+                    {t('commons.play_tracks_button')}
+                  </Button>
+                )}
+              </Buttons>
+            </HeaderInfo>
+          </Header>
+
+          {playlist.tracks.data.length > 0 ? (
+            <Section>
+              <SectionTitle>{t('commons.tracks')}</SectionTitle>
+              <TracksList>
+                {playlist.tracks.data.map((data) => (
+                  <SmallTrackItem key={data.id} data={data} />
+                ))}
+              </TracksList>
+            </Section>
+          ) : (
+              <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
+            )}
+        </>
+      )}
     </Content>
   );
 }

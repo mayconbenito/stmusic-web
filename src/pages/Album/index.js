@@ -42,7 +42,6 @@ function Album({
 
   useEffect(() => {
     dispatch(fetchAlbum(albumId));
-    dispatch(fetchTracks(1, albumId));
 
     return () => {
       dispatch(clearAlbum());
@@ -55,45 +54,47 @@ function Album({
 
   return (
     <Content ref={containerRef}>
-      {album.loading && album.tracks.loading && (
+      {album.loading && (
         <LoadingSpinner size={120} loading={album.loading} />
       )}
 
-      <React.Fragment>
-        <Header>
-          <Image
-            src={album.data.picture}
-            fallback={fallback}
-            style={{ width: 100, height: 100 }}
-          />
-          <HeaderInfo>
-            <HeaderType>{t('commons.album')}</HeaderType>
-            <HeaderTitle>{album.data.name}</HeaderTitle>
-            <Buttons>
-              {album.tracks.data.length > 0 && (
-                <Button onClick={handlePlaylistPlay}>
-                  {t('commons.play_tracks_button')}
-                </Button>
-              )}
-            </Buttons>
-          </HeaderInfo>
-        </Header>
+      {!album.loading && (
+        <>
+          <Header>
+            <Image
+              src={album.data.picture}
+              fallback={fallback}
+              style={{ width: 100, height: 100 }}
+            />
+            <HeaderInfo>
+              <HeaderType>{t('commons.album')}</HeaderType>
+              <HeaderTitle>{album.data.name}</HeaderTitle>
+              <Buttons>
+                {album.tracks.data.length > 0 && (
+                  <Button onClick={handlePlaylistPlay}>
+                    {t('commons.play_tracks_button')}
+                  </Button>
+                )}
+              </Buttons>
+            </HeaderInfo>
+          </Header>
 
-        {album.tracks.data.length > 0 ? (
-          <Section>
-            <SectionTitle>{t('commons.tracks')}</SectionTitle>
-            <TracksList>
-              {album.tracks.data.map((data) => (
-                <>
-                  <SmallTrackItem key={data.id} data={data} />
-                </>
-              ))}
-            </TracksList>
-          </Section>
-        ) : (
-          <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
-        )}
-      </React.Fragment>
+          {album.tracks.data.length > 0 ? (
+            <Section>
+              <SectionTitle>{t('commons.tracks')}</SectionTitle>
+              <TracksList>
+                {album.tracks.data.map((data) => (
+                  <>
+                    <SmallTrackItem key={data.id} data={data} />
+                  </>
+                ))}
+              </TracksList>
+            </Section>
+          ) : (
+              <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
+            )}
+        </>
+      )}
     </Content>
   );
 }

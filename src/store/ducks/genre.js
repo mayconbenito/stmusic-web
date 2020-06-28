@@ -16,6 +16,7 @@ export const { Types, Creators } = createActions(
 );
 
 const initialState = {
+  error: false,
   loading: true,
   data: {
     name: '',
@@ -23,6 +24,7 @@ const initialState = {
     picture: '',
   },
   tracks: {
+    error: false,
     loading: true,
     data: [],
     total: 0,
@@ -38,7 +40,7 @@ const successGenre = (state = initialState, action) => ({
   loading: false,
 });
 
-const failureGenre = (state = initialState) => ({ ...state, loading: false });
+const failureGenre = (state = initialState) => ({ ...state, loading: false, error: true });
 
 const fetchTracks = (state = initialState) => ({
   ...state,
@@ -58,7 +60,7 @@ const successTracks = (state = initialState, action) => ({
   },
 });
 
-const failureTracks = (state = initialState) => ({ ...state, loading: false });
+const failureTracks = (state = initialState) => ({ ...state, tracks: { loading: false, error: true } });
 
 const clearGenre = () => ({
   ...initialState,
