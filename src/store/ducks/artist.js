@@ -3,22 +3,20 @@ import { createActions, createReducer } from 'reduxsauce';
 export const { Types, Creators } = createActions(
   {
     fetchArtist: ['artistId'],
+    setFollowingState: ['followingState'],
     successArtist: ['data'],
     failureArtist: ['error'],
-    fetchTracks: ['page', 'artistId'],
     successTracks: ['data', 'total'],
     failureTracks: ['error'],
-    fetchMostPlayedTracks: ['page', 'artistId'],
     successMostPlayedTracks: ['data', 'total'],
     failureMostPlayedTracks: ['error'],
-    fetchAlbums: ['page', 'artistId'],
     successAlbums: ['data', 'total'],
     failureAlbums: ['error'],
-    clearArtist: [],
     followArtist: ['artistId'],
     unfollowArtist: ['artistId'],
     successUnfollowArtist: ['data'],
     successFollowArtist: ['data'],
+    clearArtist: [],
   },
   {
     prefix: 'artist/',
@@ -26,8 +24,10 @@ export const { Types, Creators } = createActions(
 );
 
 const initialState = {
+  error: false,
   loading: true,
   data: {
+    id: null,
     name: '',
     followers: 0,
     tracks: 0,
@@ -35,18 +35,21 @@ const initialState = {
     followingState: true,
   },
   tracks: {
+    error: false,
     loading: true,
     data: [],
     total: 0,
     page: 1,
   },
   mostPlayedTracks: {
+    error: false,
     loading: true,
     data: [],
     total: 0,
     page: 1,
   },
   albums: {
+    error: false,
     loading: true,
     data: [],
     total: 0,
@@ -56,20 +59,21 @@ const initialState = {
 
 const fetchArtist = (state = initialState) => ({ ...state, loading: true });
 
+const setFollowingState = (state = initialState, action) => ({
+  ...state,
+  data: { ...state.data, followingState: action.followingState },
+});
+
 const successArtist = (state = initialState, action) => ({
   ...state,
   data: action.data,
   loading: false,
 });
 
-const failureArtist = (state = initialState) => ({ ...state, loading: false });
-
-const fetchTracks = (state = initialState) => ({
+const failureArtist = (state = initialState) => ({
   ...state,
-  tracks: {
-    ...state.tracks,
-    loading: true,
-  },
+  loading: false,
+  error: true,
 });
 
 const successTracks = (state = initialState, action) => ({
@@ -79,16 +83,6 @@ const successTracks = (state = initialState, action) => ({
     data: [...state.tracks.data, ...action.data],
     total: action.total,
     page: state.tracks.page + 1,
-  },
-});
-
-const failureTracks = (state = initialState) => ({ ...state, loading: false });
-
-const fetchMostPlayedTracks = (state = initialState) => ({
-  ...state,
-  mostPlayedTracks: {
-    ...state.mostPlayedTracks,
-    loading: true,
   },
 });
 
@@ -102,19 +96,6 @@ const successMostPlayedTracks = (state = initialState, action) => ({
   },
 });
 
-const failureMostPlayedTracks = (state = initialState) => ({
-  ...state,
-  loading: false,
-});
-
-const fetchAlbums = (state = initialState) => ({
-  ...state,
-  albums: {
-    ...state.albums,
-    loading: true,
-  },
-});
-
 const successAlbums = (state = initialState, action) => ({
   ...state,
   albums: {
@@ -123,12 +104,6 @@ const successAlbums = (state = initialState, action) => ({
     total: action.total,
     page: state.albums.page + 1,
   },
-});
-
-const failureAlbums = (state = initialState) => ({ ...state, loading: false });
-
-const clearArtist = () => ({
-  ...initialState,
 });
 
 const followArtist = (state = initialState) => ({
@@ -155,19 +130,16 @@ const successUnfollowArtist = (state = initialState) => ({
   },
 });
 
+const clearArtist = () => initialState;
+
 export default createReducer(initialState, {
   [Types.FETCH_ARTIST]: fetchArtist,
+  [Types.SET_FOLLOWING_STATE]: setFollowingState,
   [Types.SUCCESS_ARTIST]: successArtist,
   [Types.FAILURE_ARTIST]: failureArtist,
-  [Types.FETCH_TRACKS]: fetchTracks,
   [Types.SUCCESS_TRACKS]: successTracks,
-  [Types.FAILURE_TRACKS]: failureTracks,
-  [Types.FETCH_MOST_PLAYED_TRACKS]: fetchMostPlayedTracks,
   [Types.SUCCESS_MOST_PLAYED_TRACKS]: successMostPlayedTracks,
-  [Types.FAILURE_MOST_PLAYED_TRACKS]: failureMostPlayedTracks,
-  [Types.FETCH_ALBUMS]: fetchAlbums,
   [Types.SUCCESS_ALBUMS]: successAlbums,
-  [Types.FAILURE_ALBUMS]: failureAlbums,
   [Types.CLEAR_ARTIST]: clearArtist,
   [Types.FOLLOW_ARTIST]: followArtist,
   [Types.UNFOLLOW_ARTIST]: unfollowArtist,

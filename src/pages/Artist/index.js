@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import fallback from '../../assets/images/fallback.png';
 import AlbumItem from '../../components/AlbumItem';
@@ -32,26 +33,20 @@ function Artist({
 }) {
   const {
     fetchArtist,
-    fetchTracks,
-    fetchMostPlayedTracks,
-    fetchAlbums,
-    clearArtist,
     followArtist,
     unfollowArtist,
+    clearArtist,
   } = ArtistActions;
+  const params = useParams();
   const artist = useSelector((state) => state.artist);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   useEffect(() => {
-    dispatch(fetchArtist(artistId));
-    dispatch(fetchTracks(1, artistId));
-    dispatch(fetchMostPlayedTracks(1, artistId));
-    dispatch(fetchAlbums(1, artistId));
-
-    return () => {
+    if (Number(params.artistId) !== artist.data.id) {
       dispatch(clearArtist());
-    };
+      dispatch(fetchArtist(artistId));
+    }
   }, []);
 
   function handleFollowing() {
@@ -69,6 +64,7 @@ function Artist({
   return (
     <Content>
       {artist.loading && <LoadingSpinner size={120} loading={artist.loading} />}
+
       {!artist.loading && (
         <>
           <Header>

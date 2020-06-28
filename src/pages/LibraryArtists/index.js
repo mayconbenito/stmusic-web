@@ -18,12 +18,14 @@ import {
 
 function LibraryArtists({ history }) {
   const { fetchArtists } = LibraryArtistActions;
-  const libraryArtist = useSelector(state => state.libraryArtist);
+  const libraryArtist = useSelector((state) => state.libraryArtist);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (!libraryArtist.data.length > 0) dispatch(fetchArtists(1));
+    if (!libraryArtist.data.length > 0) {
+      dispatch(fetchArtists(1));
+    }
   }, []);
 
   const onEndReached = useCallback(() => {
@@ -42,7 +44,7 @@ function LibraryArtists({ history }) {
       {libraryArtist.data.length === 0 && libraryArtist.loading && (
         <LoadingSpinner loading={libraryArtist.loading} size={40} />
       )}
-      {libraryArtist.data.map(artist => (
+      {libraryArtist.data.map((artist) => (
         <ArtistItem key={artist.id}>
           <Image
             src={artist.picture}

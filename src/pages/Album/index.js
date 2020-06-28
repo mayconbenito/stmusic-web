@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import fallback from '../../assets/images/fallback.png';
 import Image from '../../components/Image';
@@ -28,9 +29,17 @@ function Album({
   },
 }) {
   const { fetchAlbum, fetchTracks, clearAlbum } = AlbumActions;
+  const params = useParams();
   const album = useSelector((state) => state.album);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (Number(params.albumId) !== album.data.id) {
+      dispatch(clearAlbum());
+      dispatch(fetchAlbum(albumId));
+    }
+  }, []);
 
   function handleEndReached() {
     if (album.tracks.total > album.tracks.data.length) {
@@ -40,60 +49,49 @@ function Album({
 
   const containerRef = useBottomScrollListener(handleEndReached);
 
-  useEffect(() => {
-    dispatch(fetchAlbum(albumId));
-    dispatch(fetchTracks(1, albumId));
-
-    return () => {
-      dispatch(clearAlbum());
-    };
-  }, []);
-
   function handlePlaylistPlay() {
     dispatch(PlayerActions.fetchPlaylist(albumId, 'albums'));
   }
 
   return (
     <Content ref={containerRef}>
-      {album.loading && album.tracks.loading && (
-        <LoadingSpinner size={120} loading={album.loading} />
-      )}
+      {album.loading && <LoadingSpinner size={120} loading={album.loading} />}
 
-      <React.Fragment>
-        <Header>
-          <Image
-            src={album.data.picture}
-            fallback={fallback}
-            style={{ width: 100, height: 100 }}
-          />
-          <HeaderInfo>
-            <HeaderType>{t('commons.album')}</HeaderType>
-            <HeaderTitle>{album.data.name}</HeaderTitle>
-            <Buttons>
-              {album.tracks.data.length > 0 && (
-                <Button onClick={handlePlaylistPlay}>
-                  {t('commons.play_tracks_button')}
-                </Button>
-              )}
-            </Buttons>
-          </HeaderInfo>
-        </Header>
+      {!album.loading && (
+        <>
+          <Header>
+            <Image
+              src={album.data.picture}
+              fallback={fallback}
+              style={{ width: 100, height: 100 }}
+            />
+            <HeaderInfo>
+              <HeaderType>{t('commons.album')}</HeaderType>
+              <HeaderTitle>{album.data.name}</HeaderTitle>
+              <Buttons>
+                {album.tracks.data.length > 0 && (
+                  <Button onClick={handlePlaylistPlay}>
+                    {t('commons.play_tracks_button')}
+                  </Button>
+                )}
+              </Buttons>
+            </HeaderInfo>
+          </Header>
 
-        {album.tracks.data.length > 0 ? (
-          <Section>
-            <SectionTitle>{t('commons.tracks')}</SectionTitle>
-            <TracksList>
-              {album.tracks.data.map((data) => (
-                <>
+          {album.tracks.data.length > 0 ? (
+            <Section>
+              <SectionTitle>{t('commons.tracks')}</SectionTitle>
+              <TracksList>
+                {album.tracks.data.map((data) => (
                   <SmallTrackItem key={data.id} data={data} />
-                </>
-              ))}
-            </TracksList>
-          </Section>
-        ) : (
-          <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
-        )}
-      </React.Fragment>
+                ))}
+              </TracksList>
+            </Section>
+          ) : (
+            <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
+          )}
+        </>
+      )}
     </Content>
   );
 }

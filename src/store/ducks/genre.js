@@ -16,13 +16,16 @@ export const { Types, Creators } = createActions(
 );
 
 const initialState = {
+  error: false,
   loading: true,
   data: {
+    id: null,
     name: '',
     tracks: 0,
     picture: '',
   },
   tracks: {
+    error: false,
     loading: true,
     data: [],
     total: 0,
@@ -38,7 +41,11 @@ const successGenre = (state = initialState, action) => ({
   loading: false,
 });
 
-const failureGenre = (state = initialState) => ({ ...state, loading: false });
+const failureGenre = (state = initialState) => ({
+  ...state,
+  loading: false,
+  error: true,
+});
 
 const fetchTracks = (state = initialState) => ({
   ...state,
@@ -58,11 +65,12 @@ const successTracks = (state = initialState, action) => ({
   },
 });
 
-const failureTracks = (state = initialState) => ({ ...state, loading: false });
-
-const clearGenre = () => ({
-  ...initialState,
+const failureTracks = (state = initialState) => ({
+  ...state,
+  tracks: { loading: false, error: true },
 });
+
+const clearGenre = () => initialState;
 
 export default createReducer(initialState, {
   [Types.FETCH_GENRE]: fetchGenre,

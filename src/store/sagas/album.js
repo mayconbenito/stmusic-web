@@ -12,9 +12,20 @@ const {
 
 function* fetchAlbum({ albumId }) {
   try {
-    const response = yield call(api.get, `/app/albums/${albumId}`);
+    const [album, tracks] = yield Promise.all([
+      api.get(`/app/albums/${albumId}`),
+      api.get(`/app/albums/${albumId}/tracks`, {
+        params: {
+          page: 1,
+          limit: 10,
+        },
+      })
+    ])
 
-    yield put(successAlbum(response.data.album));
+    yield all([
+      put(successAlbum(album.data.album)),
+      put(successTracks(tracks.data.tracks, tracks.data.meta.total))
+    ]);
   } catch (err) {
     yield put(failureAlbum(err));
   }

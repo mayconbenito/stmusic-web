@@ -41,16 +41,10 @@ const failurePlaylists = (state = initialState) => ({
 
 const removePlaylist = (state = initialState, action) => ({
   ...state,
-  data: state.data.filter(playlist => playlist.id !== action.id),
+  data: state.data.filter((playlist) => playlist.id !== action.id),
 });
 
-const clearPlaylists = (state = initialState) => ({
-  ...state,
-  data: [],
-  total: 0,
-  page: 1,
-  loading: true,
-});
+const clearPlaylists = () => initialState;
 
 export default createReducer(initialState, {
   [Types.FETCH_PLAYLISTS]: fetchPlaylists,
