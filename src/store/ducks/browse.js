@@ -5,6 +5,7 @@ export const { Types, Creators } = createActions(
     setList: ['data', 'list'],
     fetchBrowse: [],
     failure: ['err'],
+    clearState: [],
   },
   {
     prefix: 'browse/',
@@ -81,8 +82,11 @@ const failure = (state = initialState) => ({
   loading: false,
 });
 
+const clearState = () => initialState;
+
 export default createReducer(initialState, {
   [Types.SET_LIST]: setList,
   [Types.FETCH_BROWSE]: fetchBrowse,
   [Types.FAILURE]: failure,
+  [Types.CLEAR_STATE]: clearState
 });
