@@ -18,17 +18,15 @@ import {
 } from './styles';
 
 function LibraryPlaylists({ history }) {
-  const { fetchPlaylists, clearPlaylists } = LibraryPlaylistActions;
-  const libraryPlaylist = useSelector(state => state.libraryPlaylist);
+  const { fetchPlaylists } = LibraryPlaylistActions;
+  const libraryPlaylist = useSelector((state) => state.libraryPlaylist);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (!libraryPlaylist.data.length > 0) dispatch(fetchPlaylists());
-
-    return () => {
-      dispatch(clearPlaylists());
-    };
+    if (!libraryPlaylist.data.length > 0) {
+      dispatch(fetchPlaylists(1));
+    }
   }, []);
 
   const onEndReached = useCallback(() => {
@@ -47,7 +45,7 @@ function LibraryPlaylists({ history }) {
       {libraryPlaylist.data.length === 0 && libraryPlaylist.loading && (
         <LoadingSpinner loading={libraryPlaylist.loading} size={40} />
       )}
-      {libraryPlaylist.data.map(playlist => (
+      {libraryPlaylist.data.map((playlist) => (
         <PlaylistItem key={playlist.id}>
           <Image
             src={playlist.picture}

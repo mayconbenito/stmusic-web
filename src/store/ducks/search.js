@@ -31,11 +31,7 @@ const successSearch = (state = initialState, action) => ({
 
 const failureSearch = (state = initialState) => ({ ...state, loading: false });
 
-const clearSearch = (state = initialState) => ({
-  ...state,
-  data: { artists: [], albums: [], tracks: [] },
-  loading: true,
-});
+const clearSearch = () => initialState;
 
 export default createReducer(initialState, {
   [Types.FETCH_SEARCH]: fetchSearch,

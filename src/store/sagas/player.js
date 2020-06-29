@@ -49,9 +49,9 @@ function* fetchPlaylist({ playlistId, playlistType }) {
         page: response.data.meta.page,
       })
     );
-  } catch (err) {
-    console.log(err);
-  }
+
+    // eslint-disable-next-line no-empty
+  } catch (err) {}
 }
 
 export default function* playerSaga() {

@@ -35,7 +35,7 @@ import {
 function Player() {
   const { pause, resume, stop, prev, next } = PlayerActions;
 
-  const player = useSelector(state => state.player);
+  const player = useSelector((state) => state.player);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -53,9 +53,8 @@ function Player() {
   async function handleSetPlayCount() {
     try {
       await api.post(`/app/tracks/plays/${player.active.id}`);
-    } catch (e) {
-      console.log(e);
-    }
+      // eslint-disable-next-line no-empty
+    } catch (err) {}
   }
 
   function formatTime(millis = 0) {

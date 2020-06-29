@@ -50,7 +50,6 @@
     "no-restricted-globals": "off",
     "radix": "off",
     "no-underscore-dangle": "off",
-    "no-console": "off",
     "prefer-destructuring": "off"
   }
 }
