@@ -14,6 +14,10 @@ export const Content = styled.div`
   }
 `;
 
+export const SearchInputContainer = styled.div`
+  position: relative;
+`;
+
 export const SearchInput = styled.input`
   width: 100%;
   height: 60px;
@@ -30,6 +34,15 @@ export const SearchInput = styled.input`
   }
 `;
 
+export const ClearSearchButton = styled.button`
+  position: absolute;
+  right: 15px;
+  top: 16px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+`;
+
 export const SectionContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -42,7 +55,6 @@ export const Section = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 100%;
-  align-items: center;
   margin-bottom: 30px;
   animation-name: fadeIn;
   animation-duration: 0.7s;
@@ -74,7 +86,6 @@ export const SectionTitle = styled.span`
 
 export const SectionItems = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   overflow-x: auto;
-  flex-wrap: wrap;
 `;

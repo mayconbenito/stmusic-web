@@ -10,27 +10,6 @@ export const ArtistList = styled.div`
   height: calc(100% - 80px);
 `;
 
-export const ArtistItem = styled.div`
-  display: flex;
-  margin-top: 5px;
-`;
-
-export const ArtistInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 5px;
-`;
-
-export const ArtistName = styled.span`
-  color: #d99207;
-  cursor: pointer;
-`;
-
-export const ArtistFollowers = styled.span`
-  color: #d99207;
-  font-size: 10px;
-`;
-
 export const Warning = styled.span`
   color: #d99207;
   font-weight: 500;

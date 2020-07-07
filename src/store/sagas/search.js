@@ -12,7 +12,7 @@ function* fetchSearch({ query }) {
   try {
     const response = yield call(api.get, `/app/search/${query}`, {
       params: {
-        limit: 50,
+        limit: 20,
         type: 'artist,album,track',
       },
     });
