@@ -1,12 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { MdPlaylistAdd } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
-import session from '../../services/session';
 import { Creators as PlayerActions } from '../../store/ducks/player';
-import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
 import Image from '../Image';
 import {
   Container,
@@ -14,10 +11,9 @@ import {
   Name,
   TextList,
   Type,
-  AddOnPlaylist,
 } from './styles';
 
-function SmallTrackItem({ data, style }) {
+function SmallAlbumItem({ data, style }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -32,24 +28,14 @@ function SmallTrackItem({ data, style }) {
       <Details onClick={() => dispatch(PlayerActions.play(data))}>
         <Name>{data.name}</Name>
         <TextList>
-          <Type>{t('commons.track')} | </Type>
+          <Type>{t('commons.album')} | </Type>
           {data.artists.map(
             (artist, index) => (index ? ', ' : '') + artist.name
           )}
         </TextList>
       </Details>
-
-      {session() && (
-        <AddOnPlaylist
-          onClick={() => {
-            dispatch(PlaylistModalActions.openModal(data.id));
-          }}
-        >
-          <MdPlaylistAdd size={22} color="#d99207" />
-        </AddOnPlaylist>
-      )}
     </Container>
   );
 }
 
-export default React.memo(SmallTrackItem);
+export default React.memo(SmallAlbumItem);

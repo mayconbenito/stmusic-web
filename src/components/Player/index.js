@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Sound from 'react-sound';
 
 import fallback from '../../assets/images/fallback.png';
-import usePersistedState from '../../helpers/usePersistedState';
+import usePersistedState from '../../hooks/usePersistedState';
 import api from '../../services/api';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import Image from '../Image';
@@ -54,7 +54,7 @@ function Player() {
     try {
       await api.post(`/app/tracks/plays/${player.active.id}`);
       // eslint-disable-next-line no-empty
-    } catch (err) {}
+    } catch (err) { }
   }
 
   function formatTime(millis = 0) {
