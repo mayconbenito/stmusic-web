@@ -52,16 +52,6 @@ export const Container = styled.div`
   max-width: 150px;
 `;
 
-export const AddOnPlaylist = styled.button`
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  z-index: 500;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-`;
-
 export const Details = styled.div`
   display: flex;
   flex-direction: column;
@@ -90,4 +80,14 @@ export const TextList = styled.span`
 
 export const ArtistName = styled.span`
   color: #606060;
+`;
+
+export const ToolbarButton = styled.div`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 5;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 `;

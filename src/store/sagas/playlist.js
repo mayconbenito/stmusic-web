@@ -28,7 +28,7 @@ function* fetchPlaylist({ playlistId }) {
           limit: 10,
         },
       })
-    ])
+    ]);
 
     yield all([
       put(successPlaylist(playlist.data.playlist)),
@@ -101,6 +101,6 @@ export default function* artistSaga() {
     takeLatest(PlaylistTypes.FETCH_PLAYLIST, fetchPlaylist),
     takeLatest(PlaylistTypes.FETCH_TRACKS, fetchTracks),
     takeLatest(PlaylistTypes.REQUEST_CREATE_PLAYLIST, requestCreatePlaylist),
-    takeLatest(PlaylistTypes.REQUEST_DELETE_PLAYLIST, requestDeletePlaylist),
+    takeLatest(PlaylistTypes.REQUEST_DELETE_PLAYLIST, requestDeletePlaylist)
   ]);
 }

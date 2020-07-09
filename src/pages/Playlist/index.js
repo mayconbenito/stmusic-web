@@ -8,6 +8,7 @@ import fallback from '../../assets/images/fallback.png';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import SmallTrackItem from '../../components/SmallTrackItem';
+import api from '../../services/api';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import { Creators as PlaylistActions } from '../../store/ducks/playlist';
 import {
@@ -28,7 +29,7 @@ function Playlist({
     params: { playlistId },
   },
 }) {
-  const { fetchPlaylist, fetchTracks, clearPlaylist } = PlaylistActions;
+  const { fetchPlaylist, fetchTracks, removeTrackFromPlaylist, clearPlaylist } = PlaylistActions;
 
   const params = useParams();
   const playlist = useSelector((state) => state.playlist);
@@ -49,6 +50,19 @@ function Playlist({
   }
 
   const containerRef = useBottomScrollListener(handleEndReached, 0, 200);
+
+  async function handleRemoveTrackFromPlaylist(trackId) {
+    try {
+      const response = await api.delete(`/app/playlists/${playlistId}/tracks`, {
+        data: { tracks: [trackId] },
+      });
+
+      if (response.status === 204) {
+        dispatch(removeTrackFromPlaylist(trackId));
+      }
+      // eslint-disable-next-line no-empty
+    } catch (err) {}
+  }
 
   function handlePlaylistPlay() {
     dispatch(PlayerActions.fetchPlaylist(playlistId, 'playlists'));
@@ -89,7 +103,7 @@ function Playlist({
               <SectionTitle>{t('commons.tracks')}</SectionTitle>
               <TracksList>
                 {playlist.tracks.data.map((data) => (
-                  <SmallTrackItem key={data.id} data={data} />
+                  <SmallTrackItem key={data.id} data={data} isPlaylist onRemoveTrackFromPlaylist={() => handleRemoveTrackFromPlaylist(data.id)} />
                 ))}
               </TracksList>
             </Section>

@@ -8,6 +8,7 @@ export const { Types, Creators } = createActions(
     fetchTracks: ['page', 'playlistId'],
     successTracks: ['data', 'total'],
     failureTracks: ['error'],
+    removeTrackFromPlaylist: ['trackId'],
     clearPlaylist: [],
     requestDeletePlaylist: ['id'],
     successDeletePlaylist: [],
@@ -76,6 +77,15 @@ const failureTracks = (state = initialState) => ({
   tracks: { loading: false, error: true },
 });
 
+const removeTrackFromPlaylist = (state = initialState, action) => ({
+  ...state, 
+  tracks: {
+    ...state.tracks,
+    total: state.tracks.total - 1,
+    data: state.tracks.data.filter(track => track.id !== action.trackId),
+  }
+});
+
 const requestCreatePlaylist = (state = initialState) => state;
 
 const successCreatePlaylist = (state = initialState) => state;
@@ -98,6 +108,7 @@ export default createReducer(initialState, {
   [Types.SUCCESS_TRACKS]: successTracks,
   [Types.FAILURE_TRACKS]: failureTracks,
   [Types.CLEAR_PLAYLIST]: clearPlaylist,
+  [Types.REMOVE_TRACK_FROM_PLAYLIST]: removeTrackFromPlaylist,
   [Types.REQUEST_CREATE_PLAYLIST]: requestCreatePlaylist,
   [Types.SUCCESS_CREATE_PLAYLIST]: successCreatePlaylist,
   [Types.FAILURE_CREATE_PLAYLIST]: failureCreatePlaylist,
