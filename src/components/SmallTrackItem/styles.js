@@ -40,10 +40,3 @@ export const TextList = styled.span`
 export const ArtistName = styled.span`
   color: #606060;
 `;
-
-export const AddOnPlaylist = styled.button`
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  margin-left: auto;
-`;

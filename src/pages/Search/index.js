@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import SmallAlbumItem from '../../components/SmallAlbumItem';
 import SmallArtistItem from '../../components/SmallArtistItem';
 import SmallTrackItem from '../../components/SmallTrackItem';
-import isStringEmpty from '../../helpers/isStringEmpty'
-import useDebounce from '../../hooks/useDebounce'
+import isStringEmpty from '../../helpers/isStringEmpty';
+import useDebounce from '../../hooks/useDebounce';
 import { Creators as SearchActions } from '../../store/ducks/search';
 import {
   Content,
@@ -26,7 +26,7 @@ function Search({ history }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const debouncedQuery = useDebounce(search.query, 500)
+  const debouncedQuery = useDebounce(search.query, 500);
 
   function handleInput(e) {
     const { value } = e.target;
@@ -42,8 +42,8 @@ function Search({ history }) {
   }, [debouncedQuery]);
 
   function handleClearSearch() {
-    dispatch(clearSearch())
-    dispatch(setQuery(''))
+    dispatch(clearSearch());
+    dispatch(setQuery(''));
   }
 
   return (

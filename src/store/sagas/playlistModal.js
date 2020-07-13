@@ -2,6 +2,9 @@ import { put, call, all, takeLatest } from 'redux-saga/effects';
 
 import api from '../../services/api';
 import {
+  Creators as LibraryPlaylistActions,
+} from '../ducks/libraryPlaylist';
+import {
   Types as PlaylistModalTypes,
   Creators as PlaylistModalActions,
 } from '../ducks/playlistModal';
@@ -24,7 +27,11 @@ function* addTrack({ playlistId, trackId }) {
     );
 
     if (response.status === 204) {
-      yield put(successAdd('ok'));
+      yield all([
+        put(LibraryPlaylistActions.clearPlaylists()),
+        put(LibraryPlaylistActions.fetchPlaylists(1)),
+        put(successAdd('ok'))
+      ]);
     }
   } catch (err) {
     yield put(failureAdd(err));

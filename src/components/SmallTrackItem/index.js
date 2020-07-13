@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { MdPlaylistAdd } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
@@ -8,22 +7,23 @@ import session from '../../services/session';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
 import Image from '../Image';
+import ToolbarMenu, { ToolbarMenuItem } from '../ToolbarMenu';
 import {
   Container,
   Details,
   Name,
   TextList,
   Type,
-  AddOnPlaylist,
 } from './styles';
 
-function SmallTrackItem({ data, style }) {
+function SmallTrackItem({ data, style, isPlaylist = false, onRemoveTrackFromPlaylist }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   return (
     <Container style={style}>
       <Image
+        onClick={() => dispatch(PlayerActions.play(data))}
         src={data.picture}
         fallback={fallback}
         style={{ width: 50, height: 50, cursor: 'pointer' }}
@@ -40,13 +40,10 @@ function SmallTrackItem({ data, style }) {
       </Details>
 
       {session() && (
-        <AddOnPlaylist
-          onClick={() => {
-            dispatch(PlaylistModalActions.openModal(data.id));
-          }}
-        >
-          <MdPlaylistAdd size={22} color="#d99207" />
-        </AddOnPlaylist>
+        <ToolbarMenu style={{ marginLeft: 'auto' }}>
+          <ToolbarMenuItem onClick={() => dispatch(PlaylistModalActions.openModal(data.id))}>Adicionar à uma playlist</ToolbarMenuItem>
+          {isPlaylist && <ToolbarMenuItem onClick={onRemoveTrackFromPlaylist}>Remover da Playlist</ToolbarMenuItem> }
+        </ToolbarMenu>
       )}
     </Container>
   );

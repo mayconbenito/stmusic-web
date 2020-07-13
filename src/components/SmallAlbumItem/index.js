@@ -1,9 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
-import { Creators as PlayerActions } from '../../store/ducks/player';
 import Image from '../Image';
 import {
   Container,
@@ -13,19 +11,19 @@ import {
   Type,
 } from './styles';
 
-function SmallAlbumItem({ data, style }) {
-  const dispatch = useDispatch();
+function SmallAlbumItem({ data, style, onClick }) {
   const { t } = useTranslation();
 
   return (
     <Container style={style}>
       <Image
+        onClick={onClick}
         src={data.picture}
         fallback={fallback}
         style={{ width: 50, height: 50, cursor: 'pointer' }}
       />
 
-      <Details onClick={() => dispatch(PlayerActions.play(data))}>
+      <Details onClick={onClick}>
         <Name>{data.name}</Name>
         <TextList>
           <Type>{t('commons.album')} | </Type>
