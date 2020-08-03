@@ -6,6 +6,7 @@ import ArtistItem from '../../components/ArtistItem';
 import Carrousel from '../../components/Carrousel';
 import GenreItem from '../../components/GenreItem';
 import GlobalHeader from '../../components/GlobalHeader';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
 import { Creators as BrowseActions } from '../../store/ducks/browse';
 import { Content, ContentTitle, Section } from './styles';
@@ -24,10 +25,11 @@ function Home({ history }) {
   return (
     <Content>
       <GlobalHeader history={history} />
-      <ContentTitle>{t('home.title')}</ContentTitle>
 
-      {!browse.loading && (
+      {!browse.loading ? (
         <>
+          <ContentTitle>{t('home.title')}</ContentTitle>
+
           {browse.recentlyPlayed.length > 0 && (
             <Section>
               <Carrousel
@@ -101,6 +103,8 @@ function Home({ history }) {
             </Section>
           )}
         </>
+      ) : (
+        <LoadingSpinner size={120} loading={browse.loading} />
       )}
     </Content>
   );
