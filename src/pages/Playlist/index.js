@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import fallback from '../../assets/images/fallback.png';
+import GlobalHeader from '../../components/GlobalHeader';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import SmallTrackItem from '../../components/SmallTrackItem';
@@ -28,8 +29,14 @@ function Playlist({
   match: {
     params: { playlistId },
   },
+  history,
 }) {
-  const { fetchPlaylist, fetchTracks, removeTrackFromPlaylist, clearPlaylist } = PlaylistActions;
+  const {
+    fetchPlaylist,
+    fetchTracks,
+    removeTrackFromPlaylist,
+    clearPlaylist,
+  } = PlaylistActions;
 
   const params = useParams();
   const playlist = useSelector((state) => state.playlist);
@@ -70,6 +77,8 @@ function Playlist({
 
   return (
     <Content ref={containerRef}>
+      <GlobalHeader history={history} />
+
       {playlist.loading && playlist.tracks.loading && (
         <LoadingSpinner size={120} loading={playlist.loading} />
       )}
@@ -103,7 +112,14 @@ function Playlist({
               <SectionTitle>{t('commons.tracks')}</SectionTitle>
               <TracksList>
                 {playlist.tracks.data.map((data) => (
-                  <SmallTrackItem key={data.id} data={data} isPlaylist onRemoveTrackFromPlaylist={() => handleRemoveTrackFromPlaylist(data.id)} />
+                  <SmallTrackItem
+                    key={data.id}
+                    data={data}
+                    isPlaylist
+                    onRemoveTrackFromPlaylist={() =>
+                      handleRemoveTrackFromPlaylist(data.id)
+                    }
+                  />
                 ))}
               </TracksList>
             </Section>

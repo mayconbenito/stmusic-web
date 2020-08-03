@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import fallback from '../../assets/images/fallback.png';
 import AlbumItem from '../../components/AlbumItem';
 import Carrousel from '../../components/Carrousel';
+import GlobalHeader from '../../components/GlobalHeader';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import SmallTrackItem from '../../components/SmallTrackItem';
@@ -63,6 +64,8 @@ function Artist({
 
   return (
     <Content>
+      <GlobalHeader history={history} />
+
       {artist.loading && <LoadingSpinner size={120} loading={artist.loading} />}
 
       {!artist.loading && (

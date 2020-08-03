@@ -15,21 +15,12 @@ import {
   PlaylistInput,
   CreatePlaylist,
   CreatePlaylistButton,
-  Profile,
-  Username,
-  ProfileButton,
 } from './styles';
 
-function SideBar({ history }) {
+function SideBar() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [playlistInput, setPlaylistInput] = useState('');
-  const { user } = session();
-
-  function logout() {
-    localStorage.removeItem('@STMusic:token');
-    window.location = '/';
-  }
 
   function handlePlaylistName(e) {
     setPlaylistInput(e.target.value);
@@ -84,21 +75,6 @@ function SideBar({ history }) {
           </CreatePlaylistButton>
         </CreatePlaylist>
       )}
-
-      <Profile>
-        {session() ? (
-          <>
-            <Username href="#">{user.name}</Username>
-            <ProfileButton onClick={logout} href="#">
-              {t('sidebar.logout_button')}
-            </ProfileButton>
-          </>
-        ) : (
-          <ProfileButton onClick={() => history.push('/login')} href="#">
-            {t('sidebar.login_button')}
-          </ProfileButton>
-        )}
-      </Profile>
     </Container>
   );
 }
