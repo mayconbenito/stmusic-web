@@ -22,6 +22,7 @@ export const Header = styled.div`
   width: 100%;
   border-bottom: 1px solid #d99207;
   padding-bottom: 5px;
+  margin-top: 20px;
 `;
 
 export const HeaderType = styled.span`

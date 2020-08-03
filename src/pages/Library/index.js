@@ -2,15 +2,18 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Switch, Route } from 'react-router-dom';
 
+import GlobalHeader from '../../components/GlobalHeader';
 import LibraryArtists from '../LibraryArtists';
 import LibraryPlaylists from '../LibraryPlaylists';
-import { Content, FixedHeader, ContentTitle, Menu, MenuItem } from './styles';
+import { Content, Header, ContentTitle, Menu, MenuItem } from './styles';
 
-function Library({ location }) {
+function Library({ location, history }) {
   const { t } = useTranslation();
   return (
     <Content>
-      <FixedHeader>
+      <GlobalHeader history={history} />
+
+      <Header>
         <ContentTitle>{t('library.title')}</ContentTitle>
 
         <Menu>
@@ -31,7 +34,7 @@ function Library({ location }) {
             {t('library.artists_you_follow')}
           </MenuItem>
         </Menu>
-      </FixedHeader>
+      </Header>
 
       <Switch>
         <Route path="/library/playlists" exact component={LibraryPlaylists} />

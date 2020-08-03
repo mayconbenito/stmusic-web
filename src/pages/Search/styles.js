@@ -1,11 +1,16 @@
 import styled from 'styled-components';
 
+export const GlobalHeaderContainer = styled.div`
+  padding: 10px 15px;
+`;
+
 export const Content = styled.div`
   position: fixed;
   width: calc(100% - 180px);
   right: 0;
   top: 0;
-  height: ${props => (props.theme.showPlayer ? 'calc(100% - 100px)' : '100%')};
+  height: ${(props) =>
+    props.theme.showPlayer ? 'calc(100% - 100px)' : '100%'};
   background-color: #141414;
   overflow-y: scroll;
 
@@ -15,16 +20,21 @@ export const Content = styled.div`
 `;
 
 export const SearchInputContainer = styled.div`
-  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  border-bottom: 3px solid #000;
 `;
 
 export const SearchInput = styled.input`
-  width: 100%;
+  flex: 1;
   height: 60px;
   background-color: #141414;
   border: none;
-  border-bottom: 3px solid #000;
-  padding: 10px;
+  padding: 10px 15px;
   font-size: 26px;
   color: #fff;
 
@@ -35,9 +45,7 @@ export const SearchInput = styled.input`
 `;
 
 export const ClearSearchButton = styled.button`
-  position: absolute;
-  right: 15px;
-  top: 16px;
+  margin-right: 15px;
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -59,6 +67,10 @@ export const Section = styled.div`
   animation-name: fadeIn;
   animation-duration: 0.7s;
   animation-timing-function: ease-in-out;
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
 
   @keyframes fadeIn {
     0% {

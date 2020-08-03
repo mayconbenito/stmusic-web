@@ -67,15 +67,17 @@
       "library": "Library",
       "search": "Search",
       "playlist_input": "Playlist name",
-      "create_playlist_button": "Create Playlist",
-      "login_button": "Login",
-      "logout_button": "Logout"
+      "create_playlist_button": "Create Playlist"
     },
     "playlist_modal": {
       "title": "Save on"
     },
     "player": {
       "playing": "Playing"
+    },
+    "global_header": {
+      "login_button": "Login",
+      "logout_button": "Logout"
     },
     "commons": {
       "internal_server_error": "Internal server error",

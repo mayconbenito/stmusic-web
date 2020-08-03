@@ -19,6 +19,7 @@ export const Content = styled.div`
 export const ContentTitle = styled.h2`
   font-size: 40px;
   font-weight: normal;
+  margin-top: 20px;
 `;
 
 export const Section = styled.div`

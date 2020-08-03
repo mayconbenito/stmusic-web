@@ -3,11 +3,9 @@ import styled from 'styled-components';
 export const ArtistList = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
   width: 100%;
   overflow-y: scroll;
-  margin-top: 80px;
-  height: calc(100% - 80px);
+  height: calc(100% - 130px);
 `;
 
 export const Warning = styled.span`

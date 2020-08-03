@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import fallback from '../../assets/images/fallback.png';
+import GlobalHeader from '../../components/GlobalHeader';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import SmallTrackItem from '../../components/SmallTrackItem';
@@ -27,6 +28,7 @@ function Genre({
   match: {
     params: { genreId },
   },
+  history,
 }) {
   const { fetchGenre, fetchTracks, clearGenre } = GenreActions;
   const params = useParams();
@@ -54,6 +56,8 @@ function Genre({
 
   return (
     <Content ref={containerRef}>
+      <GlobalHeader history={history} />
+
       {genre.loading && <LoadingSpinner size={120} loading={genre.loading} />}
 
       {!genre.loading && (

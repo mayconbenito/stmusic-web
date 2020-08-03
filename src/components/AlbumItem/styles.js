@@ -31,4 +31,6 @@ export const TextList = styled.span`
   font-size: 10px;
 `;
 
-export const Type = styled.span``;
+export const Type = styled.span`
+  color: #606060;
+`;

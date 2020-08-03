@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import fallback from '../../assets/images/fallback.png';
+import GlobalHeader from '../../components/GlobalHeader';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import SmallTrackItem from '../../components/SmallTrackItem';
@@ -27,6 +28,7 @@ function Album({
   match: {
     params: { albumId },
   },
+  history,
 }) {
   const { fetchAlbum, fetchTracks, clearAlbum } = AlbumActions;
   const params = useParams();
@@ -55,6 +57,8 @@ function Album({
 
   return (
     <Content ref={containerRef}>
+      <GlobalHeader history={history} />
+
       {album.loading && <LoadingSpinner size={120} loading={album.loading} />}
 
       {!album.loading && (

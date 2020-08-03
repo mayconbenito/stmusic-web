@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { MdClear } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 
+import GlobalHeader from '../../components/GlobalHeader';
 import SmallAlbumItem from '../../components/SmallAlbumItem';
 import SmallArtistItem from '../../components/SmallArtistItem';
 import SmallTrackItem from '../../components/SmallTrackItem';
@@ -10,6 +11,7 @@ import isStringEmpty from '../../helpers/isStringEmpty';
 import useDebounce from '../../hooks/useDebounce';
 import { Creators as SearchActions } from '../../store/ducks/search';
 import {
+  GlobalHeaderContainer,
   Content,
   SearchInputContainer,
   SearchInput,
@@ -22,7 +24,7 @@ import {
 
 function Search({ history }) {
   const { setQuery, fetchSearch, clearSearch } = SearchActions;
-  const search = useSelector(state => state.search);
+  const search = useSelector((state) => state.search);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -48,6 +50,10 @@ function Search({ history }) {
 
   return (
     <Content>
+      <GlobalHeaderContainer>
+        <GlobalHeader history={history} />
+      </GlobalHeaderContainer>
+
       <SearchInputContainer>
         <SearchInput
           value={search.query}
@@ -56,11 +62,11 @@ function Search({ history }) {
           placeholder={t('search.input')}
         />
 
-        {!isStringEmpty(search.query) &&
+        {!isStringEmpty(search.query) && (
           <ClearSearchButton onClick={handleClearSearch}>
             <MdClear size={26} color="#d99207" />
           </ClearSearchButton>
-        }
+        )}
       </SearchInputContainer>
 
       <SectionContainer>
@@ -68,7 +74,7 @@ function Search({ history }) {
           <Section>
             <SectionTitle>{t('commons.artists')}</SectionTitle>
             <SectionItems>
-              {search.data.artists.map(data => (
+              {search.data.artists.map((data) => (
                 <SmallArtistItem
                   key={data.id}
                   data={data}
@@ -83,7 +89,7 @@ function Search({ history }) {
           <Section>
             <SectionTitle>{t('commons.albums')}</SectionTitle>
             <SectionItems>
-              {search.data.albums.map(data => (
+              {search.data.albums.map((data) => (
                 <SmallAlbumItem
                   key={data.id}
                   data={data}
@@ -98,7 +104,7 @@ function Search({ history }) {
           <Section>
             <SectionTitle>{t('commons.tracks')}</SectionTitle>
             <SectionItems>
-              {search.data.tracks.map(data => (
+              {search.data.tracks.map((data) => (
                 <SmallTrackItem key={data.id} data={data} />
               ))}
             </SectionItems>

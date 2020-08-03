@@ -67,15 +67,17 @@
       "library": "Biblioteca",
       "search": "Busca",
       "playlist_input": "Nome da playlist",
-      "create_playlist_button": "Criar Playlist",
-      "login_button": "Fazer login",
-      "logout_button": "Sair"
+      "create_playlist_button": "Criar Playlist"
     },
     "playlist_modal": {
       "title": "Salvar em"
     },
     "player": {
       "playing": "Tocando"
+    },
+    "global_header": {
+      "login_button": "Fazer login",
+      "logout_button": "Sair"
     },
     "commons": {
       "internal_server_error": "Erro interno no servidor",

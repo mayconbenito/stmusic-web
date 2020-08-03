@@ -5,7 +5,8 @@ export const Container = styled.div`
   position: fixed;
   left: 0;
   width: 180px;
-  height: ${props => (props.theme.showPlayer ? 'calc(100% - 100px)' : '100%')};
+  height: ${(props) =>
+    props.theme.showPlayer ? 'calc(100% - 100px)' : '100%'};
   background-color: #000;
   display: flex;
   flex-direction: column;
@@ -109,35 +110,6 @@ export const PlaylistInput = styled.input`
 `;
 
 export const CreatePlaylistButton = styled.button`
-  background-color: #141414;
-  color: #d99207;
-  border-radius: 3px;
-  margin-top: 5px;
-  border: none;
-  padding: 5px;
-  cursor: pointer;
-  font-weight: 500;
-`;
-
-export const Profile = styled.div`
-  width: 100%;
-  justify-content: flex-start;
-  display: flex;
-  flex-direction: column;
-  padding: 15px;
-`;
-
-export const Username = styled.span`
-  font-family: Roboto;
-  font-size: 15px;
-  font-weight: bold;
-  color: #d99207;
-  align-items: center;
-  align-self: center;
-  margin-bottom: 10px;
-`;
-
-export const ProfileButton = styled.button`
   background-color: #141414;
   color: #d99207;
   border-radius: 3px;

@@ -12,16 +12,16 @@ export const Button = styled.button`
 
 export const MenuItems = styled.div`
   position: absolute;
-  display: ${props => props.showMenuItems ? 'flex' : 'none'};
+  display: ${(props) => (props.showMenuItems ? 'flex' : 'none')};
   flex-direction: column;
   z-index: 30;
   right: 0px;
   background-color: #141414;
   padding: 5px 0px;
   border-radius: 3px;
-  -webkit-box-shadow: 1px 1px 15px 0px rgba(0,0,0,1);
-  -moz-box-shadow: 1px 1px 15px 0px rgba(0,0,0,1);
-  box-shadow: 1px 1px 15px 0px rgba(0,0,0,1);
+  -webkit-box-shadow: 1px 1px 15px 0px rgba(0, 0, 0, 1);
+  -moz-box-shadow: 1px 1px 15px 0px rgba(0, 0, 0, 1);
+  box-shadow: 1px 1px 15px 0px rgba(0, 0, 0, 1);
 `;
 
 export const MenuItem = styled.span`
@@ -32,7 +32,7 @@ export const MenuItem = styled.span`
   white-space: nowrap;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: #202020;
     cursor: pointer;
   }
 `;
