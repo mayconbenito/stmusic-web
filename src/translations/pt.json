@@ -67,9 +67,7 @@
       "library": "Biblioteca",
       "search": "Busca",
       "playlist_input": "Nome da playlist",
-      "create_playlist_button": "Criar Playlist",
-      "login_button": "Fazer login",
-      "logout_button": "Sair"
+      "create_playlist_button": "Criar Playlist"
     },
     "playlist_modal": {
       "title": "Salvar em"
@@ -77,9 +75,13 @@
     "player": {
       "playing": "Tocando"
     },
+    "global_header": {
+      "login_button": "Fazer login",
+      "logout_button": "Sair"
+    },
     "commons": {
       "internal_server_error": "Erro interno no servidor",
-      "play_tracks_button": "Tocar Músicas",
+      "play_tracks_button": "Tocar",
       "no_track_available": "Nenhuma música disponível",
       "you_dont_have_any_playlist": "Você ainda nao tem nenhuma playlist.",
       "tracks": "Músicas",
@@ -88,7 +90,9 @@
       "artists": "Artistas",
       "following": "Seguindo",
       "followers": "Seguidores",
-      "follow": "Seguir"
+      "follow": "Seguir",
+      "genre": "Genêro",
+      "album": "Album"
     }
   }
 }

@@ -2,6 +2,7 @@ import { createActions, createReducer } from 'reduxsauce';
 
 export const { Types, Creators } = createActions(
   {
+    setQuery: ['query'],
     fetchSearch: ['query'],
     successSearch: ['data'],
     failureSearch: ['error'],
@@ -18,8 +19,11 @@ const initialState = {
     albums: [],
     tracks: [],
   },
+  query: '',
   loading: false,
 };
+
+const setQuery = (state = initialState, action) => ({ ...state, query: action.query })
 
 const fetchSearch = (state = initialState) => ({ ...state, loading: true });
 
@@ -31,13 +35,10 @@ const successSearch = (state = initialState, action) => ({
 
 const failureSearch = (state = initialState) => ({ ...state, loading: false });
 
-const clearSearch = (state = initialState) => ({
-  ...state,
-  data: { artists: [], albums: [], tracks: [] },
-  loading: true,
-});
+const clearSearch = () => initialState;
 
 export default createReducer(initialState, {
+  [Types.SET_QUERY]: setQuery,
   [Types.FETCH_SEARCH]: fetchSearch,
   [Types.SUCCESS_SEARCH]: successSearch,
   [Types.FAILURE_SEARCH]: failureSearch,

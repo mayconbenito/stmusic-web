@@ -37,13 +37,7 @@ const failureArtists = (state = initialState) => ({
   loading: false,
 });
 
-const clearArtists = (state = initialState) => ({
-  ...state,
-  data: [],
-  total: 0,
-  page: 1,
-  loading: true,
-});
+const clearArtists = () => initialState;
 
 export default createReducer(initialState, {
   [Types.FETCH_ARTISTS]: fetchArtists,

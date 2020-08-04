@@ -12,9 +12,20 @@ const {
 
 function* fetchGenre({ genreId }) {
   try {
-    const response = yield call(api.get, `/app/genres/${genreId}`);
+    const [genre, tracks] = yield Promise.all([
+      api.get(`/app/genres/${genreId}`),
+      api.get(`/app/genres/${genreId}/tracks`, {
+        params: {
+          page: 1,
+          limit: 10,
+        },
+      })
+    ])
 
-    yield put(successGenre(response.data.genre));
+    yield all([
+      put(successGenre(genre.data.genre)),
+      put(successTracks(tracks.data.tracks, tracks.data.meta.total))
+    ]);
   } catch (err) {
     yield put(failureGenre(err));
   }
@@ -25,7 +36,7 @@ function* fetchTracks({ page = 1, genreId }) {
     const response = yield call(api.get, `/app/genres/${genreId}/tracks`, {
       params: {
         page,
-        limit: 100,
+        limit: 10,
       },
     });
 

@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Sound from 'react-sound';
 
 import fallback from '../../assets/images/fallback.png';
+import usePersistedState from '../../hooks/usePersistedState';
 import api from '../../services/api';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import Image from '../Image';
@@ -34,14 +35,14 @@ import {
 function Player() {
   const { pause, resume, stop, prev, next } = PlayerActions;
 
-  const player = useSelector(state => state.player);
+  const player = useSelector((state) => state.player);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   const [currentTime, setCurrentTime] = useState();
   const [duration, setDuration] = useState();
   const [playCountStatus, setPlayCountStatus] = useState(false);
-  const [volume, setVolume] = useState(20);
+  const [volume, setVolume] = usePersistedState('@stmusic:playerVolume', 20);
 
   useEffect(() => {
     setCurrentTime(0);
@@ -52,9 +53,8 @@ function Player() {
   async function handleSetPlayCount() {
     try {
       await api.post(`/app/tracks/plays/${player.active.id}`);
-    } catch (e) {
-      console.log(e);
-    }
+      // eslint-disable-next-line no-empty
+    } catch (err) { }
   }
 
   function formatTime(millis = 0) {

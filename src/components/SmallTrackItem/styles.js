@@ -2,35 +2,41 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
-  flex-direction: column;
-  margin-right: 5px;
+  flex: 1;
   margin-bottom: 5px;
-  width: 150px;
+
+  &:last-child {
+    margin-bottom: 0px !important;
+  }
 `;
 
 export const Details = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 3px;
+  margin-left: 5px;
 `;
 
 export const Name = styled.span`
-  font-size: 14px;
+  width: 350px;
   color: #d99207;
-  text-overflow: ellipsis;
+  font-size: 14px;
   white-space: nowrap;
+  text-overflow: ellipsis;
   overflow: hidden;
   cursor: pointer;
 `;
 
-export const TextList = styled.span`
+export const Type = styled.span`
   color: #606060;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+`;
+
+export const TextList = styled.span`
+  flex-direction: row;
+  color: #606060;
   font-size: 10px;
 `;
 
-export const Type = styled.span`
+export const ArtistName = styled.span`
   color: #606060;
 `;

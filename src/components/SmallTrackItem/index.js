@@ -14,18 +14,19 @@ import {
   Name,
   TextList,
   Type,
-  ToolbarButton
 } from './styles';
 
-function TrackItem({ data, style }) {
+function SmallTrackItem({ data, style, isPlaylist = false, onRemoveTrackFromPlaylist }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+
   return (
     <Container style={style}>
       <Image
+        onClick={() => dispatch(PlayerActions.play(data))}
         src={data.picture}
         fallback={fallback}
-        style={{ width: 150, height: 150 }}
+        style={{ width: 50, height: 50, cursor: 'pointer' }}
       />
 
       <Details onClick={() => dispatch(PlayerActions.play(data))}>
@@ -39,14 +40,13 @@ function TrackItem({ data, style }) {
       </Details>
 
       {session() && (
-        <ToolbarButton>
-          <ToolbarMenu style={{ marginLeft: 'auto' }}>
-            <ToolbarMenuItem onClick={() => dispatch(PlaylistModalActions.openModal(data.id))}>Adicionar à uma playlist</ToolbarMenuItem>
-          </ToolbarMenu>
-        </ToolbarButton>
+        <ToolbarMenu style={{ marginLeft: 'auto' }}>
+          <ToolbarMenuItem onClick={() => dispatch(PlaylistModalActions.openModal(data.id))}>Adicionar à uma playlist</ToolbarMenuItem>
+          {isPlaylist && <ToolbarMenuItem onClick={onRemoveTrackFromPlaylist}>Remover da Playlist</ToolbarMenuItem> }
+        </ToolbarMenu>
       )}
     </Container>
   );
 }
 
-export default React.memo(TrackItem);
+export default React.memo(SmallTrackItem);

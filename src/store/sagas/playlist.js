@@ -20,9 +20,20 @@ const {
 
 function* fetchPlaylist({ playlistId }) {
   try {
-    const response = yield call(api.get, `/app/playlists/${playlistId}`);
+    const [playlist, tracks] = yield Promise.all([
+      api.get(`/app/playlists/${playlistId}`),
+      api.get(`/app/playlists/${playlistId}/tracks`, {
+        params: {
+          page: 1,
+          limit: 10,
+        },
+      })
+    ]);
 
-    yield put(successPlaylist(response.data.playlist));
+    yield all([
+      put(successPlaylist(playlist.data.playlist)),
+      put(successTracks(tracks.data.tracks, tracks.data.meta.total))
+    ]);
   } catch (err) {
     yield put(failurePlaylist(err));
   }
@@ -36,6 +47,7 @@ function* fetchTracks({ page = 1, playlistId }) {
       {
         params: {
           page,
+          limit: 10
         },
       }
     );
@@ -89,6 +101,6 @@ export default function* artistSaga() {
     takeLatest(PlaylistTypes.FETCH_PLAYLIST, fetchPlaylist),
     takeLatest(PlaylistTypes.FETCH_TRACKS, fetchTracks),
     takeLatest(PlaylistTypes.REQUEST_CREATE_PLAYLIST, requestCreatePlaylist),
-    takeLatest(PlaylistTypes.REQUEST_DELETE_PLAYLIST, requestDeletePlaylist),
+    takeLatest(PlaylistTypes.REQUEST_DELETE_PLAYLIST, requestDeletePlaylist)
   ]);
 }

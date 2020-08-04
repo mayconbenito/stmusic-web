@@ -16,13 +16,16 @@ export const { Types, Creators } = createActions(
 );
 
 const initialState = {
+  error: false,
   loading: true,
   data: {
+    id: null,
     name: '',
     tracks: 0,
     picture: '',
   },
   tracks: {
+    error: false,
     loading: true,
     data: [],
     total: 0,
@@ -36,9 +39,14 @@ const successAlbum = (state = initialState, action) => ({
   ...state,
   data: action.data,
   loading: false,
+  error: true,
 });
 
-const failureAlbum = (state = initialState) => ({ ...state, loading: false });
+const failureAlbum = (state = initialState) => ({
+  ...state,
+  loading: false,
+  error: true,
+});
 
 const fetchTracks = (state = initialState) => ({
   ...state,
@@ -58,11 +66,12 @@ const successTracks = (state = initialState, action) => ({
   },
 });
 
-const failureTracks = (state = initialState) => ({ ...state, loading: false });
-
-const clearAlbum = () => ({
-  ...initialState,
+const failureTracks = (state = initialState) => ({
+  ...state,
+  tracks: { error: true, loading: false },
 });
+
+const clearAlbum = () => initialState;
 
 export default createReducer(initialState, {
   [Types.FETCH_ALBUM]: fetchAlbum,

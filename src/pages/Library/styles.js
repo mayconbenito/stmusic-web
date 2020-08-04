@@ -6,21 +6,19 @@ export const Content = styled.div`
   width: calc(100% - 180px);
   right: 0;
   top: 0;
-  height: ${props => (props.theme.showPlayer ? 'calc(100% - 100px)' : '100%')};
+  height: ${(props) =>
+    props.theme.showPlayer ? 'calc(100% - 100px)' : '100%'};
   background-color: #141414;
   padding: 10px 15px;
-
   @media (max-width: 780px) {
     width: 100%;
   }
 `;
 
-export const FixedHeader = styled.div`
+export const Header = styled.div`
   width: 100%;
-  height: 90px;
-  position: fixed;
-  top: 0;
   background-color: #141414;
+  margin-top: 20px;
 `;
 
 export const ContentTitle = styled.h2`
@@ -29,8 +27,7 @@ export const ContentTitle = styled.h2`
 `;
 
 export const Menu = styled.div`
-  dispay: flex;
-  margin-top: 15px;
+  display: flex;
   padding-bottom: 5px;
 `;
 
@@ -39,6 +36,6 @@ export const MenuItem = styled(Link)`
   font-size: 18px;
   font-weight: 500;
   margin-right: 5px;
-  border-bottom: ${props =>
+  border-bottom: ${(props) =>
     props.underline === 'show' ? '2px solid #d99207' : 'none'};
 `;

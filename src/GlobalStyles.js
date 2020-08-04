@@ -12,11 +12,7 @@ export default createGlobalStyle`
     background-color: #141414;
   }
 
-  span {
-    font-family: Roboto, sans-serif;
-  }
-
-  a, p, h1, h2, h3 {
+  span, a, p, h1, h2, h3 {
     color: #d99207;
     font-family: Roboto, sans-serif;
   }

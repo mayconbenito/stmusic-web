@@ -5,7 +5,8 @@ export const Content = styled.div`
   width: calc(100% - 180px);
   right: 0;
   top: 0;
-  height: ${props => (props.theme.showPlayer ? 'calc(100% - 100px)' : '100%')};
+  height: ${(props) =>
+    props.theme.showPlayer ? 'calc(100% - 100px)' : '100%'};
   background-color: #141414;
   padding: 10px 15px;
   overflow-y: auto;
@@ -18,37 +19,34 @@ export const Content = styled.div`
 
 export const Header = styled.div`
   display: flex;
-  flex-direction: column;
   width: 100%;
   border-bottom: 1px solid #d99207;
   padding-bottom: 5px;
-`;
-
-export const HeaderContainer = styled.div`
-  display: flex;
+  margin-top: 20px;
 `;
 
 export const HeaderTitle = styled.h2`
   color: #d99207;
-  font-size: 26px;
-  margin-left: 5px;
+  font-size: 27px;
+  font-weight: 300;
 `;
 
 export const HeaderInfo = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 5px;
+  justify-content: center;
+  margin-left: 5px;
 `;
 
 export const Meta = styled.span`
   color: #d99207;
-  font-size: 16px;
-  margin-right: 10px;
+  font-size: 14px;
+  margin-right: 5px;
 `;
 
 export const Buttons = styled.div`
   display: flex;
-  margin-top: 5px;
+  margin-top: 10px;
 `;
 
 export const Button = styled.button`
@@ -65,26 +63,17 @@ export const Button = styled.button`
 `;
 
 export const Section = styled.div`
-  margin-bottom: 30px;
-  animation-name: fadeIn;
-  animation-duration: 0.7s;
-  animation-timing-function: ease-in-out;
+  display: flex;
+  flex-direction: column;
+`;
 
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    15% {
-      opacity: 0.15;
-    }
-    30% {
-      opacity: 0.3;
-    }
-    80% {
-      opacity: 0.8;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
+export const SectionTitle = styled.span`
+  color: #d99207;
+  font-size: 24px;
+`;
+
+export const TracksList = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 5px 0px;
 `;
