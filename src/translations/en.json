@@ -39,7 +39,7 @@
     },
     "artist": {
       "most_played_tracks": "Most played tracks",
-      "all_artist_tracks": "All artist tracks"
+      "artist_tracks": "Tracks"
     },
     "library": {
       "title": "Library",
@@ -92,7 +92,8 @@
       "followers": "Followers",
       "follow": "Follow",
       "genre": "Genre",
-      "album": "Album"
+      "album": "Album",
+      "most_played_from": "Most played from"
     }
   }
 }

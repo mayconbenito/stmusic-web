@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { MdPlayArrow } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -22,7 +23,9 @@ import {
   Buttons,
   Button,
   Section,
+  SectionTitleContainer,
   SectionTitle,
+  SectionPlayButton,
   TracksList,
 } from './styles';
 
@@ -58,8 +61,13 @@ function Artist({
     }
   }
 
-  function handlePlaylistPlay() {
-    dispatch(PlayerActions.fetchPlaylist(artistId, 'artists'));
+  function handlePlayPlaylist({ name, tracks }) {
+    dispatch(
+      PlayerActions.playPlaylist({
+        name,
+        tracks,
+      })
+    );
   }
 
   return (
@@ -94,11 +102,6 @@ function Artist({
                       : t('commons.follow')}
                   </Button>
                 )}
-                {artist.tracks.data.length > 0 && (
-                  <Button onClick={handlePlaylistPlay}>
-                    {t('commons.play_tracks_button')}
-                  </Button>
-                )}
               </Buttons>
             </HeaderInfo>
           </Header>
@@ -123,7 +126,21 @@ function Artist({
 
           {artist.mostPlayedTracks.data.length > 0 && (
             <Section>
-              <SectionTitle>{t('artist.most_played_tracks')}</SectionTitle>
+              <SectionTitleContainer>
+                <SectionTitle>{t('artist.most_played_tracks')}</SectionTitle>
+                <SectionPlayButton
+                  onClick={() =>
+                    handlePlayPlaylist({
+                      name: `${t('commons.most_played_from')} ${
+                        artist.data.name
+                      }`,
+                      tracks: artist.mostPlayedTracks.data,
+                    })
+                  }
+                >
+                  <MdPlayArrow size={24} color="#d99207" />
+                </SectionPlayButton>
+              </SectionTitleContainer>
               <TracksList>
                 {artist.mostPlayedTracks.data.map((data) => (
                   <SmallTrackItem key={data.id} data={data} />
@@ -134,7 +151,19 @@ function Artist({
 
           {artist.tracks.data.length > 0 && (
             <Section>
-              <SectionTitle>{t('artist.all_artist_tracks')}</SectionTitle>
+              <SectionTitleContainer>
+                <SectionTitle>{t('artist.artist_tracks')}</SectionTitle>
+                <SectionPlayButton
+                  onClick={() =>
+                    handlePlayPlaylist({
+                      name: artist.data.name,
+                      tracks: artist.tracks.data,
+                    })
+                  }
+                >
+                  <MdPlayArrow size={24} color="#d99207" />
+                </SectionPlayButton>
+              </SectionTitleContainer>
               <TracksList>
                 {artist.tracks.data.map((data) => (
                   <SmallTrackItem key={data.id} data={data} />

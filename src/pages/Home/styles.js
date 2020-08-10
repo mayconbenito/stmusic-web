@@ -19,14 +19,17 @@ export const Content = styled.div`
 export const ContentTitle = styled.h2`
   font-size: 40px;
   font-weight: normal;
-  margin-top: 20px;
 `;
 
 export const Section = styled.div`
-  margin-bottom: 30px;
   animation-name: fadeIn;
   animation-duration: 0.7s;
   animation-timing-function: ease-in-out;
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
 
   @keyframes fadeIn {
     0% {
