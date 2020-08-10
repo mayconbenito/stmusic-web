@@ -39,7 +39,7 @@
     },
     "artist": {
       "most_played_tracks": "Músicas mais tocadas",
-      "all_artist_tracks": "Todas as músicas"
+      "artist_tracks": "Músicas"
     },
     "library": {
       "title": "Biblioteca",
@@ -92,7 +92,8 @@
       "followers": "Seguidores",
       "follow": "Seguir",
       "genre": "Genêro",
-      "album": "Album"
+      "album": "Album",
+      "most_played_from": "Mais tocadas de"
     }
   }
 }

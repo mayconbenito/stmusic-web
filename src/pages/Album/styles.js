@@ -65,6 +65,11 @@ export const Button = styled.button`
 export const Section = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
 `;
 
 export const SectionTitle = styled.span`

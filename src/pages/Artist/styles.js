@@ -65,11 +65,28 @@ export const Button = styled.button`
 export const Section = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
+`;
+
+export const SectionTitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 export const SectionTitle = styled.span`
   color: #d99207;
   font-size: 24px;
+`;
+
+export const SectionPlayButton = styled.button`
+  border: none;
+  background: inherit;
+  cursor: pointer;
 `;
 
 export const TracksList = styled.div`
