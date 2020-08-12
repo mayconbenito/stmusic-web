@@ -5,7 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
 import logo from '../../assets/images/logo.svg';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import { Creators as SignUpActions } from '../../store/ducks/signUp';
+import { InputLabel, FormFooter } from '../Login/styles';
 import {
   GlobalStyle,
   Container,
@@ -31,7 +33,7 @@ const schema = yup.object().shape({
 function SignUp() {
   const { requestSignUp } = SignUpActions;
   const dispatch = useDispatch();
-  const signUp = useSelector(state => state.signUp);
+  const signUp = useSelector((state) => state.signUp);
   const alert = useAlert();
   const { t } = useTranslation();
 
@@ -55,13 +57,17 @@ function SignUp() {
     try {
       e.preventDefault();
       const isValid = await schema.validate(form, { abortEarly: false });
-      setWarning(false);
-      dispatch(requestSignUp(isValid));
+
+      if (isValid) {
+        setWarning(false);
+        dispatch(requestSignUp(isValid));
+      }
     } catch (err) {
       const validationErrors = {};
-      err.inner.forEach(error => {
+      err.inner.forEach((error) => {
         validationErrors[error.path] = error.message;
       });
+
       setWarning(validationErrors);
     }
   }
@@ -69,15 +75,18 @@ function SignUp() {
   return (
     <React.Fragment>
       <GlobalStyle />
+
       <Container>
+        <Logo src={logo} />
         <Form onSubmit={handleSubmit}>
-          <Logo src={logo} />
           <Title>{t('signup.title')}</Title>
           <InputGroup>
+            <InputLabel htmlFor="name">{t('signup.name_input')}</InputLabel>
             <Input
+              id="name"
               name="name"
               type="text"
-              placeholder={t('signup.name_input')}
+              placeholder={t('signup.name_input_placeholder')}
               value={form.name}
               onChange={handleInputChange}
             />
@@ -85,9 +94,10 @@ function SignUp() {
           </InputGroup>
 
           <InputGroup>
+            <InputLabel htmlFor="email">{t('signup.email_input')}</InputLabel>
             <Input
               name="email"
-              placeholder={t('signup.email_input')}
+              placeholder={t('signup.email_input_placeholder')}
               value={form.email}
               onChange={handleInputChange}
             />
@@ -95,10 +105,14 @@ function SignUp() {
           </InputGroup>
 
           <InputGroup>
+            <InputLabel htmlFor="email">
+              {t('signup.password_input')}
+            </InputLabel>
             <Input
+              id="password"
               name="password"
               type="password"
-              placeholder={t('signup.password_input')}
+              placeholder={t('signup.password_input_placeholder')}
               value={form.password}
               onChange={handleInputChange}
             />
@@ -106,10 +120,16 @@ function SignUp() {
           </InputGroup>
 
           <Submit type="submit">
-            {signUp.loading ? t('signup.loading') : t('signup.sign_up')}
+            {signUp.loading ? (
+              <LoadingSpinner loading size={14} />
+            ) : (
+              t('signup.sign_up')
+            )}
           </Submit>
 
-          <Button to="/login">{t('signup.sign_in_button')}</Button>
+          <FormFooter>
+            <Button to="/login">{t('signup.sign_in_button')}</Button>
+          </FormFooter>
         </Form>
       </Container>
     </React.Fragment>
