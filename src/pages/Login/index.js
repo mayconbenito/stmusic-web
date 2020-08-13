@@ -5,17 +5,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
 import logo from '../../assets/images/logo.svg';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import { Creators as LoginActions } from '../../store/ducks/login';
 import {
   GlobalStyle,
   Container,
-  Title,
   Logo,
   Form,
+  Title,
   InputGroup,
+  InputLabel,
   Input,
   InputMessage,
   Submit,
+  FormFooter,
   Button,
 } from './styles';
 
@@ -30,7 +33,7 @@ const schema = yup.object().shape({
 function Login() {
   const { requestLogin } = LoginActions;
   const dispatch = useDispatch();
-  const login = useSelector(state => state.login);
+  const login = useSelector((state) => state.login);
   const alert = useAlert();
 
   const { t } = useTranslation();
@@ -54,15 +57,17 @@ function Login() {
     try {
       e.preventDefault();
       const isValid = await schema.validate(form, { abortEarly: false });
+
       if (isValid) {
         setWarning(false);
         dispatch(requestLogin(isValid));
       }
     } catch (err) {
       const validationErrors = {};
-      err.inner.forEach(error => {
+      err.inner.forEach((error) => {
         validationErrors[error.path] = error.message;
       });
+
       setWarning(validationErrors);
     }
   }
@@ -71,13 +76,16 @@ function Login() {
     <React.Fragment>
       <GlobalStyle />
       <Container>
+        <Logo src={logo} />
+
         <Form onSubmit={handleSubmit}>
-          <Logo src={logo} />
           <Title>{t('login.title')}</Title>
           <InputGroup>
+            <InputLabel htmlFor="email">{t('login.email_input')}</InputLabel>
             <Input
+              id="email"
               name="email"
-              placeholder={t('login.email_input')}
+              placeholder={t('login.email_input_placeholder')}
               value={form.email}
               onChange={handleInputChange}
             />
@@ -85,10 +93,14 @@ function Login() {
           </InputGroup>
 
           <InputGroup>
+            <InputLabel htmlFor="password">
+              {t('login.password_input')}
+            </InputLabel>
             <Input
+              id="password"
               name="password"
               type="password"
-              placeholder={t('login.password_input')}
+              placeholder={t('login.password_input_placeholder')}
               value={form.password}
               onChange={handleInputChange}
             />
@@ -96,10 +108,16 @@ function Login() {
           </InputGroup>
 
           <Submit type="submit">
-            {login.loading ? t('login.loading') : t('login.sign_in')}
+            {login.loading ? (
+              <LoadingSpinner loading size={14} />
+            ) : (
+              t('login.sign_in')
+            )}
           </Submit>
 
-          <Button to="/sign-up">{t('login.sign_up_button')}</Button>
+          <FormFooter>
+            <Button to="/sign-up">{t('login.sign_up_button')}</Button>
+          </FormFooter>
         </Form>
       </Container>
     </React.Fragment>
