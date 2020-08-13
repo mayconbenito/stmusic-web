@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
-import logo from '../../assets/images/logo.svg';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { Creators as SignUpActions } from '../../store/ducks/signUp';
 import { InputLabel, FormFooter } from '../Login/styles';
@@ -77,7 +76,7 @@ function SignUp() {
       <GlobalStyle />
 
       <Container>
-        <Logo src={logo} />
+        <Logo width="270px" height="151.88px" />
         <Form onSubmit={handleSubmit}>
           <Title>{t('signup.title')}</Title>
           <InputGroup>

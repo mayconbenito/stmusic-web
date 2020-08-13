@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
+import { ReactComponent as SVGLogo } from '../../assets/images/logo.svg';
+
 export const GlobalStyle = createGlobalStyle`
   html, body, #root {
     height: 100%;
@@ -16,14 +18,14 @@ export const Container = styled.div`
   background-color: #141414;
 `;
 
-export const Logo = styled.img`
-  width: 270px;
+export const Logo = styled(SVGLogo)`
+  min-width: 270px;
+  min-height: 151.88px;
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
-  user-drag: none;
-  margin-top: 30px;
+  margin-top: 20px;
 `;
 
 export const Form = styled.form`
@@ -33,7 +35,7 @@ export const Form = styled.form`
   background-color: #000;
   padding: 20px 30px 20px 30px;
   border-radius: 3px;
-  margin: 30px 0px;
+  margin: 20px 0px;
 `;
 
 export const Title = styled.h1`
