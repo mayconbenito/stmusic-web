@@ -9214,10 +9214,10 @@ react-scripts@^3.4.1:
   optionalDependencies:
     fsevents "2.1.2"
 
-react-slick@^0.27.1:
-  version "0.27.1"
-  resolved "https://registry.yarnpkg.com/react-slick/-/react-slick-0.27.1.tgz#8c9680038f0ab459423010e363aa38bc483bc3f6"
-  integrity sha512-dlT8QW37XahezqcnJ/qquktzNvd9R16bBXoN7CsTab1EzUL1QqieYqYkn+A/eBetxeRUy2Z9kW+XnljZboju0w==
+react-slick@^0.27.9:
+  version "0.27.9"
+  resolved "https://registry.yarnpkg.com/react-slick/-/react-slick-0.27.9.tgz#0fb315de1559f9f7e6fa9df3f00ed978da650356"
+  integrity sha512-c7AgBguBdllxvUDBnnYw/oWLGvCzPTcZDxmqrkW8V1OQ4Zu6FCl+nMjMuR0SX4y+27XkB0ek/mMu+N4SlHTz+Q==
   dependencies:
     classnames "^2.2.5"
     enquire.js "^2.1.6"
