@@ -23,7 +23,7 @@
     "react-router-dom": "^5.1.2",
     "react-router-last-location": "^2.0.1",
     "react-scripts": "^3.4.1",
-    "react-slick": "^0.27.1",
+    "react-slick": "^0.27.10",
     "react-sound": "^1.2.0",
     "react-spinners": "^0.9.0",
     "react-transition-group": "^4.4.1",
