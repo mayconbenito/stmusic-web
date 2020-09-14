@@ -71,8 +71,18 @@ function Playlist({
     } catch (err) {}
   }
 
-  function handlePlaylistPlay() {
-    dispatch(PlayerActions.fetchPlaylist(playlistId, 'playlists'));
+  function handleQueuePlay() {
+    dispatch(
+      PlayerActions.loadQueue({
+        name: playlist.data.name,
+        id: playlistId,
+        type: 'playlists',
+      })
+    );
+  }
+
+  function handleQueueTrackPlay(track) {
+    dispatch(PlayerActions.play(track, playlistId));
   }
 
   return (
@@ -99,7 +109,7 @@ function Playlist({
               </div>
               <Buttons>
                 {playlist.tracks.data.length > 0 && (
-                  <Button onClick={handlePlaylistPlay}>
+                  <Button onClick={handleQueuePlay}>
                     {t('commons.play_tracks_button')}
                   </Button>
                 )}
@@ -116,6 +126,7 @@ function Playlist({
                     key={data.id}
                     data={data}
                     isPlaylist
+                    onPress={() => handleQueueTrackPlay(data)}
                     onRemoveTrackFromPlaylist={() =>
                       handleRemoveTrackFromPlaylist(data.id)
                     }

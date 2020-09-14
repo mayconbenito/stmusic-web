@@ -4,32 +4,31 @@ import { useDispatch } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
 import session from '../../services/session';
-import { Creators as PlayerActions } from '../../store/ducks/player';
 import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
 import Image from '../Image';
 import ToolbarMenu, { ToolbarMenuItem } from '../ToolbarMenu';
-import {
-  Container,
-  Details,
-  Name,
-  TextList,
-  Type,
-} from './styles';
+import { Container, Details, Name, TextList, Type } from './styles';
 
-function SmallTrackItem({ data, style, isPlaylist = false, onRemoveTrackFromPlaylist }) {
+function SmallTrackItem({
+  data,
+  style,
+  isPlaylist = false,
+  onRemoveTrackFromPlaylist,
+  onPress,
+}) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   return (
     <Container style={style}>
       <Image
-        onClick={() => dispatch(PlayerActions.play(data))}
+        onClick={onPress}
         src={data.picture}
         fallback={fallback}
         style={{ width: 50, height: 50, cursor: 'pointer' }}
       />
 
-      <Details onClick={() => dispatch(PlayerActions.play(data))}>
+      <Details onClick={onPress}>
         <Name>{data.name}</Name>
         <TextList>
           <Type>{t('commons.track')} | </Type>
@@ -41,8 +40,16 @@ function SmallTrackItem({ data, style, isPlaylist = false, onRemoveTrackFromPlay
 
       {session() && (
         <ToolbarMenu style={{ marginLeft: 'auto' }}>
-          <ToolbarMenuItem onClick={() => dispatch(PlaylistModalActions.openModal(data.id))}>Adicionar à uma playlist</ToolbarMenuItem>
-          {isPlaylist && <ToolbarMenuItem onClick={onRemoveTrackFromPlaylist}>Remover da Playlist</ToolbarMenuItem> }
+          <ToolbarMenuItem
+            onClick={() => dispatch(PlaylistModalActions.openModal(data.id))}
+          >
+            Adicionar à uma playlist
+          </ToolbarMenuItem>
+          {isPlaylist && (
+            <ToolbarMenuItem onClick={onRemoveTrackFromPlaylist}>
+              Remover da Playlist
+            </ToolbarMenuItem>
+          )}
         </ToolbarMenu>
       )}
     </Container>

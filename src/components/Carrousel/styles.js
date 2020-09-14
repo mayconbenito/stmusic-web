@@ -12,6 +12,18 @@ export const Title = styled.span`
   color: #d99207;
 `;
 
+export const CarrouselTitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const CarrouselPlayButton = styled.button`
+  border: none;
+  background: inherit;
+  cursor: pointer;
+`;
+
 export const Buttons = styled.div`
   @media (max-width: 800px) {
     display: none;

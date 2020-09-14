@@ -51,8 +51,18 @@ function Album({
 
   const containerRef = useBottomScrollListener(handleEndReached);
 
-  function handlePlaylistPlay() {
-    dispatch(PlayerActions.fetchPlaylist(albumId, 'albums'));
+  function handleQueuePlay() {
+    dispatch(
+      PlayerActions.loadQueue({
+        name: album.data.name,
+        id: albumId,
+        type: 'albums',
+      })
+    );
+  }
+
+  function handleQueueTrackPlay(track) {
+    dispatch(PlayerActions.play(track, albumId));
   }
 
   return (
@@ -74,7 +84,7 @@ function Album({
               <HeaderTitle>{album.data.name}</HeaderTitle>
               <Buttons>
                 {album.tracks.data.length > 0 && (
-                  <Button onClick={handlePlaylistPlay}>
+                  <Button onClick={handleQueuePlay}>
                     {t('commons.play_tracks_button')}
                   </Button>
                 )}
@@ -87,7 +97,11 @@ function Album({
               <SectionTitle>{t('commons.tracks')}</SectionTitle>
               <TracksList>
                 {album.tracks.data.map((data) => (
-                  <SmallTrackItem key={data.id} data={data} />
+                  <SmallTrackItem
+                    key={data.id}
+                    data={data}
+                    onPress={() => handleQueueTrackPlay(data)}
+                  />
                 ))}
               </TracksList>
             </Section>

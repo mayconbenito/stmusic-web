@@ -1,11 +1,19 @@
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { MdPlayArrow } from 'react-icons/md';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 
 import 'slick-carousel/slick/slick-theme.css';
 
-import { CarrouselHeader, Title, Buttons, Button } from './styles';
+import {
+  CarrouselHeader,
+  Title,
+  CarrouselPlayButton,
+  Buttons,
+  Button,
+  CarrouselTitleContainer,
+} from './styles';
 
 const settings = {
   variableWidth: true,
@@ -46,7 +54,12 @@ const settings = {
   ],
 };
 
-export default function Carrousel({ totalItems, carrouselName, children }) {
+export default function Carrousel({
+  totalItems,
+  carrouselName,
+  children,
+  onPlay,
+}) {
   const sliderRef = useRef();
   const { t } = useTranslation();
 
@@ -61,7 +74,14 @@ export default function Carrousel({ totalItems, carrouselName, children }) {
   return (
     <>
       <CarrouselHeader>
-        <Title>{carrouselName}</Title>
+        <CarrouselTitleContainer>
+          <Title>{carrouselName}</Title>
+          {onPlay && (
+            <CarrouselPlayButton onClick={onPlay}>
+              <MdPlayArrow size={24} color="#d99207" />
+            </CarrouselPlayButton>
+          )}
+        </CarrouselTitleContainer>
         {totalItems > 5 && (
           <Buttons>
             <Button type="button" onClick={prev}>
