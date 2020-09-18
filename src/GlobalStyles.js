@@ -12,7 +12,7 @@ export default createGlobalStyle`
     background-color: #141414;
   }
 
-  span, a, p, h1, h2, h3 {
+  span, a, p, label, h1, h2, h3 {
     color: #d99207;
     font-family: Roboto, sans-serif;
   }
@@ -36,9 +36,5 @@ export default createGlobalStyle`
 
   ::-webkit-scrollbar-thumb {
     background-color: #d99207;
-  }
-
-  .slick-track {
-    margin-left: 0 !important
   }
 `;
