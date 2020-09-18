@@ -50,8 +50,19 @@ function Genre({
   }
 
   const containerRef = useBottomScrollListener(handleEndReached);
-  function handlePlaylistPlay() {
-    dispatch(PlayerActions.fetchPlaylist(genreId, 'genres'));
+
+  function handleQueuePlay() {
+    dispatch(
+      PlayerActions.loadQueue({
+        name: genre.data.name,
+        id: genreId,
+        type: 'genres',
+      })
+    );
+  }
+
+  function handleQueueTrackPlay(track) {
+    dispatch(PlayerActions.play(track, genreId));
   }
 
   return (
@@ -73,7 +84,7 @@ function Genre({
               <HeaderTitle>{genre.data.name}</HeaderTitle>
               <Buttons>
                 {genre.tracks.data.length > 0 && (
-                  <Button onClick={handlePlaylistPlay}>
+                  <Button onClick={handleQueuePlay}>
                     {t('commons.play_tracks_button')}
                   </Button>
                 )}
@@ -90,6 +101,7 @@ function Genre({
                     key={data.id}
                     data={data}
                     style={{ marginBottom: 5 }}
+                    onPress={() => handleQueueTrackPlay(data)}
                   />
                 ))}
               </TracksList>

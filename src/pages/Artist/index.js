@@ -61,13 +61,18 @@ function Artist({
     }
   }
 
-  function handlePlayPlaylist({ name, tracks }) {
+  function handleQueuePlay({ name, tracks, nameKey }) {
     dispatch(
-      PlayerActions.playPlaylist({
+      PlayerActions.loadQueue(null, {
+        id: `${nameKey}-${artistId}`,
         name,
         tracks,
       })
     );
+  }
+
+  function handleQueueTrackPlay(track, nameKey) {
+    dispatch(PlayerActions.play(track, `${nameKey}-${artistId}`));
   }
 
   return (
@@ -130,11 +135,12 @@ function Artist({
                 <SectionTitle>{t('artist.most_played_tracks')}</SectionTitle>
                 <SectionPlayButton
                   onClick={() =>
-                    handlePlayPlaylist({
+                    handleQueuePlay({
                       name: `${t('commons.most_played_from')} ${
                         artist.data.name
                       }`,
                       tracks: artist.mostPlayedTracks.data,
+                      nameKey: 'most_played_from',
                     })
                   }
                 >
@@ -143,7 +149,13 @@ function Artist({
               </SectionTitleContainer>
               <TracksList>
                 {artist.mostPlayedTracks.data.map((data) => (
-                  <SmallTrackItem key={data.id} data={data} />
+                  <SmallTrackItem
+                    key={data.id}
+                    data={data}
+                    onPress={() =>
+                      handleQueueTrackPlay(data, 'most_played_from')
+                    }
+                  />
                 ))}
               </TracksList>
             </Section>
@@ -155,9 +167,10 @@ function Artist({
                 <SectionTitle>{t('artist.artist_tracks')}</SectionTitle>
                 <SectionPlayButton
                   onClick={() =>
-                    handlePlayPlaylist({
+                    handleQueuePlay({
                       name: artist.data.name,
                       tracks: artist.tracks.data,
+                      nameKey: 'artist_tracks',
                     })
                   }
                 >
@@ -166,7 +179,11 @@ function Artist({
               </SectionTitleContainer>
               <TracksList>
                 {artist.tracks.data.map((data) => (
-                  <SmallTrackItem key={data.id} data={data} />
+                  <SmallTrackItem
+                    key={data.id}
+                    data={data}
+                    onPress={() => handleQueueTrackPlay(data, 'artist_tracks')}
+                  />
                 ))}
               </TracksList>
             </Section>

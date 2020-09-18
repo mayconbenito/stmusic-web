@@ -10,7 +10,7 @@ import DownloadApp from './pages/DownloadApp';
 import Routes from './routes';
 
 function App() {
-  const player = useSelector(state => state.player);
+  const player = useSelector((state) => state.player);
   const { t } = useTranslation();
 
   const [theme, setTheme] = useState({

@@ -9,6 +9,7 @@ import GlobalHeader from '../../components/GlobalHeader';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
 import { Creators as BrowseActions } from '../../store/ducks/browse';
+import { Creators as PlayerActions } from '../../store/ducks/player';
 import { Content, ContentTitle, Section } from './styles';
 
 function Home({ history }) {
@@ -21,6 +22,20 @@ function Home({ history }) {
       dispatch(BrowseActions.fetchBrowse());
     }
   }, []);
+
+  function handleQueuePlay({ name, tracks, nameKey }) {
+    dispatch(
+      PlayerActions.loadQueue(null, {
+        id: nameKey,
+        name,
+        tracks,
+      })
+    );
+  }
+
+  function handleQueueTrackPlay(track, nameKey) {
+    dispatch(PlayerActions.play(track, nameKey));
+  }
 
   return (
     <Content>
@@ -35,9 +50,22 @@ function Home({ history }) {
               <Carrousel
                 carrouselName={t('home.recently_played')}
                 totalItems={browse.recentlyPlayed.length}
+                onPlay={() =>
+                  handleQueuePlay({
+                    name: t('home.recently_played'),
+                    tracks: browse.recentlyPlayed,
+                    nameKey: 'recently_played',
+                  })
+                }
               >
                 {browse.recentlyPlayed.map((data) => (
-                  <TrackItem key={data.id} data={data} />
+                  <TrackItem
+                    key={data.id}
+                    data={data}
+                    onClick={() =>
+                      handleQueueTrackPlay(data, 'recently_played')
+                    }
+                  />
                 ))}
               </Carrousel>
             </Section>
@@ -65,9 +93,20 @@ function Home({ history }) {
               <Carrousel
                 carrouselName={t('home.trending')}
                 totalItems={browse.trending.length}
+                onPlay={() =>
+                  handleQueuePlay({
+                    name: t('home.trending'),
+                    tracks: browse.trending,
+                    nameKey: 'trending',
+                  })
+                }
               >
                 {browse.trending.map((data) => (
-                  <TrackItem key={data.id} data={data} />
+                  <TrackItem
+                    key={data.id}
+                    data={data}
+                    onClick={() => handleQueueTrackPlay(data, 'trending')}
+                  />
                 ))}
               </Carrousel>
             </Section>
@@ -78,9 +117,22 @@ function Home({ history }) {
               <Carrousel
                 carrouselName={t('home.most_played_tracks')}
                 totalItems={browse.mostPlayed.length}
+                onPlay={() =>
+                  handleQueuePlay({
+                    name: t('home.most_played_tracks'),
+                    tracks: browse.mostPlayed,
+                    nameKey: 'most_played_tracks',
+                  })
+                }
               >
                 {browse.mostPlayed.map((data) => (
-                  <TrackItem key={data.id} data={data} />
+                  <TrackItem
+                    key={data.id}
+                    data={data}
+                    onClick={() =>
+                      handleQueueTrackPlay(data, 'most_played_tracks')
+                    }
+                  />
                 ))}
               </Carrousel>
             </Section>
