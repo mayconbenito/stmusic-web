@@ -10,43 +10,46 @@ import {
 const { successLoadQueue, successNext, successPrev } = PlayerActions;
 
 function init() {
-  TrackPlayer.setupPlayer({
-    capabilities: [
-      [
-        'play',
-        async () => {
-          await TrackPlayer.play();
-        },
+  try {
+    TrackPlayer.setupPlayer({
+      capabilities: [
+        [
+          'play',
+          async () => {
+            await TrackPlayer.play();
+          },
+        ],
+        [
+          'pause',
+          () => {
+            TrackPlayer.pause();
+          },
+        ],
+        [
+          'previoustrack',
+          async () => {
+            await TrackPlayer.skipToPrevious();
+          },
+        ],
+        [
+          'nexttrack',
+          async () => {
+            await TrackPlayer.skipToNext();
+          },
+        ],
+        [
+          'stop',
+          () => {
+            TrackPlayer.reset();
+          },
+        ],
       ],
-      [
-        'pause',
-        () => {
-          TrackPlayer.pause();
-        },
-      ],
-      [
-        'previoustrack',
-        async () => {
-          await TrackPlayer.skipToPrevious();
-        },
-      ],
-      [
-        'nexttrack',
-        async () => {
-          await TrackPlayer.skipToNext();
-        },
-      ],
-      [
-        'stop',
-        () => {
-          TrackPlayer.reset();
-        },
-      ],
-    ],
-  });
+    });
 
-  const volume = localStorage.getItem('@stmusic:playerVolume');
-  TrackPlayer.setVolume(volume / 100);
+    const volume = localStorage.getItem('@stmusic:playerVolume');
+    TrackPlayer.setVolume(volume / 100);
+    // eslint-disable-next-line no-empty
+  } catch (err) {}
 }
 
 function* loadQueue({ queue, predefinedQueue }) {
@@ -198,21 +201,24 @@ function* loadQueue({ queue, predefinedQueue }) {
 }
 
 function* play({ track, queueId }) {
-  const playerState = yield select((state) => state.player);
+  try {
+    const playerState = yield select((state) => state.player);
 
-  if (playerState.active && playerState.queue.id === queueId) {
-    yield call(TrackPlayer.play);
+    if (playerState.active && playerState.queue.id === queueId) {
+      yield call(TrackPlayer.play);
 
-    const currentTrack = TrackPlayer.getCurrentTrack();
+      const currentTrack = TrackPlayer.getCurrentTrack();
 
-    if (currentTrack) {
-      const tracksQueue = TrackPlayer.getQueue();
-      const trackIndex = tracksQueue.findIndex(
-        (queueTrack) => queueTrack.id === track.id
-      );
-      yield call(TrackPlayer.skipToIndex, trackIndex);
+      if (currentTrack) {
+        const tracksQueue = TrackPlayer.getQueue();
+        const trackIndex = tracksQueue.findIndex(
+          (queueTrack) => queueTrack.id === track.id
+        );
+        yield call(TrackPlayer.skipToIndex, trackIndex);
+      }
     }
-  }
+    // eslint-disable-next-line no-empty
+  } catch (err) {}
 }
 
 function pause() {
@@ -220,43 +226,53 @@ function pause() {
 }
 
 function* next() {
-  const tracksQueue = TrackPlayer.getQueue();
-  const currentTrack = TrackPlayer.getCurrentTrack();
-  const currentTrackIndex = tracksQueue.findIndex(
-    (track) => track.id === currentTrack.id
-  );
+  try {
+    const tracksQueue = TrackPlayer.getQueue();
+    const currentTrack = TrackPlayer.getCurrentTrack();
+    const currentTrackIndex = tracksQueue.findIndex(
+      (track) => track.id === currentTrack.id
+    );
 
-  if (tracksQueue[currentTrackIndex + 1]) {
-    yield call(TrackPlayer.skipToNext);
-  }
+    if (tracksQueue[currentTrackIndex + 1]) {
+      yield call(TrackPlayer.skipToNext);
+    }
 
-  yield put(
-    successNext({
-      currentTrackIndex,
-    })
-  );
+    yield put(
+      successNext({
+        currentTrackIndex,
+      })
+    );
+    // eslint-disable-next-line no-empty
+  } catch (err) {}
 }
 
 function* prev() {
-  const tracksQueue = TrackPlayer.getQueue();
-  const currentTrack = TrackPlayer.getCurrentTrack();
-  const currentTrackIndex = tracksQueue.findIndex(
-    (track) => track.id === currentTrack.id
-  );
+  try {
+    const tracksQueue = TrackPlayer.getQueue();
+    const currentTrack = TrackPlayer.getCurrentTrack();
+    const currentTrackIndex = tracksQueue.findIndex(
+      (track) => track.id === currentTrack.id
+    );
 
-  if (tracksQueue[currentTrackIndex - 1]) {
-    yield call(TrackPlayer.skipToPrevious);
-  }
+    if (tracksQueue[currentTrackIndex - 1]) {
+      yield call(TrackPlayer.skipToPrevious);
+    }
 
-  yield put(
-    successPrev({
-      currentTrackIndex,
-    })
-  );
+    yield put(
+      successPrev({
+        currentTrackIndex,
+      })
+    );
+    // eslint-disable-next-line no-empty
+  } catch (err) {}
 }
 
 function setVolume({ volume }) {
-  TrackPlayer.setVolume(volume);
+  try {
+    TrackPlayer.setVolume(volume);
+  } catch (err) {
+    // eslint-disable-next-line no-empty
+  }
 }
 
 export default function* playerSaga() {

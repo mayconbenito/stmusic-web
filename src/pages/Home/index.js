@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ArtistItem from '../../components/ArtistItem';
-import Carrousel from '../../components/Carrousel';
+import Carousel from '../../components/Carousel';
 import GenreItem from '../../components/GenreItem';
 import GlobalHeader from '../../components/GlobalHeader';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -47,8 +47,8 @@ function Home({ history }) {
 
           {browse.recentlyPlayed.length > 0 && (
             <Section>
-              <Carrousel
-                carrouselName={t('home.recently_played')}
+              <Carousel
+                carouselName={t('home.recently_played')}
                 totalItems={browse.recentlyPlayed.length}
                 onPlay={() =>
                   handleQueuePlay({
@@ -67,14 +67,14 @@ function Home({ history }) {
                     }
                   />
                 ))}
-              </Carrousel>
+              </Carousel>
             </Section>
           )}
 
           {browse.genres.length > 0 && (
             <Section>
-              <Carrousel
-                carrouselName={t('home.genres')}
+              <Carousel
+                carouselName={t('home.genres')}
                 totalItems={browse.genres.length}
               >
                 {browse.genres.map((data) => (
@@ -84,14 +84,14 @@ function Home({ history }) {
                     onClick={() => history.push(`/genres/${data.id}`)}
                   />
                 ))}
-              </Carrousel>
+              </Carousel>
             </Section>
           )}
 
           {browse.trending.length > 0 && (
             <Section>
-              <Carrousel
-                carrouselName={t('home.trending')}
+              <Carousel
+                carouselName={t('home.trending')}
                 totalItems={browse.trending.length}
                 onPlay={() =>
                   handleQueuePlay({
@@ -108,14 +108,14 @@ function Home({ history }) {
                     onClick={() => handleQueueTrackPlay(data, 'trending')}
                   />
                 ))}
-              </Carrousel>
+              </Carousel>
             </Section>
           )}
 
           {browse.mostPlayed.length > 0 && (
             <Section>
-              <Carrousel
-                carrouselName={t('home.most_played_tracks')}
+              <Carousel
+                carouselName={t('home.most_played_tracks')}
                 totalItems={browse.mostPlayed.length}
                 onPlay={() =>
                   handleQueuePlay({
@@ -134,14 +134,14 @@ function Home({ history }) {
                     }
                   />
                 ))}
-              </Carrousel>
+              </Carousel>
             </Section>
           )}
 
           {browse.mostFollowed.length > 0 && (
             <Section>
-              <Carrousel
-                carrouselName={t('home.most_followed_artists')}
+              <Carousel
+                carouselName={t('home.most_followed_artists')}
                 totalItems={browse.mostFollowed.length}
               >
                 {browse.mostFollowed.map((data) => (
@@ -151,7 +151,7 @@ function Home({ history }) {
                     onClick={() => history.push(`/artists/${data.id}`)}
                   />
                 ))}
-              </Carrousel>
+              </Carousel>
             </Section>
           )}
         </>

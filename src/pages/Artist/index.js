@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 
 import fallback from '../../assets/images/fallback.png';
 import AlbumItem from '../../components/AlbumItem';
-import Carrousel from '../../components/Carrousel';
+import Carousel from '../../components/Carousel';
 import GlobalHeader from '../../components/GlobalHeader';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -113,8 +113,8 @@ function Artist({
 
           {artist.albums.data.length > 0 && (
             <Section>
-              <Carrousel
-                carrouselName={t('commons.albums')}
+              <Carousel
+                carouselName={t('commons.albums')}
                 totalItems={artist.albums.data.length}
               >
                 {artist.albums.data.map((data) => (
@@ -125,7 +125,7 @@ function Artist({
                     onClick={() => history.push(`/albums/${data.id}`)}
                   />
                 ))}
-              </Carrousel>
+              </Carousel>
             </Section>
           )}
 

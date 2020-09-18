@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const CarrouselHeader = styled.div`
+export const CarouselHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -12,13 +12,13 @@ export const Title = styled.span`
   color: #d99207;
 `;
 
-export const CarrouselTitleContainer = styled.div`
+export const CarouselTitleContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
 `;
 
-export const CarrouselPlayButton = styled.button`
+export const CarouselPlayButton = styled.button`
   border: none;
   background: inherit;
   cursor: pointer;
