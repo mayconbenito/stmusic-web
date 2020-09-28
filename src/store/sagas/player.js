@@ -166,7 +166,7 @@ function* loadQueue({ queue, predefinedQueue }) {
         artist: track.artists.map(
           (artist, index) => (index ? ', ' : '') + artist.name
         )[0],
-        artwork: [{ src: track.picture, size: '512x512' }],
+        artwork: [{ src: track.picture, sizes: '512x512' }],
         album: track.album?.name,
       }));
 
