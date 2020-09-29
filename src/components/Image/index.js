@@ -1,6 +1,6 @@
 import React from 'react';
 import { Img } from 'react-image';
-import VisibilitySensor from 'react-visibility-sensor';
+import { LazyLoadComponent } from 'react-lazy-load-image-component';
 
 function Loader({ style }) {
   return <div style={{ ...style, background: '#000' }} />;
@@ -9,9 +9,9 @@ function Loader({ style }) {
 function Image(props) {
   const { src, style, fallback } = props;
   return (
-    <VisibilitySensor>
+    <LazyLoadComponent style={style}>
       <Img {...props} src={[src, fallback]} loader={<Loader style={style} />} />
-    </VisibilitySensor>
+    </LazyLoadComponent>
   );
 }
 
