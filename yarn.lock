@@ -9238,10 +9238,10 @@ react-visibility-sensor@^5.1.1:
   dependencies:
     prop-types "^15.7.2"
 
-react-web-track-player@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/react-web-track-player/-/react-web-track-player-1.2.1.tgz#2a4b09e94e021e3e9c0ee56578740f16907f292a"
-  integrity sha512-pviifi7o26sydaA9yGoKkH3YVvLx5qXbE//vipoRRa1MNiAOJTDVVyskV0WXeMWy2RzbvSSbk7886SMo2QWcCQ==
+react-web-track-player@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/react-web-track-player/-/react-web-track-player-1.3.0.tgz#5f907d93e5644560a827a4ebf3cdd2674e64c880"
+  integrity sha512-oA2tVkMOfhex0UL+iwdIPsXOFUJdFDX9hQFWe+l12q71+4g0obe0dMOtKr/4duMqhSX2/8xK/1UViXdzqfzkSA==
 
 react@^16.13.1:
   version "16.13.1"
