@@ -6,6 +6,7 @@
     "@emotion/core": "^10.0.22",
     "axios": "^0.19.0",
     "connected-react-router": "^6.6.1",
+    "disable-scroll": "^0.5.1",
     "history": "^4.10.1",
     "i18next": "^19.6.3",
     "i18next-browser-languagedetector": "^5.0.0",

@@ -27,7 +27,7 @@ export const MenuItems = styled.div`
 export const MenuItem = styled.span`
   color: #ffffff;
   line-height: 25px;
-  padding: 2px 5px;
+  padding: 4px 5px;
   font-size: 12px;
   white-space: nowrap;
 
