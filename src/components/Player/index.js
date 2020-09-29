@@ -92,6 +92,11 @@ function Player() {
     dispatch(PlayerActions.setVolume(volume / 100));
   }, [volume, player.active]);
 
+  const showPauseButton =
+    playbackState === 'STATE_PLAYING' ||
+    playbackState === 'STATE_BUFFERING' ||
+    playbackState === 'STATE_NONE';
+
   return (
     <Container visible={player.active}>
       {player?.active && (
@@ -118,21 +123,21 @@ function Player() {
                 <MdSkipPrevious size={40} color="#d99207" />
               </Control>
               <Control>
-                {playbackState === 'STATE_PLAYING' && (
+                {showPauseButton && (
                   <MdPause
                     size={40}
                     color="#d99207"
                     onClick={() => dispatch(pause())}
                   />
                 )}
-                {playbackState === 'STATE_PLAYING' ||
-                  ('STATE_STOPPED' && (
-                    <MdPlayArrow
-                      size={40}
-                      color="#d99207"
-                      onClick={() => dispatch(resume())}
-                    />
-                  ))}
+
+                {!showPauseButton && (
+                  <MdPlayArrow
+                    size={40}
+                    color="#d99207"
+                    onClick={() => dispatch(resume())}
+                  />
+                )}
               </Control>
               <Control onClick={() => dispatch(next())}>
                 <MdSkipNext size={40} color="#d99207" />
