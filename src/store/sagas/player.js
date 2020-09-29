@@ -221,6 +221,10 @@ function* play({ track, queueId }) {
   } catch (err) {}
 }
 
+function* resume() {
+  yield call(TrackPlayer.play);
+}
+
 function pause() {
   TrackPlayer.pause();
 }
@@ -270,9 +274,8 @@ function* prev() {
 function setVolume({ volume }) {
   try {
     TrackPlayer.setVolume(volume);
-  } catch (err) {
     // eslint-disable-next-line no-empty
-  }
+  } catch (err) {}
 }
 
 export default function* playerSaga() {
@@ -280,6 +283,7 @@ export default function* playerSaga() {
     init(),
     takeLatest(PlayerTypes.LOAD_QUEUE, loadQueue),
     takeLatest(PlayerTypes.PLAY, play),
+    takeLatest(PlayerTypes.RESUME, resume),
     takeLatest(PlayerTypes.PAUSE, pause),
     takeLatest(PlayerTypes.NEXT, next),
     takeLatest(PlayerTypes.PREV, prev),
