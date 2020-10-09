@@ -7,6 +7,7 @@ import {
 } from 'react-icons/md';
 import { useLastLocation } from 'react-router-last-location';
 
+import handleLogout from '../../helpers/handleLogout';
 import session from '../../services/session';
 import {
   Container,
@@ -85,11 +86,6 @@ function GlobalHeader({ history }) {
       document.removeEventListener('keyup', escapeListener);
     };
   }, []);
-
-  function handleLogout() {
-    localStorage.removeItem('@STMusic:token');
-    window.location = '/';
-  }
 
   function handleShowDropdown() {
     setShowDropdown(!showDropdown);

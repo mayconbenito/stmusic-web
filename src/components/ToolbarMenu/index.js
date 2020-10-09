@@ -27,6 +27,10 @@ function ToolbarMenu({ style, children, ...props }) {
     [ref.current]
   );
 
+  function handleClickOnMenuItems() {
+    disableScroll.off();
+  }
+
   useEffect(() => {
     if (showMenuItems) {
       disableScroll.on({
@@ -57,7 +61,9 @@ function ToolbarMenu({ style, children, ...props }) {
       <Button onClick={() => setShowMenuItems(!showMenuItems)}>
         <MdMoreVert size={24} color="#d99207" />
       </Button>
-      <MenuItems showMenuItems={showMenuItems}>{children}</MenuItems>
+      <MenuItems onClick={handleClickOnMenuItems} showMenuItems={showMenuItems}>
+        {children}
+      </MenuItems>
     </Container>
   );
 }

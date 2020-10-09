@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useInfiniteQuery } from 'react-query';
+import { useDispatch } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
 import GlobalHeader from '../../components/GlobalHeader';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import SmallTrackItem from '../../components/SmallTrackItem';
-import { Creators as AlbumActions } from '../../store/ducks/album';
+import useFetch from '../../hooks/useFetch';
+import api from '../../services/api';
+// import { Creators as AlbumActions } from '../../store/ducks/album';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import {
   Content,
@@ -30,35 +32,57 @@ function Album({
   },
   history,
 }) {
-  const { fetchAlbum, fetchTracks, clearAlbum } = AlbumActions;
-  const params = useParams();
-  const album = useSelector((state) => state.album);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    if (Number(params.albumId) !== album.data.id) {
-      dispatch(clearAlbum());
-      dispatch(fetchAlbum(albumId));
+  const [totalTracks, setTotalTracks] = useState(0);
+
+  const albumQuery = useFetch(`album-${albumId}`, `/app/albums/${albumId}`);
+
+  const tracksQuery = useInfiniteQuery(
+    `album-${albumId}-tracks`,
+    async (key, page = 1) => {
+      const response = await api.get(
+        `/app/albums/${albumId}/tracks?page=${page}`
+      );
+
+      return response.data;
+    },
+    {
+      getFetchMore: (lastGroup) => {
+        if (Math.ceil(lastGroup.meta.total / 10) > lastGroup.meta.page) {
+          return lastGroup.meta.page + 1;
+        }
+
+        return false;
+      },
     }
+  );
+
+  const onEndReached = useCallback(() => {
+    tracksQuery.fetchMore();
   }, []);
 
-  function handleEndReached() {
-    if (album.tracks.total > album.tracks.data.length) {
-      dispatch(fetchTracks(album.tracks.page, albumId));
+  useEffect(() => {
+    if (tracksQuery.isSuccess) {
+      tracksQuery.data.forEach((group) => {
+        setTotalTracks(totalTracks + group.tracks.length);
+      });
     }
-  }
+  }, [tracksQuery.isSuccess, tracksQuery.data]);
 
-  const containerRef = useBottomScrollListener(handleEndReached);
+  const containerRef = useBottomScrollListener(onEndReached);
 
   function handleQueuePlay() {
-    dispatch(
-      PlayerActions.loadQueue({
-        name: album.data.name,
-        id: albumId,
-        type: 'albums',
-      })
-    );
+    if (tracksQuery.isSuccess && totalTracks > 0) {
+      dispatch(
+        PlayerActions.loadQueue({
+          name: albumQuery.data.album.name,
+          id: albumId,
+          type: 'albums',
+        })
+      );
+    }
   }
 
   function handleQueueTrackPlay(track) {
@@ -69,46 +93,54 @@ function Album({
     <Content ref={containerRef}>
       <GlobalHeader history={history} />
 
-      {album.loading && <LoadingSpinner size={120} loading={album.loading} />}
+      {albumQuery.isLoading && <LoadingSpinner size={120} loading />}
 
-      {!album.loading && (
-        <>
-          <Header>
-            <Image
-              src={album.data.picture}
-              fallback={fallback}
-              style={{ width: 100, height: 100 }}
-            />
-            <HeaderInfo>
-              <HeaderType>{t('commons.album')}</HeaderType>
-              <HeaderTitle>{album.data.name}</HeaderTitle>
-              <Buttons>
-                {album.tracks.data.length > 0 && (
-                  <Button onClick={handleQueuePlay}>
-                    {t('commons.play_tracks_button')}
-                  </Button>
-                )}
-              </Buttons>
-            </HeaderInfo>
-          </Header>
+      {albumQuery.isSuccess && (
+        <Header>
+          <Image
+            src={albumQuery.data.album.picture}
+            fallback={fallback}
+            style={{ width: 100, height: 100 }}
+          />
+          <HeaderInfo>
+            <HeaderType>{t('commons.album')}</HeaderType>
+            <HeaderTitle>{albumQuery.data.album.name}</HeaderTitle>
+            <Buttons>
+              <Button onClick={handleQueuePlay}>
+                {t('commons.play_tracks_button')}
+              </Button>
+            </Buttons>
+          </HeaderInfo>
+        </Header>
+      )}
 
-          {album.tracks.data.length > 0 ? (
-            <Section>
-              <SectionTitle>{t('commons.tracks')}</SectionTitle>
-              <TracksList>
-                {album.tracks.data.map((data) => (
+      {tracksQuery.isError && (
+        <SectionTitle>{t('commons.internal_server_error')}</SectionTitle>
+      )}
+
+      {tracksQuery.isSuccess && totalTracks === 0 && (
+        <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
+      )}
+
+      {tracksQuery.isLoading && <LoadingSpinner size={40} loading />}
+
+      {tracksQuery.isSuccess && totalTracks > 0 && (
+        <Section>
+          <SectionTitle>{t('commons.tracks')}</SectionTitle>
+          <TracksList>
+            {tracksQuery.data.map((group, index) => (
+              <React.Fragment key={index}>
+                {group.tracks.map((album) => (
                   <SmallTrackItem
-                    key={data.id}
-                    data={data}
-                    onPress={() => handleQueueTrackPlay(data)}
+                    key={album.id}
+                    data={album}
+                    onPress={() => handleQueueTrackPlay(album)}
                   />
                 ))}
-              </TracksList>
-            </Section>
-          ) : (
-            <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
-          )}
-        </>
+              </React.Fragment>
+            ))}
+          </TracksList>
+        </Section>
       )}
     </Content>
   );

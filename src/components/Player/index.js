@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   MdPlayArrow,
@@ -15,6 +15,7 @@ import {
 } from 'react-web-track-player';
 
 import fallback from '../../assets/images/fallback.png';
+import AppContext from '../../contexts/AppContext';
 import usePersistedState from '../../hooks/usePersistedState';
 import api from '../../services/api';
 import { Creators as PlayerActions } from '../../store/ducks/player';
@@ -39,6 +40,7 @@ import {
 function Player() {
   const { pause, resume, prev, next } = PlayerActions;
 
+  const appContext = useContext(AppContext);
   const player = useSelector((state) => state.player);
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -97,10 +99,16 @@ function Player() {
     playbackState === 'STATE_BUFFERING' ||
     playbackState === 'STATE_NONE';
 
+  useEffect(() => {
+    if (player.active) {
+      appContext.togglePlayer();
+    }
+  }, [player.active]);
+
   return (
-    <Container visible={player.active}>
+    <Container>
       {player?.active && (
-        <React.Fragment>
+        <>
           <TrackInfo>
             <Image
               src={currentTrack?.artwork[0].src}
@@ -172,10 +180,10 @@ function Player() {
               max="100"
             />
           </Volume>
-        </React.Fragment>
+        </>
       )}
     </Container>
   );
 }
 
-export default React.memo(Player);
+export default Player;

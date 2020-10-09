@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import ArtistItem from '../../components/ArtistItem';
 import Carousel from '../../components/Carousel';
@@ -8,20 +8,31 @@ import GenreItem from '../../components/GenreItem';
 import GlobalHeader from '../../components/GlobalHeader';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
-import { Creators as BrowseActions } from '../../store/ducks/browse';
+import useFetch from '../../hooks/useFetch';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import { Content, ContentTitle, Section } from './styles';
 
 function Home({ history }) {
-  const browse = useSelector((state) => state.browse);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    if (!browse.isFetched) {
-      dispatch(BrowseActions.fetchBrowse());
-    }
-  }, []);
+  const recentlyPlayedQuery = useFetch(
+    'recentlyPlayed',
+    '/app/me/recently-played?page=1&limit=30'
+  );
+  const genresQuery = useFetch('genres', '/app/genres?page=1&limit=30');
+  const trendingQuery = useFetch(
+    'trending',
+    '/app/browse/tracks/trending?page=1&limit=30'
+  );
+  const mostPlayedTracksQuery = useFetch(
+    'mostPlayedTracks',
+    '/app/browse/tracks/most-played?page=1&limit=30'
+  );
+  const mostFollowedArtistsQuery = useFetch(
+    'mostFollowedArtists',
+    '/app/browse/artists/most-followed?page=1&limit=30'
+  );
 
   function handleQueuePlay({ name, tracks, nameKey }) {
     dispatch(
@@ -37,28 +48,52 @@ function Home({ history }) {
     dispatch(PlayerActions.play(track, nameKey));
   }
 
+  function isLoading() {
+    if (!recentlyPlayedQuery.isLoading) {
+      return false;
+    }
+
+    if (!genresQuery.isLoading) {
+      return false;
+    }
+
+    if (!trendingQuery.isLoading) {
+      return false;
+    }
+
+    if (!mostPlayedTracksQuery.isLoading) {
+      return false;
+    }
+
+    if (!mostFollowedArtistsQuery.isLoading) {
+      return false;
+    }
+
+    return true;
+  }
+
   return (
     <Content>
       <GlobalHeader history={history} />
 
-      {!browse.loading ? (
+      {!isLoading() ? (
         <>
           <ContentTitle>{t('home.title')}</ContentTitle>
 
-          {browse.recentlyPlayed.length > 0 && (
+          {recentlyPlayedQuery.data?.tracks?.length > 0 && (
             <Section>
               <Carousel
                 carouselName={t('home.recently_played')}
-                totalItems={browse.recentlyPlayed.length}
+                totalItems={recentlyPlayedQuery?.data?.tracks.length}
                 onPlay={() =>
                   handleQueuePlay({
                     name: t('home.recently_played'),
-                    tracks: browse.recentlyPlayed,
+                    tracks: recentlyPlayedQuery?.data?.tracks,
                     nameKey: 'recently_played',
                   })
                 }
               >
-                {browse.recentlyPlayed.map((data) => (
+                {recentlyPlayedQuery?.data?.tracks.map((data) => (
                   <TrackItem
                     key={data.id}
                     data={data}
@@ -71,13 +106,13 @@ function Home({ history }) {
             </Section>
           )}
 
-          {browse.genres.length > 0 && (
+          {genresQuery.data?.genres?.length > 0 && (
             <Section>
               <Carousel
                 carouselName={t('home.genres')}
-                totalItems={browse.genres.length}
+                totalItems={genresQuery.data?.genres?.length}
               >
-                {browse.genres.map((data) => (
+                {genresQuery.data?.genres.map((data) => (
                   <GenreItem
                     key={data.id}
                     data={data}
@@ -88,20 +123,20 @@ function Home({ history }) {
             </Section>
           )}
 
-          {browse.trending.length > 0 && (
+          {trendingQuery?.data?.tracks?.length > 0 && (
             <Section>
               <Carousel
                 carouselName={t('home.trending')}
-                totalItems={browse.trending.length}
+                totalItems={trendingQuery?.data?.tracks?.length}
                 onPlay={() =>
                   handleQueuePlay({
                     name: t('home.trending'),
-                    tracks: browse.trending,
+                    tracks: trendingQuery?.data?.tracks,
                     nameKey: 'trending',
                   })
                 }
               >
-                {browse.trending.map((data) => (
+                {trendingQuery?.data?.tracks.map((data) => (
                   <TrackItem
                     key={data.id}
                     data={data}
@@ -112,20 +147,20 @@ function Home({ history }) {
             </Section>
           )}
 
-          {browse.mostPlayed.length > 0 && (
+          {mostPlayedTracksQuery?.data?.tracks?.length > 0 && (
             <Section>
               <Carousel
                 carouselName={t('home.most_played_tracks')}
-                totalItems={browse.mostPlayed.length}
+                totalItems={mostPlayedTracksQuery?.data?.tracks?.length}
                 onPlay={() =>
                   handleQueuePlay({
                     name: t('home.most_played_tracks'),
-                    tracks: browse.mostPlayed,
+                    tracks: mostPlayedTracksQuery?.data?.tracks,
                     nameKey: 'most_played_tracks',
                   })
                 }
               >
-                {browse.mostPlayed.map((data) => (
+                {mostPlayedTracksQuery?.data?.tracks.map((data) => (
                   <TrackItem
                     key={data.id}
                     data={data}
@@ -138,13 +173,13 @@ function Home({ history }) {
             </Section>
           )}
 
-          {browse.mostFollowed.length > 0 && (
+          {mostFollowedArtistsQuery?.data?.artists?.length > 0 && (
             <Section>
               <Carousel
                 carouselName={t('home.most_followed_artists')}
-                totalItems={browse.mostFollowed.length}
+                totalItems={mostFollowedArtistsQuery?.data?.artists}
               >
-                {browse.mostFollowed.map((data) => (
+                {mostFollowedArtistsQuery?.data?.artists.map((data) => (
                   <ArtistItem
                     key={data.id}
                     data={data}
@@ -156,7 +191,7 @@ function Home({ history }) {
           )}
         </>
       ) : (
-        <LoadingSpinner size={120} loading={browse.loading} />
+        <LoadingSpinner size={120} loading />
       )}
     </Content>
   );

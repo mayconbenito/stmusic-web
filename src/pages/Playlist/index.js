@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useInfiniteQuery, useMutation, useQueryCache } from 'react-query';
+import { useDispatch } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
 import GlobalHeader from '../../components/GlobalHeader';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import SmallTrackItem from '../../components/SmallTrackItem';
+import useFetch from '../../hooks/useFetch';
 import api from '../../services/api';
 import { Creators as PlayerActions } from '../../store/ducks/player';
-import { Creators as PlaylistActions } from '../../store/ducks/playlist';
 import {
   Content,
   Header,
@@ -31,54 +31,102 @@ function Playlist({
   },
   history,
 }) {
-  const {
-    fetchPlaylist,
-    fetchTracks,
-    removeTrackFromPlaylist,
-    clearPlaylist,
-  } = PlaylistActions;
-
-  const params = useParams();
-  const playlist = useSelector((state) => state.playlist);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const queryCache = useQueryCache();
 
-  useEffect(() => {
-    if (Number(params.playlistId) !== playlist.data.id) {
-      dispatch(clearPlaylist());
-      dispatch(fetchPlaylist(playlistId));
+  const [totalTracks, setTotalTracks] = useState(0);
+
+  const playlistQuery = useFetch(
+    `playlist-${playlistId}`,
+    `/app/playlists/${playlistId}`
+  );
+
+  const tracksQuery = useInfiniteQuery(
+    `playlist-${playlistId}-tracks`,
+    async (key, page = 1) => {
+      const response = await api.get(
+        `/app/playlists/${playlistId}/tracks?page=${page}`
+      );
+
+      return response.data;
+    },
+    {
+      getFetchMore: (lastGroup) => {
+        if (Math.ceil(lastGroup?.meta.total / 10) > lastGroup?.meta.page) {
+          return lastGroup?.meta.page + 1;
+        }
+
+        return false;
+      },
     }
+  );
+
+  const onEndReached = useCallback(() => {
+    tracksQuery.fetchMore();
   }, []);
 
-  function handleEndReached() {
-    if (playlist.tracks.total > playlist.tracks.data.length) {
-      dispatch(fetchTracks(playlist.tracks.page, playlistId));
-    }
-  }
-
-  const containerRef = useBottomScrollListener(handleEndReached, 0, 200);
-
-  async function handleRemoveTrackFromPlaylist(trackId) {
-    try {
+  const [removeTrackFromPlaylist] = useMutation(
+    async ({ trackId }) => {
       const response = await api.delete(`/app/playlists/${playlistId}/tracks`, {
         data: { tracks: [trackId] },
       });
 
-      if (response.status === 204) {
-        dispatch(removeTrackFromPlaylist(trackId));
-      }
-      // eslint-disable-next-line no-empty
-    } catch (err) {}
-  }
+      return response.data;
+    },
+    {
+      onMutate: ({ trackId }) => {
+        queryCache.cancelQueries(`playlist-${playlistId}-tracks`);
+
+        const previousTodos = queryCache.getQueryData(
+          `playlist-${playlistId}-tracks`
+        );
+
+        queryCache.setQueryData(`playlist-${playlistId}-tracks`, (old) => {
+          return old.map((group) => {
+            return {
+              meta: {
+                ...group.meta,
+                total: group.total - 1,
+              },
+              tracks: group.tracks.filter((track) => track.id !== trackId),
+            };
+          });
+        });
+
+        return () =>
+          queryCache.setQueryData(
+            `playlist-${playlistId}-tracks`,
+            previousTodos
+          );
+      },
+      onError: (err, _, rollback) => rollback(),
+      onSettled: () => {
+        queryCache.invalidateQueries(`playlist-${playlistId}-tracks`);
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (tracksQuery.isSuccess) {
+      tracksQuery.data.forEach((group) => {
+        setTotalTracks(totalTracks + group?.tracks.length);
+      });
+    }
+  }, [tracksQuery.isSuccess, tracksQuery.data]);
+
+  const containerRef = useBottomScrollListener(onEndReached);
 
   function handleQueuePlay() {
-    dispatch(
-      PlayerActions.loadQueue({
-        name: playlist.data.name,
-        id: playlistId,
-        type: 'playlists',
-      })
-    );
+    if (tracksQuery.isSuccess && totalTracks > 0) {
+      dispatch(
+        PlayerActions.loadQueue({
+          name: playlistQuery.data.playlist.name,
+          id: playlistId,
+          type: 'playlists',
+        })
+      );
+    }
   }
 
   function handleQueueTrackPlay(track) {
@@ -89,55 +137,63 @@ function Playlist({
     <Content ref={containerRef}>
       <GlobalHeader history={history} />
 
-      {playlist.loading && playlist.tracks.loading && (
-        <LoadingSpinner size={120} loading={playlist.loading} />
+      {!playlistQuery.data && <LoadingSpinner size={120} loading />}
+
+      {playlistQuery.data && (
+        <Header>
+          <Image
+            src={playlistQuery.data.playlist.picture}
+            fallback={fallback}
+            style={{ width: 100, height: 100 }}
+          />
+          <HeaderInfo>
+            <HeaderTitle>{playlistQuery.data.playlist.name}</HeaderTitle>
+            <div>
+              <Meta>{`${playlistQuery.data.playlist.tracks} ${t(
+                'commons.tracks'
+              )}`}</Meta>
+            </div>
+            <Buttons>
+              <Button onClick={handleQueuePlay}>
+                {t('commons.play_tracks_button')}
+              </Button>
+            </Buttons>
+          </HeaderInfo>
+        </Header>
       )}
 
-      {!playlist.loading && (
-        <>
-          <Header>
-            <Image
-              src={playlist.data.picture}
-              fallback={fallback}
-              style={{ width: 100, height: 100 }}
-            />
+      {tracksQuery.isError && (
+        <SectionTitle>{t('commons.internal_server_error')}</SectionTitle>
+      )}
 
-            <HeaderInfo>
-              <HeaderTitle>{playlist.data.name}</HeaderTitle>
-              <div>
-                <Meta>{`${playlist.data.tracks} ${t('commons.tracks')}`}</Meta>
-              </div>
-              <Buttons>
-                {playlist.tracks.data.length > 0 && (
-                  <Button onClick={handleQueuePlay}>
-                    {t('commons.play_tracks_button')}
-                  </Button>
-                )}
-              </Buttons>
-            </HeaderInfo>
-          </Header>
+      {tracksQuery.isSuccess && totalTracks === 0 && (
+        <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
+      )}
 
-          {playlist.tracks.data.length > 0 ? (
-            <Section>
-              <SectionTitle>{t('commons.tracks')}</SectionTitle>
-              <TracksList>
-                {playlist.tracks.data.map((data) => (
-                  <SmallTrackItem
-                    key={data.id}
-                    data={data}
-                    isPlaylist
-                    onPress={() => handleQueueTrackPlay(data)}
-                    onRemoveTrackFromPlaylist={() =>
-                      handleRemoveTrackFromPlaylist(data.id)
-                    }
-                  />
-                ))}
-              </TracksList>
-            </Section>
-          ) : (
-            <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
-          )}
-        </>
+      {tracksQuery.isLoading && <LoadingSpinner size={40} loading />}
+
+      {tracksQuery.isSuccess && totalTracks > 0 && (
+        <Section>
+          <SectionTitle>{t('commons.tracks')}</SectionTitle>
+          <TracksList>
+            {tracksQuery.data.map((group, index) => (
+              <React.Fragment key={index}>
+                {group?.tracks &&
+                  group.tracks.map((track) => (
+                    <SmallTrackItem
+                      key={track.id}
+                      data={track}
+                      isPlaylist
+                      onPress={() => handleQueueTrackPlay(track)}
+                      onRemoveTrackFromPlaylist={() =>
+                        removeTrackFromPlaylist({ trackId: track.id })
+                      }
+                    />
+                  ))}
+              </React.Fragment>
+            ))}
+          </TracksList>
+        </Section>
       )}
     </Content>
   );

@@ -1,11 +1,10 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
 import LoadingSpinner from '../../components/LoadingSpinner';
-import { Creators as LoginActions } from '../../store/ducks/login';
+import api from '../../services/api';
 import {
   GlobalStyle,
   Container,
@@ -29,27 +28,46 @@ const schema = yup.object().shape({
   password: yup.string().required('login.password_is_required'),
 });
 
-function Login() {
-  const { requestLogin } = LoginActions;
-  const dispatch = useDispatch();
-  const login = useSelector((state) => state.login);
+function Login({ history }) {
   const alert = useAlert();
 
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
   const [warning, setWarning] = useState(false);
+  const [error, setError] = useState(false);
   const [form, setForm] = useState({ email: '', password: '' });
 
   useLayoutEffect(() => {
-    if (login.error.length > 0) {
-      alert.show(t(login.error));
+    if (error.length > 0) {
+      alert.show(t(error));
     }
-  }, [login.error]);
+  }, [error]);
 
   function handleInputChange(event) {
     setForm({
       ...form,
       [event.target.name]: event.target.value,
     });
+  }
+
+  async function handleLogin({ email, password }) {
+    try {
+      setLoading(true);
+      const response = await api.post('/app/sessions', { email, password });
+
+      setLoading(false);
+      localStorage.setItem('@STMusic:token', response.data.jwt);
+      history.push('/');
+    } catch (err) {
+      setLoading(false);
+      if (err.response.status === 401) {
+        setError(t('login.email_or_password_invalid'));
+      }
+
+      if (err.response.status === 500) {
+        setError(t('commons.internal_server_error'));
+      }
+    }
   }
 
   async function handleSubmit(e) {
@@ -59,12 +77,12 @@ function Login() {
 
       if (isValid) {
         setWarning(false);
-        dispatch(requestLogin(isValid));
+        await handleLogin(form);
       }
     } catch (err) {
       const validationErrors = {};
-      err.inner.forEach((error) => {
-        validationErrors[error.path] = error.message;
+      err.inner.forEach((validationError) => {
+        validationErrors[validationError.path] = validationError.message;
       });
 
       setWarning(validationErrors);
@@ -107,7 +125,7 @@ function Login() {
           </InputGroup>
 
           <Submit type="submit">
-            {login.loading ? (
+            {loading ? (
               <LoadingSpinner loading size={14} />
             ) : (
               t('login.sign_in')
