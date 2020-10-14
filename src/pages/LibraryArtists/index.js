@@ -1,45 +1,74 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useInfiniteQuery } from 'react-query';
 
 import LoadingSpinner from '../../components/LoadingSpinner';
 import SmallArtistItem from '../../components/SmallArtistItem';
-import { Creators as LibraryArtistActions } from '../../store/ducks/libraryArtist';
-import {
-  ArtistList,
-  Warning,
-} from './styles';
+import api from '../../services/api';
+import { ArtistList, Warning } from './styles';
 
 function LibraryArtists({ history }) {
-  const { fetchArtists } = LibraryArtistActions;
-  const libraryArtist = useSelector((state) => state.libraryArtist);
-  const dispatch = useDispatch();
   const { t } = useTranslation();
+  const [totalArtists, setTotalArtists] = useState(0);
 
-  useEffect(() => {
-    if (!libraryArtist.data.length > 0) {
-      dispatch(fetchArtists(1));
+  const artistsQuery = useInfiniteQuery(
+    'libraryArtists',
+    async (key, page = 1) => {
+      const response = await api.get(`/app/me/following/artists?page=${page}`);
+
+      return response.data;
+    },
+    {
+      getFetchMore: (lastGroup) => {
+        if (Math.ceil(lastGroup.meta.total / 10) > lastGroup.meta.page) {
+          return lastGroup.meta.page + 1;
+        }
+
+        return false;
+      },
     }
-  }, []);
+  );
 
   const onEndReached = useCallback(() => {
-    if (libraryArtist.total > libraryArtist.data.length) {
-      dispatch(fetchArtists(libraryArtist.page));
+    artistsQuery.fetchMore();
+  }, []);
+
+  useEffect(() => {
+    if (!artistsQuery.isLoading) {
+      artistsQuery.data.forEach((group) => {
+        setTotalArtists(totalArtists + group.artists.length);
+      });
     }
-  }, [libraryArtist.page, libraryArtist.total]);
+  }, [artistsQuery.isLoading, artistsQuery.data]);
 
   const artistListRef = useBottomScrollListener(onEndReached);
 
   return (
     <ArtistList ref={artistListRef}>
-      {libraryArtist.data.length === 0 && !libraryArtist.loading && (
+      {artistsQuery.isLoading && <LoadingSpinner loading size={40} />}
+
+      {artistsQuery.isError && (
+        <Warning>{t('commons.internal_server_error')}</Warning>
+      )}
+
+      {artistsQuery.isSuccess && totalArtists === 0 && (
         <Warning>{t('library.you_are_not_following_any_artist')}</Warning>
       )}
-      {libraryArtist.data.length === 0 && libraryArtist.loading && (
-        <LoadingSpinner loading={libraryArtist.loading} size={40} />
-      )}
-      {libraryArtist.data.map((artist) => <SmallArtistItem key={artist.id} data={artist} onClick={() => history.push(`/artists/${artist.id}`)} />)}
+
+      {artistsQuery.isSuccess &&
+        totalArtists > 0 &&
+        artistsQuery.data.map((group, index) => (
+          <React.Fragment key={index}>
+            {group.artists.map((artist) => (
+              <SmallArtistItem
+                key={artist.id}
+                data={artist}
+                onClick={() => history.push(`/artists/${artist.id}`)}
+              />
+            ))}
+          </React.Fragment>
+        ))}
     </ArtistList>
   );
 }

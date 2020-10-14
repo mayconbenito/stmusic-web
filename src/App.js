@@ -2,18 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useTranslation } from 'react-i18next';
 import { IconContext } from 'react-icons';
-import { useSelector } from 'react-redux';
+import { QueryCache, ReactQueryCacheProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query-devtools';
 import { ThemeProvider } from 'styled-components';
 
+import { AppProvider } from './contexts/AppContext';
+import { SearchProvider } from './contexts/SearchContext';
 import GlobalStyles from './GlobalStyles';
 import DownloadApp from './pages/DownloadApp';
 import Routes from './routes';
 
 function App() {
-  const player = useSelector((state) => state.player);
   const { t } = useTranslation();
 
-  const [theme, setTheme] = useState({
+  const [theme] = useState({
     showPlayer: false,
   });
 
@@ -21,19 +23,24 @@ function App() {
     document.title = t('page.title');
   }, []);
 
-  useEffect(() => {
-    setTheme({
-      showPlayer: player.active ? player.showPlayer : false,
-    });
-  }, [player.active]);
+  const queryCache = new QueryCache();
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <IconContext.Provider value={{ style: { verticalAlign: 'middle' } }}>
-        {isMobile ? <DownloadApp /> : <Routes />}
-      </IconContext.Provider>
-    </ThemeProvider>
+    <ReactQueryCacheProvider queryCache={queryCache}>
+      <ThemeProvider theme={theme}>
+        <AppProvider>
+          <SearchProvider>
+            <IconContext.Provider
+              value={{ style: { verticalAlign: 'middle' } }}
+            >
+              <GlobalStyles />
+              {isMobile ? <DownloadApp /> : <Routes />}
+            </IconContext.Provider>
+          </SearchProvider>
+        </AppProvider>
+      </ThemeProvider>
+      <ReactQueryDevtools />
+    </ReactQueryCacheProvider>
   );
 }
 

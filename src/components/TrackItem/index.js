@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
+import AppContext from '../../contexts/AppContext';
 import session from '../../services/session';
-import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
 import Image from '../Image';
 import ToolbarMenu, { ToolbarMenuItem } from '../ToolbarMenu';
 import {
@@ -17,8 +16,9 @@ import {
 } from './styles';
 
 function TrackItem({ data, style, onClick }) {
-  const dispatch = useDispatch();
+  const appContext = useContext(AppContext);
   const { t } = useTranslation();
+
   return (
     <Container style={style}>
       <Image
@@ -41,7 +41,12 @@ function TrackItem({ data, style, onClick }) {
         <ToolbarButton>
           <ToolbarMenu style={{ marginLeft: 'auto' }}>
             <ToolbarMenuItem
-              onClick={() => dispatch(PlaylistModalActions.openModal(data.id))}
+              onClick={() =>
+                appContext.showPlaylistModal({
+                  trackId: data.id,
+                  picture: data.picture,
+                })
+              }
             >
               Adicionar à uma playlist
             </ToolbarMenuItem>

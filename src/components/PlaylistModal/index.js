@@ -1,11 +1,12 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState, useContext } from 'react';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 import { useTranslation } from 'react-i18next';
 import { MdClear } from 'react-icons/md';
-import { useSelector, useDispatch } from 'react-redux';
+import { useInfiniteQuery, useMutation, useQueryCache } from 'react-query';
 
 import fallback from '../../assets/images/fallback.png';
-import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
+import AppContext from '../../contexts/AppContext';
+import api from '../../services/api';
 import Image from '../Image';
 import LoadingSpinner from '../LoadingSpinner';
 import {
@@ -24,30 +25,58 @@ import {
 } from './styles';
 
 function PlaylistModal() {
-  const {
-    fetchPlaylists,
-    addTrack,
-    closeModal,
-    clearState,
-  } = PlaylistModalActions;
-  const playlistModal = useSelector(state => state.playlistModal);
-  const dispatch = useDispatch();
+  const appContext = useContext(AppContext);
   const { t } = useTranslation();
+  const queryCache = useQueryCache();
 
-  useEffect(() => {
-    dispatch(fetchPlaylists());
+  const [totalPlaylists, setTotalPlaylists] = useState(0);
 
-    return () => {
-      dispatch(clearState());
-    };
-  }, []);
+  const playlistsQuery = useInfiniteQuery(
+    'libraryPlaylists',
+    async (key, page = 1) => {
+      const response = await api.get(`/app/me/playlists?page=${page}`);
 
-  function handleAddTrack(id) {
-    dispatch(addTrack(id, playlistModal.trackId));
+      return response.data;
+    },
+    {
+      getFetchMore: (lastGroup) => {
+        if (Math.ceil(lastGroup.meta.total / 10) > lastGroup.meta.page) {
+          return lastGroup.meta.page + 1;
+        }
+
+        return false;
+      },
+    }
+  );
+
+  const [addTrackToPlaylist] = useMutation(
+    async ({ playlistId, track }) => {
+      await api.post(`/app/playlists/${playlistId}/tracks`, {
+        tracks: [track.id],
+      });
+
+      return { playlistId };
+    },
+    {
+      onSettled: ({ playlistId }) => {
+        queryCache.invalidateQueries('libraryPlaylists');
+        queryCache.invalidateQueries(`playlist-${playlistId}-tracks`);
+      },
+    }
+  );
+
+  function handleAddTrack({ playlistId }) {
+    addTrackToPlaylist({
+      playlistId,
+      track: {
+        id: appContext.playlistModal.track.id,
+        picture: appContext.playlistModal.track.picture,
+      },
+    });
   }
 
   function handleCloseModal() {
-    dispatch(closeModal());
+    appContext.closePlaylistModal();
   }
 
   function handleCloseModalFromContainer(e) {
@@ -55,10 +84,16 @@ function PlaylistModal() {
   }
 
   const onEndReached = useCallback(() => {
-    if (playlistModal.playlists.total > playlistModal.playlists.data.length) {
-      dispatch(fetchPlaylists(playlistModal.playlists.page));
+    playlistsQuery.fetchMore();
+  }, []);
+
+  useEffect(() => {
+    if (!playlistsQuery.isLoading) {
+      playlistsQuery.data.forEach((group) => {
+        setTotalPlaylists(totalPlaylists + group.playlists.length);
+      });
     }
-  }, [playlistModal.playlists.total, playlistModal.playlists.page]);
+  }, [playlistsQuery.isLoading, playlistsQuery.data]);
 
   const playlistListRef = useBottomScrollListener(onEndReached);
 
@@ -72,42 +107,43 @@ function PlaylistModal() {
           </HeaderButton>
         </Header>
         <Body ref={playlistListRef}>
-          {playlistModal.playlists.data.length === 0 &&
-            !playlistModal.playlists.loading && (
-              <Warning>{t('commons.you_dont_have_any_playlist')}</Warning>
-            )}
-          {playlistModal.playlists.loading &&
-            playlistModal.playlists.data.length === 0 && (
-              <LoadingSpinner
-                size={48}
-                loading={playlistModal.playlists.loading}
-              />
-            )}
-          {playlistModal.playlists.data.map(playlist => (
-            <PlaylistItem
-              key={playlist.id}
-              onClick={() => handleAddTrack(playlist.id)}
-            >
-              <PlaylistOpacity />
-              <Image
-                src={playlist.picture}
-                fallback={fallback}
-                style={{
-                  borderWidth: 1,
-                  borderColor: '#141414',
-                  borderStyle: 'solid',
-                  width: 90,
-                  height: 90,
-                }}
-              />
-              <PlaylistInfo>
-                <PlaylistTitle>{playlist.name}</PlaylistTitle>
-                <PlaylistTracks>{`${playlist.tracks} ${t(
-                  'commons.tracks'
-                )}`}</PlaylistTracks>
-              </PlaylistInfo>
-            </PlaylistItem>
-          ))}
+          {playlistsQuery.isSuccess && totalPlaylists === 0 && (
+            <Warning>{t('commons.you_dont_have_any_playlist')}</Warning>
+          )}
+
+          {playlistsQuery.isLoading && <LoadingSpinner size={48} loading />}
+
+          {playlistsQuery.isSuccess &&
+            playlistsQuery.data.map((group, index) => (
+              <React.Fragment key={index}>
+                {group.playlists.map((playlist) => (
+                  <PlaylistItem
+                    key={playlist.id}
+                    onClick={() => handleAddTrack({ playlistId: playlist.id })}
+                  >
+                    <PlaylistOpacity />
+                    <Image
+                      src={playlist.picture}
+                      fallback={fallback}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#141414',
+                        borderStyle: 'solid',
+                        width: 90,
+                        height: 90,
+                      }}
+                    />
+                    <PlaylistInfo>
+                      <PlaylistTitle>{playlist.name}</PlaylistTitle>
+                      <PlaylistTracks>{`${playlist.tracks} ${t(
+                        'commons.tracks'
+                      )}`}</PlaylistTracks>
+                    </PlaylistInfo>
+                  </PlaylistItem>
+                ))}
+                ;
+              </React.Fragment>
+            ))}
         </Body>
       </Modal>
     </Container>

@@ -48,6 +48,7 @@ export const Body = styled.div`
   height: 100%;
   flex: 1;
   padding-top: 5px;
+  margin-top: 3px;
   overflow: auto;
 `;
 

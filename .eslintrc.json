@@ -23,6 +23,7 @@
     "eslint-plugin-import-helpers"
   ],
   "rules": {
+    "prettier/prettier": "error",
     "react/jsx-filename-extension": [
       "error",
       {
@@ -42,11 +43,13 @@
         }
       }
     ],
+    "import/no-named-as-default": "off",
     "global-require": "off",
     "no-unused-expressions": ["error", { "allowTaggedTemplates": true }],
     "no-param-reassign": "off",
     "jsx-a11y/media-has-caption": "off",
     "react/prop-types": "off",
+    "react/no-array-index-key": "off",
     "no-restricted-globals": "off",
     "radix": "off",
     "no-underscore-dangle": "off",
