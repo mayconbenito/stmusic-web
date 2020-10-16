@@ -106,7 +106,10 @@ function Album({
             <HeaderType>{t('commons.album')}</HeaderType>
             <HeaderTitle>{albumQuery.data.album.name}</HeaderTitle>
             <Buttons>
-              <Button onClick={handleQueuePlay}>
+              <Button
+                onClick={handleQueuePlay}
+                cursorPointer={tracksQuery.isSuccess && totalTracks > 0}
+              >
                 {t('commons.play_tracks_button')}
               </Button>
             </Buttons>

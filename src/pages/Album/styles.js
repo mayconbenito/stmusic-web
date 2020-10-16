@@ -59,7 +59,7 @@ export const Button = styled.button`
   margin-right: 5px;
   font-weight: bold;
   font-family: Roboto;
-  cursor: pointer;
+  cursor: ${(props) => (props.cursorPointer ? 'pointer' : 'default')};
 `;
 
 export const Section = styled.div`

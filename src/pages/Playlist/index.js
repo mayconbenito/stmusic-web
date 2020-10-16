@@ -154,7 +154,10 @@ function Playlist({
               )}`}</Meta>
             </div>
             <Buttons>
-              <Button onClick={handleQueuePlay}>
+              <Button
+                onClick={handleQueuePlay}
+                cursorPointer={tracksQuery.isSuccess && totalTracks > 0}
+              >
                 {t('commons.play_tracks_button')}
               </Button>
             </Buttons>
