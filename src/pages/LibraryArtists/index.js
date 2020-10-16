@@ -35,12 +35,12 @@ function LibraryArtists({ history }) {
   }, []);
 
   useEffect(() => {
-    if (!artistsQuery.isLoading) {
+    if (artistsQuery.isSuccess) {
       artistsQuery.data.forEach((group) => {
         setTotalArtists(totalArtists + group.artists.length);
       });
     }
-  }, [artistsQuery.isLoading, artistsQuery.data]);
+  }, [artistsQuery.isSuccess, artistsQuery.data]);
 
   const artistListRef = useBottomScrollListener(onEndReached);
 

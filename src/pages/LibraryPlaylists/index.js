@@ -44,12 +44,12 @@ function LibraryPlaylists({ history }) {
   }, []);
 
   useEffect(() => {
-    if (!playlistsQuery.isLoading) {
+    if (playlistsQuery.isSuccess) {
       playlistsQuery.data.forEach((group) => {
         setTotalPlaylists(totalPlaylists + group.playlists.length);
       });
     }
-  }, [playlistsQuery.isLoading, playlistsQuery.data]);
+  }, [playlistsQuery.isSuccess, playlistsQuery.data]);
 
   const playlistListRef = useBottomScrollListener(onEndReached);
 
