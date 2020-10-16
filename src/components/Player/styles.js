@@ -131,7 +131,7 @@ export const VolumeBar = styled.input`
   width: 100px;
   height: 5px;
   border-radius: 5px;
-  background: ${props =>
+  background: ${(props) =>
     `linear-gradient(90deg, #d99207 ${props.value}%, #fff ${props.value}%)`};
 
   &::-webkit-slider-runnable-track {

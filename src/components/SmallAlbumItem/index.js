@@ -3,13 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import fallback from '../../assets/images/fallback.png';
 import Image from '../Image';
-import {
-  Container,
-  Details,
-  Name,
-  TextList,
-  Type,
-} from './styles';
+import { Container, Details, Name, TextList, Type } from './styles';
 
 function SmallAlbumItem({ data, style, onClick }) {
   const { t } = useTranslation();
