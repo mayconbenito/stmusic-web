@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdClear } from 'react-icons/md';
 
@@ -8,7 +8,6 @@ import SmallArtistItem from '../../components/SmallArtistItem';
 import SmallTrackItem from '../../components/SmallTrackItem';
 import SearchContext from '../../contexts/SearchContext';
 import isStringEmpty from '../../helpers/isStringEmpty';
-import useDebounce from '../../hooks/useDebounce';
 import {
   GlobalHeaderContainer,
   Content,
@@ -24,26 +23,15 @@ import {
 function Search({ history }) {
   const { t } = useTranslation();
   const searchContext = useContext(SearchContext);
-  const [query, setQuery] = useState(searchContext.query);
-
-  const debouncedQuery = useDebounce(query, 400);
 
   function handleInput(e) {
-    setQuery(e.target.value);
+    searchContext.setQuery(e.target.value);
   }
 
   function handleClearSearch() {
-    setQuery('');
+    searchContext.setQuery('');
     searchContext.handleClearSearch();
   }
-
-  useEffect(() => {
-    if (!isStringEmpty(debouncedQuery)) {
-      searchContext.handleSearch(query);
-    } else {
-      handleClearSearch();
-    }
-  }, [debouncedQuery]);
 
   return (
     <Content>
@@ -53,13 +41,13 @@ function Search({ history }) {
 
       <SearchInputContainer>
         <SearchInput
-          value={query}
+          value={searchContext.query}
           onChange={handleInput}
           autoFocus
           placeholder={t('search.input')}
         />
 
-        {!isStringEmpty(query) && (
+        {!isStringEmpty(searchContext.query) && (
           <ClearSearchButton onClick={handleClearSearch}>
             <MdClear size={26} color="#d99207" />
           </ClearSearchButton>
