@@ -77,7 +77,7 @@ export const MenuText = styled(Link)`
   margin-left: 5px;
 
   &:hover {
-    color: #fff;
+    color: #ffa800;
   }
 `;
 
@@ -87,12 +87,6 @@ export const CreatePlaylist = styled.div`
   display: flex;
   flex-direction: column;
   padding: 5px 15px 0px 15px;
-`;
-
-export const PlaylistLabel = styled.label`
-  color: #d99207;
-  font-size: 12px;
-  font-weight: 500;
 `;
 
 export const PlaylistInput = styled.input`
