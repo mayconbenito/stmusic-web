@@ -9,7 +9,7 @@
     "disable-scroll": "^0.5.1",
     "history": "^4.10.1",
     "i18next": "^19.6.3",
-    "i18next-browser-languagedetector": "^5.0.0",
+    "i18next-browser-languagedetector": "^6.0.1",
     "jwt-decode": "^2.2.0",
     "keen-slider": "^5.2.3",
     "react": "^16.13.1",
