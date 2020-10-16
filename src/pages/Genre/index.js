@@ -105,7 +105,10 @@ function Genre({
             <HeaderType>{t('commons.genre')}</HeaderType>
             <HeaderTitle>{genreQuery.data.genre.name}</HeaderTitle>
             <Buttons>
-              <Button onClick={handleQueuePlay}>
+              <Button
+                onClick={handleQueuePlay}
+                cursorPointer={tracksQuery.isSuccess && totalTracks > 0}
+              >
                 {t('commons.play_tracks_button')}
               </Button>
             </Buttons>
