@@ -164,6 +164,22 @@ function Artist({
     dispatch(PlayerActions.play(track, `${nameKey}-${artistId}`));
   }
 
+  function isLoading() {
+    if (!albumsQuery.isLoading) {
+      return false;
+    }
+
+    if (!mostPlayedTracksQuery.isLoading) {
+      return false;
+    }
+
+    if (!tracksQuery.isLoading) {
+      return false;
+    }
+
+    return true;
+  }
+
   return (
     <Content>
       <GlobalHeader history={history} />
@@ -171,118 +187,116 @@ function Artist({
       {artistQuery.isLoading && <LoadingSpinner size={120} loading />}
 
       {artistQuery.isSuccess && (
-        <>
-          <Header>
-            <Image
-              src={artistQuery.data.artist.picture}
-              fallback={fallback}
-              style={{ width: 100, height: 100, borderRadius: '100%' }}
-            />
+        <Header>
+          <Image
+            src={artistQuery.data.artist.picture}
+            fallback={fallback}
+            style={{ width: 100, height: 100, borderRadius: '100%' }}
+          />
 
-            <HeaderInfo>
-              <HeaderTitle>{artistQuery.data.artist.name}</HeaderTitle>
+          <HeaderInfo>
+            <HeaderTitle>{artistQuery.data.artist.name}</HeaderTitle>
 
-              <div>
-                <Meta>{`${artistQuery.data.artist.followers} ${t(
-                  'commons.followers'
-                )}`}</Meta>
-                <Meta>{`${artistQuery.data.artist.tracks} ${t(
-                  'commons.tracks'
-                )}`}</Meta>
-              </div>
-              <Buttons>
-                {session() && (
-                  <Button onClick={handleFollowing}>
-                    {artistFollowingStateQuery.isSuccess &&
-                    artistFollowingStateQuery.data.artists.find(
-                      (itemId) => itemId === parseInt(artistId)
-                    )
-                      ? t('commons.following')
-                      : t('commons.follow')}
-                  </Button>
-                )}
-              </Buttons>
-            </HeaderInfo>
-          </Header>
+            <div>
+              <Meta>{`${artistQuery.data.artist.followers} ${t(
+                'commons.followers'
+              )}`}</Meta>
+              <Meta>{`${artistQuery.data.artist.tracks} ${t(
+                'commons.tracks'
+              )}`}</Meta>
+            </div>
+            <Buttons>
+              {session() && (
+                <Button onClick={handleFollowing}>
+                  {artistFollowingStateQuery.isSuccess &&
+                  artistFollowingStateQuery.data.artists.find(
+                    (itemId) => itemId === parseInt(artistId)
+                  )
+                    ? t('commons.following')
+                    : t('commons.follow')}
+                </Button>
+              )}
+            </Buttons>
+          </HeaderInfo>
+        </Header>
+      )}
 
-          {albumsQuery.data?.albums?.length > 0 && (
-            <Section>
-              <Carousel
-                carouselName={t('commons.albums')}
-                totalItems={albumsQuery.data?.albums?.length}
-              >
-                {albumsQuery.data.albums.map((data) => (
-                  <AlbumItem
-                    key={data.id}
-                    data={data}
-                    style={{ marginBottom: 5 }}
-                    onClick={() => history.push(`/albums/${data.id}`)}
-                  />
-                ))}
-              </Carousel>
-            </Section>
-          )}
+      {isLoading() && <LoadingSpinner size={40} loading />}
 
-          {mostPlayedTracksQuery.data?.tracks?.length > 0 && (
-            <Section>
-              <SectionTitleContainer>
-                <SectionTitle>{t('artist.most_played_tracks')}</SectionTitle>
-                <SectionPlayButton
-                  onClick={() =>
-                    handleQueuePlay({
-                      name: `${t('commons.most_played_from')} ${
-                        artistQuery.data.artist.name
-                      }`,
-                      tracks: mostPlayedTracksQuery.data?.tracks,
-                      nameKey: 'most_played_from',
-                    })
-                  }
-                >
-                  <MdPlayArrow size={24} color="#d99207" />
-                </SectionPlayButton>
-              </SectionTitleContainer>
-              <TracksList>
-                {mostPlayedTracksQuery.data?.tracks.map((data) => (
-                  <SmallTrackItem
-                    key={data.id}
-                    data={data}
-                    onPress={() =>
-                      handleQueueTrackPlay(data, 'most_played_from')
-                    }
-                  />
-                ))}
-              </TracksList>
-            </Section>
-          )}
+      {albumsQuery.data?.albums?.length > 0 && (
+        <Section>
+          <Carousel
+            carouselName={t('commons.albums')}
+            totalItems={albumsQuery.data?.albums?.length}
+          >
+            {albumsQuery.data.albums.map((data) => (
+              <AlbumItem
+                key={data.id}
+                data={data}
+                style={{ marginBottom: 5 }}
+                onClick={() => history.push(`/albums/${data.id}`)}
+              />
+            ))}
+          </Carousel>
+        </Section>
+      )}
 
-          {tracksQuery.data?.tracks?.length > 0 && (
-            <Section>
-              <SectionTitleContainer>
-                <SectionTitle>{t('artist.artist_tracks')}</SectionTitle>
-                <SectionPlayButton
-                  onClick={() =>
-                    handleQueuePlay({
-                      name: artistQuery.data.artist.name,
-                      tracks: tracksQuery.data?.tracks,
-                      nameKey: 'artist_tracks',
-                    })
-                  }
-                >
-                  <MdPlayArrow size={24} color="#d99207" />
-                </SectionPlayButton>
-              </SectionTitleContainer>
-              <TracksList>
-                {tracksQuery.data?.tracks.map((data) => (
-                  <SmallTrackItem
-                    key={data.id}
-                    data={data}
-                    onPress={() => handleQueueTrackPlay(data, 'artist_tracks')}
-                  />
-                ))}
-              </TracksList>
-            </Section>
-          )}
-        </>
+      {mostPlayedTracksQuery.data?.tracks?.length > 0 && (
+        <Section>
+          <SectionTitleContainer>
+            <SectionTitle>{t('artist.most_played_tracks')}</SectionTitle>
+            <SectionPlayButton
+              onClick={() =>
+                handleQueuePlay({
+                  name: `${t('commons.most_played_from')} ${
+                    artistQuery.data.artist.name
+                  }`,
+                  tracks: mostPlayedTracksQuery.data?.tracks,
+                  nameKey: 'most_played_from',
+                })
+              }
+            >
+              <MdPlayArrow size={24} color="#d99207" />
+            </SectionPlayButton>
+          </SectionTitleContainer>
+          <TracksList>
+            {mostPlayedTracksQuery.data?.tracks.map((data) => (
+              <SmallTrackItem
+                key={data.id}
+                data={data}
+                onPress={() => handleQueueTrackPlay(data, 'most_played_from')}
+              />
+            ))}
+          </TracksList>
+        </Section>
+      )}
+
+      {tracksQuery.data?.tracks?.length > 0 && (
+        <Section>
+          <SectionTitleContainer>
+            <SectionTitle>{t('artist.artist_tracks')}</SectionTitle>
+            <SectionPlayButton
+              onClick={() =>
+                handleQueuePlay({
+                  name: artistQuery.data.artist.name,
+                  tracks: tracksQuery.data?.tracks,
+                  nameKey: 'artist_tracks',
+                })
+              }
+            >
+              <MdPlayArrow size={24} color="#d99207" />
+            </SectionPlayButton>
+          </SectionTitleContainer>
+          <TracksList>
+            {tracksQuery.data?.tracks.map((data) => (
+              <SmallTrackItem
+                key={data.id}
+                data={data}
+                onPress={() => handleQueueTrackPlay(data, 'artist_tracks')}
+              />
+            ))}
+          </TracksList>
+        </Section>
       )}
     </Content>
   );
