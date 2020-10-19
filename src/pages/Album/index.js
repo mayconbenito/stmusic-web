@@ -73,12 +73,21 @@ function Album({
   const containerRef = useBottomScrollListener(onEndReached);
 
   function handleQueuePlay() {
-    if (tracksQuery.isSuccess && totalTracks > 0) {
+    if (albumQuery.isSuccess && tracksQuery.isSuccess && totalTracks > 0) {
+      const firstTrack = tracksQuery.data.map((group) => group.tracks[0])[0];
+
       dispatch(
         PlayerActions.loadQueue({
           name: albumQuery.data.album.name,
           id: albumId,
           type: 'albums',
+          preloadedTrack: {
+            title: firstTrack.name,
+            artwork: firstTrack.picture,
+            artist: firstTrack.artists.map(
+              (artist, index) => (index ? ', ' : '') + artist.name
+            )[0],
+          },
         })
       );
     }

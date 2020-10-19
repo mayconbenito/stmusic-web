@@ -111,13 +111,20 @@ function Player() {
         <>
           <TrackInfo>
             <Image
-              src={currentTrack?.artwork[0].src}
+              src={
+                currentTrack?.artwork[0].src ||
+                player?.queue?.preloadedTrack?.artwork
+              }
               fallback={fallback}
               style={{ width: 70, height: 70 }}
             />
             <TrackTexts>
-              <TrackName>{currentTrack?.title}</TrackName>
-              <ArtistName>{currentTrack?.artist}</ArtistName>
+              <TrackName>
+                {currentTrack?.title || player?.queue?.preloadedTrack?.title}
+              </TrackName>
+              <ArtistName>
+                {currentTrack?.artist || player?.queue?.preloadedTrack?.artist}
+              </ArtistName>
             </TrackTexts>
           </TrackInfo>
 
