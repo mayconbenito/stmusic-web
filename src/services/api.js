@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-import session from './session';
+import { getSessionData, isLoggedIn } from '../helpers/session';
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
 
 api.interceptors.request.use((config) => {
-  if (session()) {
-    config.headers = { Authorization: `Bearer ${session().jwt}` };
+  if (isLoggedIn()) {
+    config.headers = { Authorization: `Bearer ${getSessionData().jwt}` };
   }
 
   return config;

@@ -11,7 +11,6 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import SmallTrackItem from '../../components/SmallTrackItem';
 import useFetch from '../../hooks/useFetch';
 import api from '../../services/api';
-// import { Creators as AlbumActions } from '../../store/ducks/album';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import {
   Content,

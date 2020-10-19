@@ -7,8 +7,7 @@ import {
 } from 'react-icons/md';
 import { useLastLocation } from 'react-router-last-location';
 
-import handleLogout from '../../helpers/handleLogout';
-import session from '../../services/session';
+import { isLoggedIn, getSessionData, logout } from '../../helpers/session';
 import {
   Container,
   NavigationButtons,
@@ -24,7 +23,7 @@ import {
 function GlobalHeader({ history }) {
   const lastLocation = useLastLocation();
   const { t } = useTranslation();
-  const { user } = session();
+  const { user } = getSessionData();
 
   const [canGoBack, setCanGoBack] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -130,7 +129,7 @@ function GlobalHeader({ history }) {
         </NavigationButton>
       </NavigationButtons>
 
-      {session() ? (
+      {isLoggedIn() ? (
         <UserInfo ref={dropdownRef}>
           <Name>{user.name}</Name>
           <ArrowDown onClick={handleShowDropdown}>
@@ -138,7 +137,7 @@ function GlobalHeader({ history }) {
           </ArrowDown>
           {showDropdown && (
             <Dropdown>
-              <DropdownItem onClick={handleLogout}>
+              <DropdownItem onClick={logout}>
                 {t('global_header.logout_button')}
               </DropdownItem>
             </Dropdown>

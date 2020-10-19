@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { MdHome, MdSearch, MdFolder, MdAudiotrack } from 'react-icons/md';
 import { useMutation, useQueryCache } from 'react-query';
 
+import { isLoggedIn } from '../../helpers/session';
 import api from '../../services/api';
-import session from '../../services/session';
 import {
   Container,
   Header,
@@ -60,7 +60,7 @@ function SideBar() {
               <MenuText to="/">{t('sidebar.home')}</MenuText>
             </MenuItem>
 
-            {session() && (
+            {isLoggedIn() && (
               <MenuItem>
                 <MdFolder size={36} color="#d99207" />
                 <MenuText to="/library/playlists">
@@ -77,7 +77,7 @@ function SideBar() {
         </Menu>
       </Header>
 
-      {session() && (
+      {isLoggedIn() && (
         <CreatePlaylist>
           <PlaylistInput
             id="playlistInput"

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import fallback from '../../assets/images/fallback.png';
 import AppContext from '../../contexts/AppContext';
-import session from '../../services/session';
+import { isLoggedIn } from '../../helpers/session';
 import Image from '../Image';
 import ToolbarMenu, { ToolbarMenuItem } from '../ToolbarMenu';
 import {
@@ -37,7 +37,7 @@ function TrackItem({ data, style, onClick }) {
         </TextList>
       </Details>
 
-      {session() && (
+      {isLoggedIn() && (
         <ToolbarButton>
           <ToolbarMenu style={{ marginLeft: 'auto' }}>
             <ToolbarMenuItem
