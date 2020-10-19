@@ -11,9 +11,9 @@ import GlobalHeader from '../../components/GlobalHeader';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import SmallTrackItem from '../../components/SmallTrackItem';
+import { isLoggedIn } from '../../helpers/session';
 import useFetch from '../../hooks/useFetch';
 import api from '../../services/api';
-import session from '../../services/session';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import {
   Content,
@@ -206,7 +206,7 @@ function Artist({
               )}`}</Meta>
             </div>
             <Buttons>
-              {session() && (
+              {isLoggedIn() && (
                 <Button onClick={handleFollowing}>
                   {artistFollowingStateQuery.isSuccess &&
                   artistFollowingStateQuery.data.artists.find(
