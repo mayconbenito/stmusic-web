@@ -6,12 +6,15 @@ import {
   MdSkipPrevious,
   MdSkipNext,
   MdVolumeMute,
+  MdQueueMusic,
+  MdClose,
 } from 'react-icons/md';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   usePlaybackTrackChanged,
   useTrackPlayerProgress,
   usePlaybackState,
+  usePlayerQueue,
 } from 'react-web-track-player';
 
 import fallback from '../../assets/images/fallback.png';
@@ -20,6 +23,7 @@ import usePersistedState from '../../hooks/usePersistedState';
 import api from '../../services/api';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import Image from '../Image';
+import SmallTrackItem from '../SmallTrackItem';
 import {
   Container,
   TrackInfo,
@@ -35,20 +39,25 @@ import {
   Control,
   Volume,
   VolumeBar,
+  PlayerQueueListContainer,
+  PlayerQueueListHeader,
+  PlayerQueueListTitle,
 } from './styles';
 
 function Player() {
-  const { pause, resume, prev, next } = PlayerActions;
+  const { pause, resume, prev, next, skipToIndex } = PlayerActions;
 
   const appContext = useContext(AppContext);
   const player = useSelector((state) => state.player);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  const [showPlayerQueueList, setShowPlayerQueueList] = useState(false);
   const [playCountStatus, setPlayCountStatus] = useState(null);
   const currentTrack = usePlaybackTrackChanged();
   const currentTrackProgress = useTrackPlayerProgress();
   const playbackState = usePlaybackState();
+  const playerQueue = usePlayerQueue();
   const [volume, setVolume] = usePersistedState('@stmusic:playerVolume', 20);
 
   function formatTime(seconds = 0) {
@@ -105,91 +114,138 @@ function Player() {
     }
   }, [player.active]);
 
+  function handleTogglePlayerQueueList() {
+    setShowPlayerQueueList(!showPlayerQueueList);
+  }
+
+  function handleSkipToQueueTrack(trackId) {
+    const trackIndex = playerQueue.findIndex((track) => track.id === trackId);
+    dispatch(skipToIndex(trackIndex));
+  }
+
   return (
-    <Container>
-      {player?.active && (
-        <>
-          <TrackInfo>
-            <Image
-              src={
-                currentTrack?.artwork[0].src ||
-                player?.queue?.preloadedTrack?.artwork
-              }
-              fallback={fallback}
-              style={{ width: 70, height: 70 }}
-            />
-            <TrackTexts>
-              <TrackName>
-                {currentTrack?.title || player?.queue?.preloadedTrack?.title}
-              </TrackName>
-              <ArtistName>
-                {currentTrack?.artist || player?.queue?.preloadedTrack?.artist}
-              </ArtistName>
-            </TrackTexts>
-          </TrackInfo>
-
-          <TrackMiddle>
-            <Playing>
-              {player?.queue &&
-                `${t('player.playing')}: ${player?.queue?.name}`}
-            </Playing>
-            <Controls>
-              <Control onClick={() => dispatch(prev())}>
-                <MdSkipPrevious size={40} color="#d99207" />
-              </Control>
-              <Control>
-                {showPauseButton && (
-                  <MdPause
-                    size={40}
-                    color="#d99207"
-                    onClick={() => dispatch(pause())}
-                  />
-                )}
-
-                {!showPauseButton && (
-                  <MdPlayArrow
-                    size={40}
-                    color="#d99207"
-                    onClick={() => dispatch(resume())}
-                  />
-                )}
-              </Control>
-              <Control onClick={() => dispatch(next())}>
-                <MdSkipNext size={40} color="#d99207" />
-              </Control>
-            </Controls>
-            <Progress>
-              <ProgressTime>
-                {formatTime(currentTrackProgress.position)}
-              </ProgressTime>
-              <ProgressBar
-                value={
-                  (currentTrackProgress.position * 100) /
-                    currentTrackProgress.duration || 0
+    <>
+      <Container>
+        {player?.active && (
+          <>
+            <TrackInfo>
+              <Image
+                src={
+                  currentTrack?.artwork[0].src ||
+                  player?.queue?.preloadedTrack?.artwork
                 }
+                fallback={fallback}
+                style={{ width: 70, height: 70 }}
+              />
+              <TrackTexts>
+                <TrackName>
+                  {currentTrack?.title || player?.queue?.preloadedTrack?.title}
+                </TrackName>
+                <ArtistName>
+                  {currentTrack?.artist ||
+                    player?.queue?.preloadedTrack?.artist}
+                </ArtistName>
+              </TrackTexts>
+            </TrackInfo>
+
+            <TrackMiddle>
+              <Playing>
+                {player?.queue &&
+                  `${t('player.playing')}: ${player?.queue?.name}`}
+              </Playing>
+              <Controls>
+                <Control onClick={() => dispatch(prev())}>
+                  <MdSkipPrevious size={40} color="#d99207" />
+                </Control>
+                <Control>
+                  {showPauseButton && (
+                    <MdPause
+                      size={40}
+                      color="#d99207"
+                      onClick={() => dispatch(pause())}
+                    />
+                  )}
+
+                  {!showPauseButton && (
+                    <MdPlayArrow
+                      size={40}
+                      color="#d99207"
+                      onClick={() => dispatch(resume())}
+                    />
+                  )}
+                </Control>
+                <Control onClick={() => dispatch(next())}>
+                  <MdSkipNext size={40} color="#d99207" />
+                </Control>
+              </Controls>
+              <Progress>
+                <ProgressTime>
+                  {formatTime(currentTrackProgress.position)}
+                </ProgressTime>
+                <ProgressBar
+                  value={
+                    (currentTrackProgress.position * 100) /
+                      currentTrackProgress.duration || 0
+                  }
+                  max="100"
+                />
+                <ProgressTime>
+                  {formatTime(currentTrackProgress.duration)}
+                </ProgressTime>
+              </Progress>
+            </TrackMiddle>
+
+            <Volume>
+              <Control>
+                <MdVolumeMute size={20} color="#d99207" />
+              </Control>
+              <VolumeBar
+                onChange={handleVolumeChange}
+                value={volume}
+                type="range"
+                min="0"
                 max="100"
               />
-              <ProgressTime>
-                {formatTime(currentTrackProgress.duration)}
-              </ProgressTime>
-            </Progress>
-          </TrackMiddle>
-
-          <Volume>
-            <Control>
-              <MdVolumeMute size={20} color="#d99207" />
+            </Volume>
+            <Control
+              style={{ marginLeft: 10 }}
+              onClick={handleTogglePlayerQueueList}
+            >
+              <MdQueueMusic size={20} color="#d99207" />
             </Control>
-            <VolumeBar
-              onChange={handleVolumeChange}
-              value={volume}
-              type="range"
-              min="0"
-              max="100"
-            />
-          </Volume>
-        </>
+          </>
+        )}
+      </Container>
+
+      {showPlayerQueueList && (
+        <PlayerQueueListContainer>
+          <PlayerQueueListHeader>
+            <PlayerQueueListTitle>
+              {player?.queue &&
+                `${t('player.queue_list_playing')} - ${player?.queue?.name}`}
+            </PlayerQueueListTitle>
+            <Control onClick={handleTogglePlayerQueueList}>
+              <MdClose size={20} color="#d99207" />
+            </Control>
+          </PlayerQueueListHeader>
+          {player?.queue && (
+            <div>
+              {playerQueue.length > 0 &&
+                playerQueue.map((track) => (
+                  <SmallTrackItem
+                    key={track.id}
+                    data={{
+                      name: track.title,
+                      picture: track.artwork[0].src,
+                    }}
+                    onClick={() => handleSkipToQueueTrack(track.id)}
+                  />
+                ))}
+            </div>
+          )}
+        </PlayerQueueListContainer>
       )}
-    </Container>
+    </>
   );
 }
 

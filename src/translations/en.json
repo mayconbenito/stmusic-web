@@ -76,7 +76,8 @@
       "title": "Save on"
     },
     "player": {
-      "playing": "Playing"
+      "playing": "Playing",
+      "queue_list_playing": "Playlist"
     },
     "global_header": {
       "login_button": "Login",

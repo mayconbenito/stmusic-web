@@ -146,8 +146,9 @@ function Genre({
                     <SmallTrackItem
                       key={track.id}
                       data={track}
+                      showMenu
                       style={{ marginBottom: 5 }}
-                      onPress={() => handleQueueTrackPlay(track)}
+                      onClick={() => handleQueueTrackPlay(track)}
                     />
                   ))}
               </React.Fragment>

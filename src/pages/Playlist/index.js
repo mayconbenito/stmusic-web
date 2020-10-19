@@ -196,7 +196,8 @@ function Playlist({
                       key={track.id}
                       data={track}
                       isPlaylist
-                      onPress={() => handleQueueTrackPlay(track)}
+                      showMenu
+                      onClick={() => handleQueueTrackPlay(track)}
                       onRemoveTrackFromPlaylist={() =>
                         removeTrackFromPlaylist({ trackId: track.id })
                       }

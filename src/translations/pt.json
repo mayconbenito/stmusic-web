@@ -76,7 +76,8 @@
       "title": "Salvar em"
     },
     "player": {
-      "playing": "Tocando"
+      "playing": "Tocando",
+      "queue_list_playing": "Lista de reprodução"
     },
     "global_header": {
       "login_button": "Fazer login",
