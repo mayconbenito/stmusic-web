@@ -69,6 +69,7 @@ function* loadQueue({ queue, predefinedQueue }) {
             name: queue.name,
             id: queue.id,
             type: queue.type,
+            preloadedTrack: queue.preloadedTrack,
           },
         })
       );

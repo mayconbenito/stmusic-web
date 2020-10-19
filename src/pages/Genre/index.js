@@ -73,12 +73,21 @@ function Genre({
   const containerRef = useBottomScrollListener(onEndReached);
 
   function handleQueuePlay() {
-    if (genreQuery.isSuccess && totalTracks > 0) {
+    if (genreQuery.isSuccess && tracksQuery.isSuccess && totalTracks > 0) {
+      const firstTrack = tracksQuery.data.map((group) => group.tracks[0])[0];
+
       dispatch(
         PlayerActions.loadQueue({
           name: genreQuery.data.genre.name,
           id: genreId,
           type: 'genres',
+          preloadedTrack: {
+            title: firstTrack.name,
+            artwork: firstTrack.picture,
+            artist: firstTrack.artists.map(
+              (artist, index) => (index ? ', ' : '') + artist.name
+            )[0],
+          },
         })
       );
     }
