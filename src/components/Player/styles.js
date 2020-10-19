@@ -81,6 +81,7 @@ export const Controls = styled.div`
 
 export const Control = styled.button`
   border: none;
+  cursor: pointer;
   background-color: transparent;
 `;
 

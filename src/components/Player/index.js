@@ -154,7 +154,10 @@ function Player() {
                   `${t('player.playing')}: ${player?.queue?.name}`}
               </Playing>
               <Controls>
-                <Control onClick={() => dispatch(prev())}>
+                <Control
+                  style={{ marginRight: 5 }}
+                  onClick={() => dispatch(prev())}
+                >
                   <MdSkipPrevious size={40} color="#d99207" />
                 </Control>
                 <Control>
@@ -174,7 +177,10 @@ function Player() {
                     />
                   )}
                 </Control>
-                <Control onClick={() => dispatch(next())}>
+                <Control
+                  style={{ marginLeft: 5 }}
+                  onClick={() => dispatch(next())}
+                >
                   <MdSkipNext size={40} color="#d99207" />
                 </Control>
               </Controls>
@@ -196,9 +202,7 @@ function Player() {
             </TrackMiddle>
 
             <Volume>
-              <Control>
-                <MdVolumeMute size={20} color="#d99207" />
-              </Control>
+              <MdVolumeMute size={20} color="#d99207" />
               <VolumeBar
                 onChange={handleVolumeChange}
                 value={volume}
