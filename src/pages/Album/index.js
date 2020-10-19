@@ -145,7 +145,8 @@ function Album({
                   <SmallTrackItem
                     key={album.id}
                     data={album}
-                    onPress={() => handleQueueTrackPlay(album)}
+                    showMenu
+                    onClick={() => handleQueueTrackPlay(album)}
                   />
                 ))}
               </React.Fragment>

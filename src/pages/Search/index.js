@@ -90,7 +90,7 @@ function Search({ history }) {
             <SectionTitle>{t('commons.tracks')}</SectionTitle>
             <SectionItems>
               {searchContext.results.tracks.map((data) => (
-                <SmallTrackItem key={data.id} data={data} />
+                <SmallTrackItem key={data.id} showMenu data={data} />
               ))}
             </SectionItems>
           </Section>

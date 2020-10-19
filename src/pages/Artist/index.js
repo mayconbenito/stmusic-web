@@ -264,7 +264,8 @@ function Artist({
               <SmallTrackItem
                 key={data.id}
                 data={data}
-                onPress={() => handleQueueTrackPlay(data, 'most_played_from')}
+                showMenu
+                onClick={() => handleQueueTrackPlay(data, 'most_played_from')}
               />
             ))}
           </TracksList>
@@ -292,7 +293,8 @@ function Artist({
               <SmallTrackItem
                 key={data.id}
                 data={data}
-                onPress={() => handleQueueTrackPlay(data, 'artist_tracks')}
+                showMenu
+                onClick={() => handleQueueTrackPlay(data, 'artist_tracks')}
               />
             ))}
           </TracksList>

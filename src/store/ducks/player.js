@@ -10,6 +10,7 @@ export const { Types, Creators } = createActions(
     stop: [],
     prev: [],
     next: [],
+    skipToIndex: ['index'],
     successNext: ['data'],
     successPrev: ['data'],
     setVolume: ['volume'],
@@ -44,6 +45,8 @@ const prev = (state = initialState) => state;
 
 const next = (state = initialState) => state;
 
+const skipToIndex = (state = initialState) => state;
+
 const successNext = (state = initialState, action) => ({
   ...state,
   queue: {
@@ -71,6 +74,7 @@ export default createReducer(initialState, {
   [Types.STOP]: stop,
   [Types.PREV]: prev,
   [Types.NEXT]: next,
+  [Types.SKIP_TO_INDEX]: skipToIndex,
   [Types.SUCCESS_NEXT]: successNext,
   [Types.SUCCESS_PREV]: successPrev,
   [Types.SET_VOLUME]: setVolume,

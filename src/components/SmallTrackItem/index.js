@@ -13,7 +13,8 @@ function SmallTrackItem({
   style,
   isPlaylist = false,
   onRemoveTrackFromPlaylist,
-  onPress,
+  onClick,
+  showMenu,
 }) {
   const appContext = useContext(AppContext);
 
@@ -22,23 +23,24 @@ function SmallTrackItem({
   return (
     <Container style={style}>
       <Image
-        onClick={onPress}
+        onClick={onClick}
         src={data.picture}
         fallback={fallback}
         style={{ width: 50, height: 50, cursor: 'pointer' }}
       />
 
-      <Details onClick={onPress}>
+      <Details onClick={onClick}>
         <Name>{data.name}</Name>
         <TextList>
           <Type>{t('commons.track')} | </Type>
-          {data.artists.map(
-            (artist, index) => (index ? ', ' : '') + artist.name
-          )}
+          {data.artists &&
+            data.artists.map(
+              (artist, index) => (index ? ', ' : '') + artist.name
+            )}
         </TextList>
       </Details>
 
-      {isLoggedIn() && (
+      {isLoggedIn() && showMenu && (
         <ToolbarMenu style={{ marginLeft: 'auto' }}>
           <ToolbarMenuItem
             onClick={() =>

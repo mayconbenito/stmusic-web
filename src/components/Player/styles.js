@@ -149,3 +149,54 @@ export const VolumeBar = styled.input`
     margin-top: -5px;
   }
 `;
+
+export const PlayerQueueListContainer = styled.div`
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 1000;
+  background-color: #141414;
+  padding: 10px 15px;
+  border-left: 3px solid #000000;
+  width: 450px;
+  height: ${(props) =>
+    props.theme.showPlayer ? 'calc(100% - 100px)' : '100%'};
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  & > div {
+    margin-top: 10px;
+  }
+
+  animation-name: fadeIn;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-in;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    15% {
+      opacity: 0.15;
+    }
+    30% {
+      opacity: 0.3;
+    }
+    80% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;
+
+export const PlayerQueueListHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const PlayerQueueListTitle = styled.span`
+  font-size: 20px;
+`;

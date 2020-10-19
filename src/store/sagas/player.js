@@ -57,7 +57,7 @@ function* loadQueue({ queue, predefinedQueue }) {
     const playerState = yield select((state) => state.player);
 
     if (!predefinedQueue) {
-      if (playerState.active) {
+      if (playerState.active && playerState.queue.id !== queue.id) {
         TrackPlayer.reset();
       }
 
@@ -145,7 +145,7 @@ function* loadQueue({ queue, predefinedQueue }) {
         })
       );
     } else {
-      if (playerState.active) {
+      if (playerState.active && playerState.queue.id !== predefinedQueue.id) {
         TrackPlayer.reset();
       }
 
@@ -251,6 +251,19 @@ function* next() {
   } catch (err) {}
 }
 
+function* skipToIndex({ index }) {
+  try {
+    yield call(TrackPlayer.skipToIndex, index);
+
+    yield put(
+      successNext({
+        currentTrackIndex: index,
+      })
+    );
+    // eslint-disable-next-line no-empty
+  } catch (err) {}
+}
+
 function* prev() {
   try {
     const tracksQueue = TrackPlayer.getQueue();
@@ -287,6 +300,7 @@ export default function* playerSaga() {
     takeLatest(PlayerTypes.RESUME, resume),
     takeLatest(PlayerTypes.PAUSE, pause),
     takeLatest(PlayerTypes.NEXT, next),
+    takeLatest(PlayerTypes.SKIP_TO_INDEX, skipToIndex),
     takeLatest(PlayerTypes.PREV, prev),
     takeLatest(PlayerTypes.SET_VOLUME, setVolume),
   ]);
