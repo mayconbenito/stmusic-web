@@ -241,6 +241,11 @@ function Player() {
                     data={{
                       name: track.title,
                       picture: track.artwork[0].src,
+                      artists: track.artist
+                        ? track.artist.split(',').map((artist) => {
+                            return { name: artist };
+                          })
+                        : '',
                     }}
                     onClick={() => handleSkipToQueueTrack(track.id)}
                   />

@@ -27,8 +27,8 @@ function TrackItem({ data, style, onClick }) {
         style={{ width: 150, height: 150 }}
       />
 
-      <Details onClick={onClick}>
-        <Name>{data.name}</Name>
+      <Details>
+        <Name onClick={onClick}>{data.name}</Name>
         <TextList>
           <Type>{t('commons.track')} | </Type>
           {data.artists.map(

@@ -24,7 +24,7 @@ export const Name = styled.span`
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  cursor: pointer;
+  cursor: ${(props) => (props.onClick ? 'pointer' : 'default')};
 `;
 
 export const Type = styled.span`
