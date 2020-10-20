@@ -26,11 +26,15 @@ function SmallTrackItem({
         onClick={onClick}
         src={data.picture}
         fallback={fallback}
-        style={{ width: 50, height: 50, cursor: 'pointer' }}
+        style={{
+          width: 50,
+          height: 50,
+          cursor: onClick ? 'pointer' : 'default',
+        }}
       />
 
-      <Details onClick={onClick}>
-        <Name>{data.name}</Name>
+      <Details>
+        <Name onClick={onClick}>{data.name}</Name>
         <TextList>
           <Type>{t('commons.track')} | </Type>
           {data.artists &&
