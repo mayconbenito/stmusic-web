@@ -54,6 +54,7 @@
     "radix": "off",
     "no-underscore-dangle": "off",
     "prefer-destructuring": "off",
-    "semi": "error"
+    "semi": "error",
+    "no-unused-vars": "warn"
   }
 }
