@@ -1126,22 +1126,6 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@eslint/eslintrc@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.2.0.tgz#bc7e3c4304d4c8720968ccaee793087dfb5fe6b4"
-  integrity sha512-+cIGPCBdLCzqxdtwppswP+zTsH9BOIGzAeKfBIbtb4gW/giMlfMwP0HUSFfhzh20f9u8uZ8hOp62+4GPquTbwQ==
-  dependencies:
-    ajv "^6.12.4"
-    debug "^4.1.1"
-    espree "^7.3.0"
-    globals "^12.1.0"
-    ignore "^4.0.6"
-    import-fresh "^3.2.1"
-    js-yaml "^3.13.1"
-    lodash "^4.17.19"
-    minimatch "^3.0.4"
-    strip-json-comments "^3.1.1"
-
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -9442,10 +9426,10 @@ react-virtualized@^9.22.2:
     prop-types "^15.7.2"
     react-lifecycles-compat "^3.0.4"
 
-react-web-track-player@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/react-web-track-player/-/react-web-track-player-1.4.0.tgz#b09babab8e5fcad62fadb55596dc62a44b9f807b"
-  integrity sha512-fzkcfeOURC2KsYlyArHEiWfgShAsud+ScYaPa3GXCDlMeKBtpXv2OzG3t/aaeqdujJ7GIna7K7vOwyJS8hqhig==
+react-web-track-player@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/react-web-track-player/-/react-web-track-player-1.4.1.tgz#90cdd9790541419b57e12beaf01d422cad7db417"
+  integrity sha512-CottouEQsjHeT8u3ql+EkxhUOX8i+4cepu6c15pJEw3KWnkOrOBAZElghEzH3OFm/1l9Q/Zmrt5/on6mBkp0HQ==
 
 react@^16.13.1:
   version "16.14.0"
