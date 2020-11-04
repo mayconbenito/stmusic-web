@@ -7,7 +7,7 @@ export const Container = styled.div`
   width: 180px;
   height: ${(props) =>
     props.theme.showPlayer ? 'calc(100% - 100px)' : '100%'};
-  background-color: #000;
+  background-color: ${(props) => props.theme.colors.black};
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -46,8 +46,8 @@ export const Header = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid #d99207;
-  padding-bottom: 5px;
+  border-bottom: 1px solid ${(props) => props.theme.colors.primary};
+  padding-bottom: ${(props) => props.theme.spacing.smallest};
 `;
 
 export const Logo = styled.div`
@@ -59,25 +59,25 @@ export const Logo = styled.div`
 export const Menu = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 5px;
+  margin-top: ${(props) => props.theme.spacing.smallest};
   align-items: center;
 `;
 
 export const MenuItem = styled.div`
   display: flex;
   align-items: center;
-  padding-top: 5px;
+  padding-top: ${(props) => props.theme.spacing.smallest};
 `;
 
 export const MenuText = styled(Link)`
   font-family: Roboto;
-  font-size: 24px;
-  color: #d99207;
+  font-size: ${(props) => props.theme.fontSizes.biggestFontSize};
+  color: ${(props) => props.theme.colors.primary};
   font-weight: bold;
-  margin-left: 5px;
+  margin-left: ${(props) => props.theme.spacing.smallest};
 
   &:hover {
-    color: #ffa800;
+    color: ${(props) => props.theme.colors.lightPrimary};
   }
 `;
 
@@ -86,30 +86,33 @@ export const CreatePlaylist = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 5px 15px 0px 15px;
+  padding: ${(props) => props.theme.spacing.smallest}
+    ${(props) => props.theme.spacing.base} 0px
+    ${(props) => props.theme.spacing.base};
 `;
 
 export const PlaylistInput = styled.input`
   height: 30px;
-  padding: 2px 5px;
-  border-radius: 3px;
-  background-color: #141414;
+  padding: ${(props) =>
+    `${props.theme.spacing.tiniest} ${props.theme.spacing.smallest}`};
+  border-radius: ${(props) => props.theme.spacing.tiny};
+  background-color: ${(props) => props.theme.colors.darkestGray};
   border: none;
-  margin-top: 2px;
-  color: #d99207;
+  margin-top: ${(props) => props.theme.spacing.tiniest};
+  color: ${(props) => props.theme.colors.primary};
 
   &::placeholder {
-    color: #d99207;
+    color: ${(props) => props.theme.colors.primary};
   }
 `;
 
 export const CreatePlaylistButton = styled.button`
-  background-color: #141414;
-  color: #d99207;
-  border-radius: 3px;
-  margin-top: 5px;
+  background-color: ${(props) => props.theme.colors.darkestGray};
+  color: ${(props) => props.theme.colors.primary};
+  border-radius: ${(props) => props.theme.spacing.tiny};
+  margin-top: ${(props) => props.theme.spacing.smallest};
   border: none;
-  padding: 5px;
+  padding: ${(props) => props.theme.spacing.smallest};
   cursor: pointer;
   font-weight: 500;
 `;

@@ -1,0 +1,11 @@
+export const hairline = '1px';
+export const tiniest = '2px';
+export const tiny = '3px';
+export const smallest = '5px';
+export const smaller = '8px';
+export const small = '12px';
+export const base = '16px';
+export const large = '20px';
+export const larger = '24px';
+export const largest = '30px';
+export const extraLarge = '40px';

@@ -8,6 +8,7 @@ import {
 import { useLastLocation } from 'react-router-last-location';
 
 import { isLoggedIn, getSessionData, logout } from '../../helpers/session';
+import theme from '../../styles/theme';
 import {
   Container,
   NavigationButtons,
@@ -122,10 +123,10 @@ function GlobalHeader({ history }) {
     <Container>
       <NavigationButtons>
         <NavigationButton onClick={handleGoBack} hover={canGoBack}>
-          <MdKeyboardArrowLeft color="#d99027" size={24} />
+          <MdKeyboardArrowLeft color={theme.colors.primary} size={24} />
         </NavigationButton>
         <NavigationButton onClick={history.goForward} hover>
-          <MdKeyboardArrowRight color="#d99027" size={24} />
+          <MdKeyboardArrowRight color={theme.colors.primary} size={24} />
         </NavigationButton>
       </NavigationButtons>
 
@@ -133,7 +134,7 @@ function GlobalHeader({ history }) {
         <UserInfo ref={dropdownRef}>
           <Name>{user.name}</Name>
           <ArrowDown onClick={handleShowDropdown}>
-            <MdArrowDropDown size={24} color="#d99207" />
+            <MdArrowDropDown size={24} color={theme.colors.primary} />
           </ArrowDown>
           {showDropdown && (
             <Dropdown>

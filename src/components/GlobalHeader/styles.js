@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  background-color: #141414;
+  background-color: ${(props) => props.theme.colors.darkestGray};
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -19,12 +19,12 @@ export const NavigationButton = styled.button`
   align-items: center;
   cursor: ${(props) => (props.hover ? 'pointer' : 'normal')};
   height: 30px;
-  background-color: #0f0f0f;
-  color: #fff;
-  padding: 5px;
-  margin-right: 10px;
+  background-color: ${(props) => props.theme.colors.lightBlack};
+  color: ${(props) => props.theme.colors.white};
+  padding: ${(props) => props.theme.spacing.smallest};
+  margin-right: ${(props) => props.theme.spacing.small};
   border: none;
-  border-radius: 2px;
+  border-radius: ${(props) => props.theme.spacing.tiniest};
 `;
 
 export const LoginButton = styled.button`
@@ -33,11 +33,12 @@ export const LoginButton = styled.button`
   align-items: center;
   cursor: pointer;
   height: 30px;
-  background-color: #0f0f0f;
-  color: #d99207;
-  padding: 5px 10px;
+  background-color: ${(props) => props.theme.colors.lightBlack};
+  color: ${(props) => props.theme.colors.primary};
+  padding: ${(props) =>
+    `${props.theme.spacing.smallest} ${props.theme.spacing.small}`};
   border: none;
-  border-radius: 2px;
+  border-radius: ${(props) => props.theme.spacing.tiniest};
 `;
 
 export const UserInfo = styled.div`
@@ -47,17 +48,17 @@ export const UserInfo = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 30px;
-  padding: 5px 0px;
-  padding-left: 5px;
-  border-radius: 2px;
-  background-color: #0f0f0f;
+  padding: ${(props) => props.theme.spacing.smallest} 0px;
+  padding-left: ${(props) => props.theme.spacing.smallest};
+  border-radius: ${(props) => props.theme.spacing.tiniest};
+  background-color: ${(props) => props.theme.colors.lightBlack};
 `;
 
 export const Name = styled.span`
-  font-size: 12px;
-  color: #d99207;
+  font-size: ${(props) => props.theme.fontSizes.smallerFontSize};
+  color: ${(props) => props.theme.colors.primary};
   font-weight: 500;
-  margin-left: 5px;
+  margin-left: ${(props) => props.theme.spacing.smallest};
 `;
 
 export const ArrowDown = styled.button`
@@ -74,8 +75,8 @@ export const Dropdown = styled.div`
   width: 100%;
   top: 35px;
   left: 0px;
-  border-radius: 2px;
-  background-color: #0f0f0f;
+  border-radius: ${(props) => props.theme.spacing.tiniest};
+  background-color: ${(props) => props.theme.colors.lightBlack};
 `;
 
 export const DropdownItem = styled.button`
@@ -84,14 +85,14 @@ export const DropdownItem = styled.button`
   align-items: center;
   cursor: pointer;
   height: 30px;
-  background-color: #0f0f0f;
-  padding: 10px;
+  background-color: ${(props) => props.theme.colors.lightBlack};
+  padding: ${(props) => props.theme.spacing.small};
   width: 100%;
-  margin-right: 10px;
+  margin-right: ${(props) => props.theme.spacing.small};
   border: none;
-  border-radius: 2px;
-  color: #d99207;
-  font-size: 12px;
+  border-radius: ${(props) => props.theme.spacing.tiniest};
+  color: ${(props) => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.fontSizes.smallerFontSize};
   font-weight: 500;
   text-align: left;
 

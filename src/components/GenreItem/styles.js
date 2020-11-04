@@ -4,16 +4,16 @@ export const Container = styled.div`
   display: flex;
   width: 150px;
   height: 150px;
-  margin-right: 5px;
-  margin-bottom: 5px;
+  margin-right: ${(props) => props.theme.spacing.smallest};
+  margin-bottom: ${(props) => props.theme.spacing.smallest};
   justify-content: center;
   align-items: center;
   position: relative;
 `;
 
 export const Name = styled.span`
-  font-size: 18px;
-  color: #d99207;
+  font-size: ${(props) => props.theme.fontSizes.headerFontSize};
+  color: ${(props) => props.theme.colors.primary};
   position: absolute;
   top: 50%;
   left: 50%;

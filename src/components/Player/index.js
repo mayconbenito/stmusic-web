@@ -22,6 +22,7 @@ import AppContext from '../../contexts/AppContext';
 import usePersistedState from '../../hooks/usePersistedState';
 import api from '../../services/api';
 import { Creators as PlayerActions } from '../../store/ducks/player';
+import theme from '../../styles/theme';
 import Image from '../Image';
 import SmallTrackItem from '../SmallTrackItem';
 import {
@@ -158,13 +159,13 @@ function Player() {
                   style={{ marginRight: 5 }}
                   onClick={() => dispatch(prev())}
                 >
-                  <MdSkipPrevious size={40} color="#d99207" />
+                  <MdSkipPrevious size={40} color={theme.colors.primary} />
                 </Control>
                 <Control>
                   {showPauseButton && (
                     <MdPause
                       size={40}
-                      color="#d99207"
+                      color={theme.colors.primary}
                       onClick={() => dispatch(pause())}
                     />
                   )}
@@ -172,7 +173,7 @@ function Player() {
                   {!showPauseButton && (
                     <MdPlayArrow
                       size={40}
-                      color="#d99207"
+                      color={theme.colors.primary}
                       onClick={() => dispatch(resume())}
                     />
                   )}
@@ -181,7 +182,7 @@ function Player() {
                   style={{ marginLeft: 5 }}
                   onClick={() => dispatch(next())}
                 >
-                  <MdSkipNext size={40} color="#d99207" />
+                  <MdSkipNext size={40} color={theme.colors.primary} />
                 </Control>
               </Controls>
               <Progress>
@@ -202,7 +203,7 @@ function Player() {
             </TrackMiddle>
 
             <Volume>
-              <MdVolumeMute size={20} color="#d99207" />
+              <MdVolumeMute size={20} color={theme.colors.primary} />
               <VolumeBar
                 onChange={handleVolumeChange}
                 value={volume}
@@ -215,7 +216,7 @@ function Player() {
               style={{ marginLeft: 10 }}
               onClick={handleTogglePlayerQueueList}
             >
-              <MdQueueMusic size={20} color="#d99207" />
+              <MdQueueMusic size={20} color={theme.colors.primary} />
             </Control>
           </>
         )}
@@ -229,7 +230,7 @@ function Player() {
                 `${t('player.queue_list_playing')} - ${player?.queue?.name}`}
             </PlayerQueueListTitle>
             <Control onClick={handleTogglePlayerQueueList}>
-              <MdClose size={20} color="#d99207" />
+              <MdClose size={20} color={theme.colors.primary} />
             </Control>
           </PlayerQueueListHeader>
           {player?.queue && (

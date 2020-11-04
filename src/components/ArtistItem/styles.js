@@ -34,7 +34,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 10px;
+  margin-right: ${(props) => props.theme.spacing.smaller};
   position: relative;
 
   &:hover ${Opacity} {
@@ -51,7 +51,7 @@ export const Image = styled.img`
 export const Name = styled.span`
   width: 80px;
   font-weight: 500;
-  color: #d99207;
-  margin-top: 3px;
+  color: ${(props) => props.theme.colors.primary};
+  margin-top: ${(props) => props.theme.spacing.tiny};
   text-align: center;
 `;

@@ -4,12 +4,12 @@ export const CarouselHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: ${(props) => props.theme.spacing.smallest};
 `;
 
 export const Title = styled.span`
-  font-size: 24px;
-  color: #d99207;
+  font-size: ${(props) => props.theme.fontSizes.biggestFontSize};
+  color: ${(props) => props.theme.colors.primary};
 `;
 
 export const CarouselTitleContainer = styled.div`
@@ -32,12 +32,13 @@ export const Buttons = styled.div`
 
 export const Button = styled.button`
   border: none;
-  background-color: #d99207;
-  padding: 5px 15px;
-  font-size: 12px;
-  border-radius: 15px;
-  color: #000;
-  margin-right: 5px;
+  background-color: ${(props) => props.theme.colors.primary};
+  padding: ${(props) =>
+    `${props.theme.spacing.smallest} ${props.theme.spacing.base}`};
+  font-size: ${(props) => props.theme.fontSizes.smallerFontSize};
+  border-radius: ${(props) => props.theme.spacing.base};
+  color: ${(props) => props.theme.colors.black};
+  margin-right: ${(props) => props.theme.spacing.smallest};
   font-weight: bold;
   font-family: Roboto;
   cursor: pointer;

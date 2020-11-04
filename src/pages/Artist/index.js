@@ -15,6 +15,7 @@ import { isLoggedIn } from '../../helpers/session';
 import useFetch from '../../hooks/useFetch';
 import api from '../../services/api';
 import { Creators as PlayerActions } from '../../store/ducks/player';
+import theme from '../../styles/theme';
 import {
   Content,
   Header,
@@ -256,7 +257,7 @@ function Artist({
                 })
               }
             >
-              <MdPlayArrow size={24} color="#d99207" />
+              <MdPlayArrow size={24} color={theme.colors.primary} />
             </SectionPlayButton>
           </SectionTitleContainer>
           <TracksList>
@@ -285,7 +286,7 @@ function Artist({
                 })
               }
             >
-              <MdPlayArrow size={24} color="#d99207" />
+              <MdPlayArrow size={24} color={theme.colors.primary} />
             </SectionPlayButton>
           </SectionTitleContainer>
           <TracksList>

@@ -2,6 +2,7 @@ import disableScroll from 'disable-scroll';
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { MdMoreVert } from 'react-icons/md';
 
+import theme from '../../styles/theme';
 import { Container, Button, MenuItems, MenuItem } from './styles';
 
 export const ToolbarMenuItem = ({ children, ...props }) => {
@@ -59,7 +60,7 @@ function ToolbarMenu({ style, children, ...props }) {
   return (
     <Container ref={ref} {...props} style={style}>
       <Button onClick={() => setShowMenuItems(!showMenuItems)}>
-        <MdMoreVert size={24} color="#d99207" />
+        <MdMoreVert size={24} color={theme.colors.primary} />
       </Button>
       <MenuItems onClick={handleClickOnMenuItems} showMenuItems={showMenuItems}>
         {children}

@@ -1,0 +1,10 @@
+export const primary = '#d99207';
+export const lightPrimary = '#ffa800';
+export const black = '#000000';
+export const lightBlack = '#0f0f0f';
+export const darkestGray = '#141414';
+export const darkGray = '##817e7e';
+export const mediumGray = '#606060';
+export const white = '#ffffff';
+export const red = '#ff1f1f';
+export const transparent = 'rgba(0, 0, 0, 0)';

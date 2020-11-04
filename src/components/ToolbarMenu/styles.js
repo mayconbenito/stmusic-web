@@ -16,19 +16,19 @@ export const MenuItems = styled.div`
   flex-direction: column;
   z-index: 30;
   right: 0px;
-  background-color: #141414;
-  padding: 5px 0px;
-  border-radius: 3px;
+  background-color: ${(props) => props.theme.colors.darkestGray};
+  padding: ${(props) => props.theme.spacing.smallest} 0px;
+  border-radius: ${(props) => props.theme.spacing.tiny};
   -webkit-box-shadow: 1px 1px 15px 0px rgba(0, 0, 0, 1);
   -moz-box-shadow: 1px 1px 15px 0px rgba(0, 0, 0, 1);
   box-shadow: 1px 1px 15px 0px rgba(0, 0, 0, 1);
 `;
 
 export const MenuItem = styled.span`
-  color: #ffffff;
+  color: ${(props) => props.theme.colors.white};
   line-height: 25px;
-  padding: 4px 5px;
-  font-size: 12px;
+  padding: ${(props) => props.theme.spacing.smallest};
+  font-size: ${(props) => props.theme.fontSizes.smallerFontSize};
   white-space: nowrap;
 
   &:hover {

@@ -7,6 +7,7 @@ import { useInfiniteQuery, useMutation, useQueryCache } from 'react-query';
 import fallback from '../../assets/images/fallback.png';
 import AppContext from '../../contexts/AppContext';
 import api from '../../services/api';
+import theme from '../../styles/theme';
 import Image from '../Image';
 import LoadingSpinner from '../LoadingSpinner';
 import {
@@ -103,7 +104,7 @@ function PlaylistModal() {
         <Header>
           <HeaderTitle>{t('playlist_modal.title')}</HeaderTitle>
           <HeaderButton onClick={handleCloseModal}>
-            <MdClear size={18} color="#d99207" />
+            <MdClear size={18} color={theme.colors.primary} />
           </HeaderButton>
         </Header>
         <Body ref={playlistListRef}>
@@ -127,7 +128,7 @@ function PlaylistModal() {
                       fallback={fallback}
                       style={{
                         borderWidth: 1,
-                        borderColor: '#141414',
+                        borderColor: theme.colors.darkestGray,
                         borderStyle: 'solid',
                         width: 90,
                         height: 90,

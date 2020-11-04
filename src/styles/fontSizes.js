@@ -1,0 +1,10 @@
+export const extraLargeFontSize = '40px';
+export const largeFontSize = '26px';
+export const biggestFontSize = '24px';
+export const biggerFontSize = '22px';
+export const bigFontSize = '20px';
+export const baseFontSize = '16px';
+export const smallFontSize = '14px';
+export const smallerFontSize = '12px';
+export const smallestFontSize = '10px';
+export const headerFontSize = '18px';

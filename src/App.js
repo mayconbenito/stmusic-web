@@ -8,10 +8,10 @@ import { Provider } from 'react-redux';
 
 import { AppProvider } from './contexts/AppContext';
 import { SearchProvider } from './contexts/SearchContext';
-import GlobalStyles from './GlobalStyles';
 import DownloadApp from './pages/DownloadApp';
 import Routes from './routes';
 import store from './store';
+import GlobalStyles from './styles/GlobalStyles';
 
 function App() {
   const { t } = useTranslation();
@@ -24,10 +24,10 @@ function App() {
 
   if (isMobile) {
     return (
-      <>
+      <AppProvider>
         <GlobalStyles />
         <DownloadApp />
-      </>
+      </AppProvider>
     );
   }
 
