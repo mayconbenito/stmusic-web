@@ -7,8 +7,9 @@ export const Content = styled.div`
   top: 0;
   height: ${(props) =>
     props.theme.showPlayer ? 'calc(100% - 100px)' : '100%'};
-  background-color: #141414;
-  padding: 10px 15px;
+  background-color: ${(props) => props.theme.colors.darkestGray};
+  padding: ${(props) =>
+    `${props.theme.spacing.small} ${props.theme.spacing.base}`};
   overflow-y: auto;
   overflow-x: hidden;
 
@@ -20,14 +21,20 @@ export const Content = styled.div`
 export const Header = styled.div`
   display: flex;
   width: 100%;
-  border-bottom: 1px solid #d99207;
-  padding-bottom: 5px;
-  margin-top: 20px;
+  border-bottom: 1px solid ${(props) => props.theme.colors.primary};
+  padding-bottom: ${(props) => props.theme.spacing.smallest};
+  margin-top: ${(props) => props.theme.spacing.large};
+`;
+
+export const HeaderType = styled.span`
+  color: ${(props) => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.fontSizes.smallFontSize};
+  text-transform: uppercase;
 `;
 
 export const HeaderTitle = styled.h2`
-  color: #d99207;
-  font-size: 27px;
+  color: ${(props) => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.fontSizes.largeFontSize};
   font-weight: 300;
 `;
 
@@ -35,52 +42,53 @@ export const HeaderInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 5px;
+  margin-left: ${(props) => props.theme.spacing.smallest};
 `;
 
 export const Meta = styled.span`
-  color: #d99207;
-  font-size: 14px;
-  margin-right: 5px;
+  color: ${(props) => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.fontSizes.smallFontSize};
+  margin-right: ${(props) => props.theme.spacing.smallest};
 `;
 
 export const Buttons = styled.div`
   display: flex;
-  margin-top: 10px;
+  margin-top: ${(props) => props.theme.spacing.small};
 `;
 
 export const Button = styled.button`
   border: none;
-  background-color: #d99207;
-  padding: 5px 15px;
-  font-size: 12px;
-  border-radius: 15px;
-  color: #000;
-  margin-right: 5px;
+  background-color: ${(props) => props.theme.colors.primary};
+  padding: ${(props) =>
+    `${props.theme.spacing.smallest} ${props.theme.spacing.base}`};
+  font-size: ${(props) => props.theme.fontSizes.small};
+  border-radius: ${(props) => props.theme.spacing.base};
+  color: ${(props) => props.theme.colors.black};
+  margin-right: ${(props) => props.theme.spacing.smallest};
   font-weight: bold;
   font-family: Roboto;
-  cursor: pointer;
+  cursor: ${(props) => (props.cursorPointer ? 'pointer' : 'default')};
 `;
 
 export const Section = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: ${(props) => props.theme.spacing.large};
 
   &:last-child {
     margin-bottom: 0px;
   }
 `;
 
+export const SectionTitle = styled.span`
+  color: ${(props) => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.fontSizes.biggestFontSize};
+`;
+
 export const SectionTitleContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-`;
-
-export const SectionTitle = styled.span`
-  color: #d99207;
-  font-size: 24px;
 `;
 
 export const SectionPlayButton = styled.button`
@@ -92,5 +100,5 @@ export const SectionPlayButton = styled.button`
 export const TracksList = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 5px 0px;
+  padding: ${(props) => props.theme.spacing.smallest} 0px;
 `;

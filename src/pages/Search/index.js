@@ -8,6 +8,7 @@ import SmallArtistItem from '../../components/SmallArtistItem';
 import SmallTrackItem from '../../components/SmallTrackItem';
 import SearchContext from '../../contexts/SearchContext';
 import isStringEmpty from '../../helpers/isStringEmpty';
+import theme from '../../styles/theme';
 import {
   GlobalHeaderContainer,
   Content,
@@ -49,7 +50,7 @@ function Search({ history }) {
 
         {!isStringEmpty(searchContext.query) && (
           <ClearSearchButton onClick={handleClearSearch}>
-            <MdClear size={26} color="#d99207" />
+            <MdClear size={26} color={theme.colors.primary} />
           </ClearSearchButton>
         )}
       </SearchInputContainer>

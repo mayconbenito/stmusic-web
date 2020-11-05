@@ -1,8 +1,10 @@
 import React from 'react';
 import { Img } from 'react-image';
 
+import theme from '../../styles/theme';
+
 function Loader({ style }) {
-  return <div style={{ ...style, background: '#000' }} />;
+  return <div style={{ ...style, background: theme.colors.black }} />;
 }
 
 function Image(props) {

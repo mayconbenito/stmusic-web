@@ -5,6 +5,7 @@ import { MdPlayArrow } from 'react-icons/md';
 
 import 'keen-slider/keen-slider.min.css';
 
+import theme from '../../styles/theme';
 import {
   CarouselHeader,
   Title,
@@ -56,7 +57,7 @@ function Carousel({ totalItems, carouselName, children, onPlay }) {
           <Title>{carouselName}</Title>
           {onPlay && (
             <CarouselPlayButton onClick={onPlay}>
-              <MdPlayArrow size={24} color="#d99207" />
+              <MdPlayArrow size={24} color={theme.colors.primary} />
             </CarouselPlayButton>
           )}
         </CarouselTitleContainer>

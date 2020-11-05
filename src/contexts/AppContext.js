@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
+import theme from '../styles/theme';
+
 const AppContext = React.createContext({
   showPlayer: false,
   togglePlayer() {},
@@ -39,7 +41,7 @@ export const AppProvider = ({ children }) => {
         closePlaylistModal,
       }}
     >
-      <ThemeProvider theme={{ showPlayer }}>{children}</ThemeProvider>
+      <ThemeProvider theme={{ showPlayer, ...theme }}>{children}</ThemeProvider>
     </AppContext.Provider>
   );
 };

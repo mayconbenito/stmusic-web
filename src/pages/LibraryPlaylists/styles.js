@@ -10,14 +10,14 @@ export const PlaylistList = styled.div`
 
 export const PlaylistItem = styled.div`
   display: flex;
-  margin-top: 5px;
+  margin-top: ${(props) => props.theme.spacing.smallest};
 `;
 
 export const PlaylistInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-left: 5px;
+  margin-left: ${(props) => props.theme.spacing.smallest};
 `;
 
 export const PlaylistMeta = styled.div`
@@ -26,17 +26,17 @@ export const PlaylistMeta = styled.div`
 `;
 
 export const PlaylistName = styled.span`
-  color: #d99207;
+  color: ${(props) => props.theme.colors.primary};
   cursor: pointer;
 `;
 
 export const PlaylistTracks = styled.span`
-  color: #d99207;
-  font-size: 10px;
+  color: ${(props) => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.fontSizes.smallestFontSize};
 `;
 
 export const Warning = styled.span`
-  color: #d99207;
+  color: ${(props) => props.theme.colors.primary};
   font-weight: 500;
-  font-size: 12px;
+  font-size: ${(props) => props.theme.fontSizes.smallerFontSize};
 `;

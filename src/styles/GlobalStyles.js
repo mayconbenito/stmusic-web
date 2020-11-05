@@ -9,11 +9,11 @@ export default createGlobalStyle`
   }
 
   body {
-    background-color: #141414;
+    background-color: ${(props) => props.theme.colors.darkestGray};
   }
 
   span, a, p, label, h1, h2, h3 {
-    color: #d99207;
+    color: ${(props) => props.theme.colors.primary};
     font-family: Roboto, sans-serif;
   }
 
@@ -31,10 +31,10 @@ export default createGlobalStyle`
   }
 
   ::-webkit-scrollbar-track {
-    background-color: #fff;
+    background-color: ${(props) => props.theme.colors.white};
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #d99207;
+    background-color: ${(props) => props.theme.colors.primary};
   }
 `;

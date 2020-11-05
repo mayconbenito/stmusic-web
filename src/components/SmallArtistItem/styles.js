@@ -2,21 +2,21 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
-  margin-top: 5px;
+  margin-top: ${(props) => props.theme.spacing.smallest};
 `;
 
 export const Info = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 5px;
+  margin-left: ${(props) => props.theme.spacing.smallest};
 `;
 
 export const Name = styled.span`
-  color: #d99207;
+  color: ${(props) => props.theme.colors.primary};
   cursor: pointer;
 `;
 
 export const Followers = styled.span`
-  color: #d99207;
-  font-size: 10px;
+  color: ${(props) => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.fontSize.smallestFontSize};
 `;

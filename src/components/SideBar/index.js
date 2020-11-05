@@ -5,6 +5,7 @@ import { useMutation, useQueryCache } from 'react-query';
 
 import { isLoggedIn } from '../../helpers/session';
 import api from '../../services/api';
+import theme from '../../styles/theme';
 import {
   Container,
   Header,
@@ -50,19 +51,19 @@ function SideBar() {
     <Container>
       <Header>
         <Logo>
-          <MdAudiotrack size={40} color="#d99207" />
+          <MdAudiotrack size={40} color={theme.colors.primary} />
         </Logo>
 
         <Menu>
           <div>
             <MenuItem>
-              <MdHome size={36} color="#d99207" />
+              <MdHome size={36} color={theme.colors.primary} />
               <MenuText to="/">{t('sidebar.home')}</MenuText>
             </MenuItem>
 
             {isLoggedIn() && (
               <MenuItem>
-                <MdFolder size={36} color="#d99207" />
+                <MdFolder size={36} color={theme.colors.primary} />
                 <MenuText to="/library/playlists">
                   {t('sidebar.library')}
                 </MenuText>
@@ -70,7 +71,7 @@ function SideBar() {
             )}
 
             <MenuItem>
-              <MdSearch size={36} color="#d99207" />
+              <MdSearch size={36} color={theme.colors.primary} />
               <MenuText to="/search">{t('sidebar.search')}</MenuText>
             </MenuItem>
           </div>

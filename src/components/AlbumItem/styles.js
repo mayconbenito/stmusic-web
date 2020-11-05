@@ -3,20 +3,20 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin-right: 5px;
-  margin-bottom: 5px;
+  margin-right: ${(props) => props.theme.spacing.smallest};
+  margin-bottom: ${(props) => props.theme.spacing.smallest};
   width: 150px;
 `;
 
 export const Details = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 3px;
+  margin-top: ${(props) => props.theme.spacing.tiny};
 `;
 
 export const Name = styled.span`
-  font-size: 14px;
-  color: #d99207;
+  font-size: ${(props) => props.theme.fontSizes.smallFontSize};
+  color: ${(props) => props.theme.colors.primary};
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -24,13 +24,13 @@ export const Name = styled.span`
 `;
 
 export const TextList = styled.span`
-  color: #606060;
+  color: ${(props) => props.theme.colors.mediumGray};
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  font-size: 10px;
+  font-size: ${(props) => props.theme.fontSizes.smallestFontSize};
 `;
 
 export const Type = styled.span`
-  color: #606060;
+  color: ${(props) => props.theme.colors.mediumGray};
 `;

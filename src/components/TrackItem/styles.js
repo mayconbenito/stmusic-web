@@ -47,26 +47,26 @@ export const Container = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
-  margin-right: 5px;
-  margin-bottom: 5px;
+  margin-right: ${(props) => props.theme.spacing.smallest};
+  margin-bottom: ${(props) => props.theme.spacing.smallest};
   max-width: 150px;
 `;
 
 export const Details = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 3px;
+  margin-top: ${(props) => props.theme.spacing.tiny};
   cursor: pointer;
 `;
 
 export const Type = styled.span`
-  color: #606060;
+  color: ${(props) => props.theme.colors.mediumGray}; ;
 `;
 
 export const Name = styled.span`
   width: 150px;
-  color: #d99207;
-  font-size: 14px;
+  color: ${(props) => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.fontSizes.smallFontSize};
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -74,18 +74,18 @@ export const Name = styled.span`
 
 export const TextList = styled.span`
   flex-direction: row;
-  color: #606060;
-  font-size: 10px;
+  color: ${(props) => props.theme.colors.mediumGray};
+  font-size: ${(props) => props.theme.fontSizes.smallest};
 `;
 
 export const ArtistName = styled.span`
-  color: #606060;
+  color: ${(props) => props.theme.colors.mediumGray}; ;
 `;
 
 export const ToolbarButton = styled.div`
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: ${(props) => props.theme.spacing.smallest};
+  right: ${(props) => props.theme.spacing.smallest};
   z-index: 5;
   border: none;
   background-color: transparent;
