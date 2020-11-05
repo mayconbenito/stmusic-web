@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/core": "^10.0.35",
+    "@emotion/core": "^10.1.1",
     "axios": "^0.19.2",
     "connected-react-router": "^6.6.1",
     "disable-scroll": "^0.5.1",
