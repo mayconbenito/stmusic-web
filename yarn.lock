@@ -6872,10 +6872,10 @@ jwt-decode@^3.1.1:
   resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-3.1.1.tgz#526710779567c380910139f790da2910c529e49f"
   integrity sha512-EaH9dTD9ogCmxZRdiTsIUIJslqjoFfk8nEAi+Bq8u/aUjrVuhZ6eZjhWRH6SC9NBA0Lwr3K35H2zDnWvK/n4vQ==
 
-keen-slider@^5.2.4:
-  version "5.2.4"
-  resolved "https://registry.yarnpkg.com/keen-slider/-/keen-slider-5.2.4.tgz#9e2a889c63c02a651c81caa438f3691e9a3bc0a8"
-  integrity sha512-z39afyASW63B+1FzWGzBkvXAnzJl3gAD8M+32TmhJAPJqjckCaKYm7YBjpSba04AoVMQw8y9U1LVcUucVVIQkQ==
+keen-slider@^5.3.2:
+  version "5.3.2"
+  resolved "https://registry.yarnpkg.com/keen-slider/-/keen-slider-5.3.2.tgz#41277ab9efca7dba3d1b41fc3bcfc368c4afd214"
+  integrity sha512-sd74UMxQT8o7aotS7wjFF4eZNvEoCRpEL2z40Mas7SfqwJFEc3x9kiD8+GzD8djXXKaFuigoPn2Wn58pOyEBAg==
 
 killable@^1.0.1:
   version "1.0.1"
