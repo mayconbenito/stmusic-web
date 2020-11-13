@@ -202,9 +202,6 @@ function Artist({
               <Meta>{`${artistQuery.data.artist.followers} ${t(
                 'commons.followers'
               )}`}</Meta>
-              <Meta>{`${artistQuery.data.artist.tracks} ${t(
-                'commons.tracks'
-              )}`}</Meta>
             </div>
             <Buttons>
               {isLoggedIn() && (
