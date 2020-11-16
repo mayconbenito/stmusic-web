@@ -18,5 +18,5 @@ export const Name = styled.span`
 
 export const Followers = styled.span`
   color: ${(props) => props.theme.colors.primary};
-  font-size: ${(props) => props.theme.fontSize.smallestFontSize};
+  font-size: ${(props) => props.theme.fontSizes.smallestFontSize};
 `;
