@@ -9440,10 +9440,10 @@ react-virtualized@^9.22.2:
     prop-types "^15.7.2"
     react-lifecycles-compat "^3.0.4"
 
-react-web-track-player@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/react-web-track-player/-/react-web-track-player-1.4.1.tgz#90cdd9790541419b57e12beaf01d422cad7db417"
-  integrity sha512-CottouEQsjHeT8u3ql+EkxhUOX8i+4cepu6c15pJEw3KWnkOrOBAZElghEzH3OFm/1l9Q/Zmrt5/on6mBkp0HQ==
+react-web-track-player@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/react-web-track-player/-/react-web-track-player-1.4.2.tgz#e336ace8ad49042c0455a2e0078f03761c9030ce"
+  integrity sha512-+BRsjRkLnRpKCCodSVj7wdX2BfOehOR+oK1SGuc7hr7J2WRPKTdwEyvhm6eQrZh/buZLe/GPP/2kBrgNfUy6Yg==
 
 react@^16.13.1:
   version "16.14.0"
