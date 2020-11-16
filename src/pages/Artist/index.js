@@ -205,7 +205,7 @@ function Artist({
             </div>
             <Buttons>
               {isLoggedIn() && (
-                <Button onClick={handleFollowing}>
+                <Button cursorPointer onClick={handleFollowing}>
                   {artistFollowingStateQuery.isSuccess &&
                   artistFollowingStateQuery.data.artists.find(
                     (itemId) => itemId === parseInt(artistId)
