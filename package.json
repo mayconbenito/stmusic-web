@@ -8,7 +8,7 @@
     "connected-react-router": "^6.6.1",
     "disable-scroll": "^0.5.1",
     "history": "^4.10.1",
-    "i18next": "^19.6.3",
+    "i18next": "^19.8.4",
     "i18next-browser-languagedetector": "^6.0.1",
     "react": "^17.0.1",
     "react-bottom-scroll-listener": "^4.1.0",
