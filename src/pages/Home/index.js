@@ -8,6 +8,7 @@ import GenreItem from '../../components/GenreItem';
 import GlobalHeader from '../../components/GlobalHeader';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
+import { isLoggedIn } from '../../helpers/session';
 import useFetch from '../../hooks/useFetch';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import { Content, ContentTitle, Section } from './styles';
@@ -16,10 +17,15 @@ function Home({ history }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const recentlyPlayedQuery = useFetch(
-    'recentlyPlayed',
-    '/app/me/recently-played?page=1&limit=30'
-  );
+  let recentlyPlayedQuery;
+
+  if (isLoggedIn()) {
+    recentlyPlayedQuery = useFetch(
+      isLoggedIn() ? 'recentlyPlayed' : null,
+      '/app/me/recently-played?page=1&limit=30'
+    );
+  }
+
   const genresQuery = useFetch('genres', '/app/genres?page=1&limit=30');
   const trendingQuery = useFetch(
     'trending',
@@ -49,7 +55,7 @@ function Home({ history }) {
   }
 
   function isLoading() {
-    if (!recentlyPlayedQuery.isLoading) {
+    if (!recentlyPlayedQuery?.isLoading) {
       return false;
     }
 
@@ -80,7 +86,7 @@ function Home({ history }) {
         <>
           <ContentTitle>{t('home.title')}</ContentTitle>
 
-          {recentlyPlayedQuery.data?.tracks?.length > 0 && (
+          {recentlyPlayedQuery?.data?.tracks?.length > 0 && (
             <Section>
               <Carousel
                 carouselName={t('home.recently_played')}
