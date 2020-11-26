@@ -51,6 +51,10 @@ export const ClearSearchButton = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
+
+  svg:hover {
+    color: ${(props) => props.theme.colors.lightPrimary} !important;
+  }
 `;
 
 export const SectionContainer = styled.div`

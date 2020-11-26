@@ -25,6 +25,11 @@ export const NavigationButton = styled.button`
   margin-right: ${(props) => props.theme.spacing.small};
   border: none;
   border-radius: ${(props) => props.theme.spacing.tiniest};
+
+  &:hover {
+    background-color: ${(props) =>
+      props.hover ? '#202020' : props.theme.colors.lightBlack};
+  }
 `;
 
 export const LoginButton = styled.button`
@@ -47,11 +52,16 @@ export const UserInfo = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
   height: 30px;
   padding: ${(props) => props.theme.spacing.smallest} 0px;
   padding-left: ${(props) => props.theme.spacing.smallest};
   border-radius: ${(props) => props.theme.spacing.tiniest};
   background-color: ${(props) => props.theme.colors.lightBlack};
+
+  &:hover {
+    background-color: #202020;
+  }
 `;
 
 export const Name = styled.span`

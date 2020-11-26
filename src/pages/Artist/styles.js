@@ -68,6 +68,10 @@ export const Button = styled.button`
   font-weight: bold;
   font-family: Roboto;
   cursor: ${(props) => (props.cursorPointer ? 'pointer' : 'default')};
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.lightPrimary};
+  }
 `;
 
 export const Section = styled.div`
@@ -95,6 +99,10 @@ export const SectionPlayButton = styled.button`
   border: none;
   background: inherit;
   cursor: pointer;
+
+  svg:hover {
+    color: ${(props) => props.theme.colors.lightPrimary} !important;
+  }
 `;
 
 export const TracksList = styled.div`

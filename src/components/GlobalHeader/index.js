@@ -131,9 +131,9 @@ function GlobalHeader({ history }) {
       </NavigationButtons>
 
       {isLoggedIn() ? (
-        <UserInfo ref={dropdownRef}>
+        <UserInfo ref={dropdownRef} onClick={handleShowDropdown}>
           <Name>{user.name}</Name>
-          <ArrowDown onClick={handleShowDropdown}>
+          <ArrowDown>
             <MdArrowDropDown size={24} color={theme.colors.primary} />
           </ArrowDown>
           {showDropdown && (
