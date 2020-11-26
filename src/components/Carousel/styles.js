@@ -42,4 +42,8 @@ export const Button = styled.button`
   font-weight: bold;
   font-family: Roboto;
   cursor: pointer;
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.lightPrimary};
+  }
 `;

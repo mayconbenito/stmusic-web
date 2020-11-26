@@ -115,4 +115,8 @@ export const CreatePlaylistButton = styled.button`
   padding: ${(props) => props.theme.spacing.smallest};
   cursor: pointer;
   font-weight: 500;
+
+  &:hover {
+    background-color: #202020;
+  }
 `;

@@ -95,6 +95,10 @@ export const Submit = styled.button`
   cursor: pointer;
   border-bottom: ${(props) =>
     props.warning ? `1px solid ${props.theme.colors.primary}` : 'none'};
+
+  &:hover {
+    background-color: #202020;
+  }
 `;
 
 export const FormFooter = styled.div`
@@ -113,4 +117,8 @@ export const Button = styled(Link)`
   cursor: pointer;
   border: none;
   align-self: flex-start;
+
+  &:hover {
+    background-color: #202020;
+  }
 `;

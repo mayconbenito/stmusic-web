@@ -83,6 +83,10 @@ export const Control = styled.button`
   border: none;
   cursor: pointer;
   background-color: transparent;
+
+  svg:hover {
+    color: ${(props) => props.theme.colors.lightPrimary} !important;
+  }
 `;
 
 export const Progress = styled.div`
