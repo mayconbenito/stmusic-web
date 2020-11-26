@@ -44,6 +44,10 @@ export const LoginButton = styled.button`
     `${props.theme.spacing.smallest} ${props.theme.spacing.small}`};
   border: none;
   border-radius: ${(props) => props.theme.spacing.tiniest};
+
+  &:hover {
+    background-color: #202020;
+  }
 `;
 
 export const UserInfo = styled.div`
