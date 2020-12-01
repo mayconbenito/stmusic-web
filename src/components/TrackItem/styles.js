@@ -75,7 +75,7 @@ export const Name = styled.span`
 export const TextList = styled.span`
   flex-direction: row;
   color: ${(props) => props.theme.colors.mediumGray};
-  font-size: ${(props) => props.theme.fontSizes.smallest};
+  font-size: ${(props) => props.theme.fontSizes.smallestFontSize};
 `;
 
 export const ArtistName = styled.span`
