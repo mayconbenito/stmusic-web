@@ -25,7 +25,7 @@ function SideBar() {
 
   const [createPlaylist] = useMutation(
     async ({ name }) => {
-      const response = await api.post(`/app/me/playlists`, {
+      const response = await api.post(`/app/me/library/playlists`, {
         name,
       });
 

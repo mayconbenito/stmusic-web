@@ -24,7 +24,7 @@ function LibraryPlaylists({ history }) {
   const playlistsQuery = useInfiniteQuery(
     'libraryPlaylists',
     async (key, page = 1) => {
-      const response = await api.get(`/app/me/playlists?page=${page}`);
+      const response = await api.get(`/app/me/library/playlists?page=${page}`);
 
       return response.data;
     },
