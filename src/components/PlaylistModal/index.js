@@ -35,7 +35,7 @@ function PlaylistModal() {
   const playlistsQuery = useInfiniteQuery(
     'libraryPlaylists',
     async (key, page = 1) => {
-      const response = await api.get(`/app/me/playlists?page=${page}`);
+      const response = await api.get(`/app/me/library/playlists?page=${page}`);
 
       return response.data;
     },
@@ -52,7 +52,7 @@ function PlaylistModal() {
 
   const [addTrackToPlaylist] = useMutation(
     async ({ playlistId, track }) => {
-      await api.post(`/app/playlists/${playlistId}/tracks`, {
+      await api.post(`/app/me/library/playlists/${playlistId}/tracks`, {
         tracks: [track.id],
       });
 

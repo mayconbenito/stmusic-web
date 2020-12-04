@@ -68,9 +68,12 @@ function Playlist({
 
   const [removeTrackFromPlaylist] = useMutation(
     async ({ trackId }) => {
-      const response = await api.delete(`/app/playlists/${playlistId}/tracks`, {
-        data: { tracks: [trackId] },
-      });
+      const response = await api.delete(
+        `/app/me/library/playlists/${playlistId}/tracks`,
+        {
+          data: { tracks: [trackId] },
+        }
+      );
 
       return response.data;
     },
