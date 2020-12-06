@@ -43,7 +43,7 @@ function Artist({
 
   const artistFollowingStateQuery = useFetch(
     `artist-${artistId}-followingState`,
-    `/app/me/following/artists/contains?artists=${artistId}`
+    `/app/me/library/following/artists/contains?artists=${artistId}`
   );
   const artistQuery = useFetch(
     `artist-${artistId}`,
@@ -64,7 +64,7 @@ function Artist({
 
   const [followArtist] = useMutation(
     async () => {
-      const response = await api.put('/app/me/following/artists', {
+      const response = await api.put('/app/me/library/following/artists', {
         artists: [parseInt(artistId)],
       });
 
@@ -101,7 +101,7 @@ function Artist({
 
   const [unfollowArtist] = useMutation(
     async () => {
-      const response = await api.delete('/app/me/following/artists', {
+      const response = await api.delete('/app/me/library/following/artists', {
         data: { artists: [artistId] },
       });
 
