@@ -15,7 +15,9 @@ function LibraryArtists({ history }) {
   const artistsQuery = useInfiniteQuery(
     'libraryArtists',
     async (key, page = 1) => {
-      const response = await api.get(`/app/me/following/artists?page=${page}`);
+      const response = await api.get(
+        `/app/me/library/following/artists?page=${page}`
+      );
 
       return response.data;
     },
