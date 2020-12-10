@@ -157,11 +157,12 @@ function Player() {
               <Controls>
                 <Control
                   style={{ marginRight: 5 }}
+                  active={player.queue.type !== 'singleTrack'}
                   onClick={() => dispatch(prev())}
                 >
                   <MdSkipPrevious size={40} color={theme.colors.primary} />
                 </Control>
-                <Control>
+                <Control active>
                   {showPauseButton && (
                     <MdPause
                       size={40}
@@ -180,6 +181,7 @@ function Player() {
                 </Control>
                 <Control
                   style={{ marginLeft: 5 }}
+                  active={player.queue.type !== 'singleTrack'}
                   onClick={() => dispatch(next())}
                 >
                   <MdSkipNext size={40} color={theme.colors.primary} />

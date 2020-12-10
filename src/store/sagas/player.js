@@ -201,6 +201,52 @@ function* loadQueue({ queue, predefinedQueue }) {
   } catch (err) {}
 }
 
+function* loadSingleTrack({ track }) {
+  try {
+    TrackPlayer.reset();
+
+    TrackPlayer.add([
+      {
+        id: track.id,
+        url: `${process.env.REACT_APP_STREAM_URL}/yt?url=${track.youtubeId}`,
+        duration: track.duration,
+        title: track.name,
+        artist: track.artists.map(
+          (artist, index) => (index ? ', ' : '') + artist.name
+        )[0],
+        artwork: [{ src: track.picture, sizes: '512x512' }],
+        album: track.album?.name,
+      },
+    ]);
+
+    const tracksQueue = TrackPlayer.getQueue();
+
+    const currentTrack = TrackPlayer.getCurrentTrack();
+    const currentTrackIndex = tracksQueue.findIndex(
+      (trackFromQueue) => trackFromQueue.id === currentTrack?.id
+    );
+
+    yield put(
+      successLoadQueue({
+        active: true,
+        showPlayer: true,
+        queue: {
+          name: track.name,
+          currentTrackIndex,
+          id: `singleTrack-${track.id}`,
+          items: 1,
+          total: 1,
+          page: 1,
+          type: 'singleTrack',
+        },
+      })
+    );
+
+    yield call(TrackPlayer.play);
+    // eslint-disable-next-line no-empty
+  } catch (err) {}
+}
+
 function* play({ track, queueId }) {
   try {
     const playerState = yield select((state) => state.player);
@@ -296,6 +342,7 @@ export default function* playerSaga() {
   yield all([
     init(),
     takeLatest(PlayerTypes.LOAD_QUEUE, loadQueue),
+    takeLatest(PlayerTypes.LOAD_SINGLE_TRACK, loadSingleTrack),
     takeLatest(PlayerTypes.PLAY, play),
     takeLatest(PlayerTypes.RESUME, resume),
     takeLatest(PlayerTypes.PAUSE, pause),
