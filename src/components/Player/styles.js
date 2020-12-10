@@ -81,11 +81,12 @@ export const Controls = styled.div`
 
 export const Control = styled.button`
   border: none;
-  cursor: pointer;
+  cursor: ${(props) => (props.active ? 'pointer' : 'default')};
   background-color: transparent;
 
   svg:hover {
-    color: ${(props) => props.theme.colors.lightPrimary} !important;
+    color: ${(props) =>
+      props.active && props.theme.colors.lightPrimary} !important;
   }
 `;
 

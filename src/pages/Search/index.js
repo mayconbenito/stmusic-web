@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdClear } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
 
 import GlobalHeader from '../../components/GlobalHeader';
 import SmallAlbumItem from '../../components/SmallAlbumItem';
@@ -8,6 +9,7 @@ import SmallArtistItem from '../../components/SmallArtistItem';
 import SmallTrackItem from '../../components/SmallTrackItem';
 import SearchContext from '../../contexts/SearchContext';
 import isStringEmpty from '../../helpers/isStringEmpty';
+import { Creators as PlayerActions } from '../../store/ducks/player';
 import theme from '../../styles/theme';
 import {
   GlobalHeaderContainer,
@@ -23,6 +25,7 @@ import {
 
 function Search({ history }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const searchContext = useContext(SearchContext);
 
   function handleInput(e) {
@@ -91,7 +94,12 @@ function Search({ history }) {
             <SectionTitle>{t('commons.tracks')}</SectionTitle>
             <SectionItems>
               {searchContext.results.tracks.map((data) => (
-                <SmallTrackItem key={data.id} showMenu data={data} />
+                <SmallTrackItem
+                  key={data.id}
+                  showMenu
+                  data={data}
+                  onClick={() => dispatch(PlayerActions.loadSingleTrack(data))}
+                />
               ))}
             </SectionItems>
           </Section>

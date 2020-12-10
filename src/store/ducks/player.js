@@ -3,6 +3,7 @@ import { createActions, createReducer } from 'reduxsauce';
 export const { Types, Creators } = createActions(
   {
     loadQueue: ['queue', 'predefinedQueue'],
+    loadSingleTrack: ['track'],
     successLoadQueue: ['data'],
     play: ['track', 'queueId'],
     pause: [],
@@ -27,6 +28,8 @@ const initialState = {
 };
 
 const loadQueue = (state = initialState) => state;
+
+const loadSingleTrack = (state = initialState) => state;
 
 const successLoadQueue = (state = initialState, action) => ({
   ...state,
@@ -67,6 +70,7 @@ const setVolume = (state = initialState) => state;
 
 export default createReducer(initialState, {
   [Types.LOAD_QUEUE]: loadQueue,
+  [Types.LOAD_SINGLE_TRACK]: loadSingleTrack,
   [Types.SUCCESS_LOAD_QUEUE]: successLoadQueue,
   [Types.PLAY]: play,
   [Types.PAUSE]: pause,
