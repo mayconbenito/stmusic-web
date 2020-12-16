@@ -64,7 +64,8 @@ export const UserInfo = styled.div`
   background-color: ${(props) => props.theme.colors.lightBlack};
 
   &:hover {
-    background-color: #202020;
+    background-color: ${(props) =>
+      props.menuHover ? '#202020' : props.theme.colors.lightBlack};
   }
 `;
 

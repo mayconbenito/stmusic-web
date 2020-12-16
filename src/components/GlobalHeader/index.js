@@ -25,6 +25,7 @@ function GlobalHeader({ history }) {
   const lastLocation = useLastLocation();
   const { t } = useTranslation();
   const { user } = getSessionData();
+  const [userInfoHover, setUserInfoHover] = useState(true);
 
   const [canGoBack, setCanGoBack] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -131,14 +132,22 @@ function GlobalHeader({ history }) {
       </NavigationButtons>
 
       {isLoggedIn() ? (
-        <UserInfo ref={dropdownRef} onClick={handleShowDropdown}>
+        <UserInfo
+          ref={dropdownRef}
+          menuHover={userInfoHover}
+          onClick={handleShowDropdown}
+        >
           <Name>{user.name}</Name>
           <ArrowDown>
             <MdArrowDropDown size={24} color={theme.colors.primary} />
           </ArrowDown>
           {showDropdown && (
             <Dropdown>
-              <DropdownItem onClick={logout}>
+              <DropdownItem
+                onClick={logout}
+                onMouseOut={() => setUserInfoHover(true)}
+                onMouseEnter={() => setUserInfoHover(false)}
+              >
                 {t('global_header.logout_button')}
               </DropdownItem>
             </Dropdown>
