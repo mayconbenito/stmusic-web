@@ -2418,7 +2418,7 @@ axios@^0.19.2:
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.19.2.tgz#3ea36c5d8818d0d5f8a8a97a6d36b86cdc00cb27"
   integrity sha512-fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==
   dependencies:
-    follow-redirects "^1.10.0"
+    follow-redirects "1.5.10"
 
 axobject-query@^2.2.0:
   version "2.2.0"
@@ -9367,10 +9367,10 @@ react-virtualized@^9.22.2:
     prop-types "^15.7.2"
     react-lifecycles-compat "^3.0.4"
 
-react-web-track-player@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/react-web-track-player/-/react-web-track-player-1.4.2.tgz#e336ace8ad49042c0455a2e0078f03761c9030ce"
-  integrity sha512-+BRsjRkLnRpKCCodSVj7wdX2BfOehOR+oK1SGuc7hr7J2WRPKTdwEyvhm6eQrZh/buZLe/GPP/2kBrgNfUy6Yg==
+react-web-track-player@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/react-web-track-player/-/react-web-track-player-1.4.3.tgz#25b6453631caba30d4414888f26955d31ec3765f"
+  integrity sha512-iR7mpXsvMKafXTBiS9FhzV8XDPK/DeofT630i96IkqsxNwfIc7oUXnlRLedNX9pUJalsvdvAx3fifDjNTnnJkQ==
 
 react@^17.0.1:
   version "17.0.1"
