@@ -215,6 +215,7 @@ function Player() {
               />
             </Volume>
             <Control
+              active
               style={{ marginLeft: 10 }}
               onClick={handleTogglePlayerQueueList}
             >
@@ -231,7 +232,7 @@ function Player() {
               {player?.queue &&
                 `${t('player.queue_list_playing')} - ${player?.queue?.name}`}
             </PlayerQueueListTitle>
-            <Control onClick={handleTogglePlayerQueueList}>
+            <Control active onClick={handleTogglePlayerQueueList}>
               <MdClose size={20} color={theme.colors.primary} />
             </Control>
           </PlayerQueueListHeader>
