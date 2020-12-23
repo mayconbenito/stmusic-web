@@ -5,9 +5,7 @@
   "dependencies": {
     "@emotion/core": "^11.0.0",
     "axios": "^0.19.2",
-    "connected-react-router": "^6.6.1",
     "disable-scroll": "^0.5.1",
-    "history": "^4.10.1",
     "i18next": "^19.6.3",
     "i18next-browser-languagedetector": "^6.0.1",
     "jwt-decode": "^3.1.1",
@@ -16,6 +14,7 @@
     "react-alert": "^7.0.2",
     "react-alert-template-basic": "^1.0.0",
     "react-bottom-scroll-listener": "^4.1.0",
+    "react-detect-click-outside": "^1.0.7",
     "react-device-detect": "^1.14.0",
     "react-dom": "^17.0.1",
     "react-i18next": "^11.7.3",
