@@ -48,6 +48,10 @@ function Album({
       return response.data;
     },
     {
+      refetchInterval: 999999999,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
       getFetchMore: (lastGroup) => {
         if (Math.ceil(lastGroup.meta.total / 10) > lastGroup.meta.page) {
           return lastGroup.meta.page + 1;
