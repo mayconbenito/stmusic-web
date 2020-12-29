@@ -51,15 +51,33 @@ function Artist({
   );
   const albumsQuery = useFetch(
     `artist-${artistId}-albums`,
-    `/app/artists/${artistId}/albums?page=1&limit=100`
+    `/app/artists/${artistId}/albums?page=1&limit=100`,
+    {
+      refetchInterval: 999999999,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
   );
   const mostPlayedTracksQuery = useFetch(
     `artist-${artistId}-mostPlayedTracks`,
-    `/app/artists/${artistId}/most-played-tracks?page=1&limit=10`
+    `/app/artists/${artistId}/most-played-tracks?page=1&limit=10`,
+    {
+      refetchInterval: 999999999,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
   );
   const tracksQuery = useFetch(
     `artist-${artistId}-tracks`,
-    `/app/artists/${artistId}/tracks?page=1&limit=10`
+    `/app/artists/${artistId}/tracks?page=1&limit=10`,
+    {
+      refetchInterval: 999999999,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
   );
 
   const [followArtist] = useMutation(
