@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
+import AlbumItem from '../../components/AlbumItem';
 import ArtistItem from '../../components/ArtistItem';
 import Carousel from '../../components/Carousel';
 import GenreItem from '../../components/GenreItem';
@@ -86,28 +87,72 @@ function Home({ history }) {
         <>
           <ContentTitle>{t('home.title')}</ContentTitle>
 
-          {recentlyPlayedQuery?.data?.tracks?.length > 0 && (
+          {recentlyPlayedQuery?.data?.lists?.length > 0 && (
             <Section>
               <Carousel
                 carouselName={t('home.recently_played')}
-                totalItems={recentlyPlayedQuery?.data?.tracks.length}
+                totalItems={recentlyPlayedQuery?.data?.lists.length}
                 onPlay={() =>
                   handleQueuePlay({
                     name: t('home.recently_played'),
-                    tracks: recentlyPlayedQuery?.data?.tracks,
+                    tracks: recentlyPlayedQuery?.data?.lists,
                     nameKey: 'recently_played',
                   })
                 }
               >
-                {recentlyPlayedQuery?.data?.tracks.map((data) => (
-                  <TrackItem
-                    key={data.id}
-                    data={data}
-                    onClick={() =>
-                      handleQueueTrackPlay(data, 'recently_played')
-                    }
-                  />
-                ))}
+                {recentlyPlayedQuery?.data?.lists.map((data) => {
+                  if (data.listType === 'artist') {
+                    return (
+                      <ArtistItem
+                        key={data.id}
+                        data={{ name: data.name, picture: data.picture }}
+                        onClick={() => history.push(`/artists/${data.id}`)}
+                      />
+                    );
+                  }
+
+                  if (data.listType === 'album') {
+                    return (
+                      <AlbumItem
+                        key={data.id}
+                        data={{
+                          name: data.name,
+                          picture: data.picture,
+                          artists: data.artists || [],
+                          type: data.type || 'album',
+                        }}
+                        onClick={() => history.push(`/albums/${data.id}`)}
+                      />
+                    );
+                  }
+
+                  if (data.listType === 'playlist') {
+                    return (
+                      <AlbumItem
+                        key={data.id}
+                        data={{
+                          name: data.name,
+                          picture: data.picture,
+                          artists: [],
+                          type: 'playlist',
+                        }}
+                        onClick={() => history.push(`/playlists/${data.id}`)}
+                      />
+                    );
+                  }
+
+                  if (data.listType === 'genre') {
+                    return (
+                      <GenreItem
+                        key={data.id}
+                        data={{
+                          name: data.name,
+                        }}
+                        onClick={() => history.push(`/genres/${data.id}`)}
+                      />
+                    );
+                  }
+                })}
               </Carousel>
             </Section>
           )}

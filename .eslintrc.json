@@ -55,6 +55,8 @@
     "no-underscore-dangle": "off",
     "prefer-destructuring": "off",
     "semi": "error",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "array-callback-return": "off",
+    "consistent-return": "off"
   }
 }
