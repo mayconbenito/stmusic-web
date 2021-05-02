@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import AlbumItem from '../../components/AlbumItem';
 import ArtistItem from '../../components/ArtistItem';
+import BigPlaylistItem from '../../components/BigPlaylistItem';
 import Carousel from '../../components/Carousel';
 import GenreItem from '../../components/GenreItem';
 import GlobalHeader from '../../components/GlobalHeader';
@@ -128,13 +129,11 @@ function Home({ history }) {
 
                   if (data.listType === 'playlist') {
                     return (
-                      <AlbumItem
+                      <BigPlaylistItem
                         key={data.id}
                         data={{
                           name: data.name,
                           picture: data.picture,
-                          artists: [],
-                          type: 'playlist',
                         }}
                         onClick={() => history.push(`/playlists/${data.id}`)}
                       />
