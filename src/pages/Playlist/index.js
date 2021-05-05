@@ -140,6 +140,8 @@ function Playlist({
               (artist, index) => (index ? ', ' : '') + artist.name
             )[0],
           },
+          listType: 'playlist',
+          listId: playlistId,
         })
       );
     }

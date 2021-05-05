@@ -71,6 +71,8 @@ function* loadQueue({ queue, predefinedQueue }) {
             type: queue.type,
             preloadedTrack: queue.preloadedTrack,
           },
+          listType: queue.listType,
+          listId: queue.listId,
         })
       );
 
@@ -141,6 +143,8 @@ function* loadQueue({ queue, predefinedQueue }) {
             total: queueTracksResponse.data.meta.total,
             page: queueTracksResponse.data.meta.page,
             type: queue.type,
+            listType: queue.listType,
+            listId: queue.listId,
           },
         })
       );
@@ -155,6 +159,8 @@ function* loadQueue({ queue, predefinedQueue }) {
           showPlayer: true,
           queue: {
             name: predefinedQueue.name,
+            listType: predefinedQueue.listType,
+            listId: predefinedQueue.listId,
           },
         })
       );
@@ -193,6 +199,8 @@ function* loadQueue({ queue, predefinedQueue }) {
             total: predefinedQueue.tracks.length,
             page: 1,
             type: 'predefinedQueue',
+            listType: predefinedQueue.listType,
+            listId: predefinedQueue.listId,
           },
         })
       );
