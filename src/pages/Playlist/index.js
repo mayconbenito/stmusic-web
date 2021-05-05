@@ -89,17 +89,15 @@ function Playlist({
           `playlist-${playlistId}-tracks`
         );
 
-        queryCache.setQueryData(`playlist-${playlistId}-tracks`, (old) => {
-          return old.map((group) => {
-            return {
-              meta: {
-                ...group.meta,
-                total: group.total - 1,
-              },
-              tracks: group.tracks.filter((track) => track.id !== trackId),
-            };
-          });
-        });
+        queryCache.setQueryData(`playlist-${playlistId}-tracks`, (old) =>
+          old.map((group) => ({
+            meta: {
+              ...group.meta,
+              total: group.total - 1,
+            },
+            tracks: group.tracks.filter((track) => track.id !== trackId),
+          }))
+        );
 
         return () =>
           queryCache.setQueryData(
