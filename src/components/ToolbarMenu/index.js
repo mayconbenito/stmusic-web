@@ -5,9 +5,9 @@ import { MdMoreVert } from 'react-icons/md';
 import theme from '../../styles/theme';
 import { Container, Button, MenuItems, MenuItem } from './styles';
 
-export const ToolbarMenuItem = ({ children, ...props }) => {
-  return <MenuItem {...props}>{children}</MenuItem>;
-};
+export const ToolbarMenuItem = ({ children, ...props }) => (
+  <MenuItem {...props}>{children}</MenuItem>
+);
 
 function ToolbarMenu({ style, children, ...props }) {
   const [showMenuItems, setShowMenuItems] = useState(false);

@@ -96,11 +96,9 @@ function Artist({
           `artist-${artistId}-followingState`
         );
 
-        queryCache.setQueryData(`artist-${artistId}-followingState`, () => {
-          return {
-            artists: [parseInt(artistId)],
-          };
-        });
+        queryCache.setQueryData(`artist-${artistId}-followingState`, () => ({
+          artists: [parseInt(artistId)],
+        }));
 
         queryCache.invalidateQueries('libraryArtists');
 
@@ -133,13 +131,11 @@ function Artist({
           `artist-${artistId}-followingState`
         );
 
-        queryCache.setQueryData(`artist-${artistId}-followingState`, (old) => {
-          return {
-            artists: old.artists.filter((artist) => {
-              return artist !== parseInt(artistId);
-            }),
-          };
-        });
+        queryCache.setQueryData(`artist-${artistId}-followingState`, (old) => ({
+          artists: old.artists.filter(
+            (artist) => artist !== parseInt(artistId)
+          ),
+        }));
 
         queryCache.invalidateQueries('libraryArtists');
 
