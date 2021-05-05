@@ -92,6 +92,8 @@ function Genre({
               (artist, index) => (index ? ', ' : '') + artist.name
             )[0],
           },
+          listType: 'genre',
+          listId: genreId,
         })
       );
     }

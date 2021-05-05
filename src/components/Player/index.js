@@ -87,7 +87,11 @@ function Player() {
 
         if (!playCountStatus && percentage >= 45) {
           setPlayCountStatus(true);
-          api.post(`/app/tracks/plays/${currentTrack?.id}`);
+          api.post('/app/tracks/plays', {
+            trackId: currentTrack?.id,
+            listId: player.queue.listId,
+            listType: player.queue.listType,
+          });
         }
         // eslint-disable-next-line no-empty
       } catch (err) {}

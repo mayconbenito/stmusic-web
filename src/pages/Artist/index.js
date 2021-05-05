@@ -175,6 +175,8 @@ function Artist({
         id: `${nameKey}-${artistId}`,
         name,
         tracks,
+        listType: 'artist',
+        listId: artistId,
       })
     );
   }

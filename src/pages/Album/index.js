@@ -92,6 +92,8 @@ function Album({
               (artist, index) => (index ? ', ' : '') + artist.name
             )[0],
           },
+          listType: 'album',
+          listId: albumId,
         })
       );
     }
