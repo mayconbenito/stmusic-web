@@ -7,8 +7,9 @@ export const Content = styled.div`
   top: 0;
   height: ${(props) =>
     props.theme.showPlayer ? 'calc(100% - 100px)' : '100%'};
-  background-color: #141414;
-  padding: 10px 15px;
+  background-color: ${(props) => props.theme.colors.darkestGray};
+  padding: ${(props) =>
+    `${props.theme.spacing.small} ${props.theme.spacing.base}`};
   overflow-y: scroll;
 
   @media (max-width: 780px) {
@@ -17,16 +18,20 @@ export const Content = styled.div`
 `;
 
 export const ContentTitle = styled.h2`
-  font-size: 40px;
+  font-size: ${(props) => props.theme.fontSizes.extraLargeFontSize};
   font-weight: normal;
-  margin-top: 20px;
+  margin-top: ${(props) => props.theme.spacing.large};
 `;
 
 export const Section = styled.div`
-  margin-bottom: 30px;
   animation-name: fadeIn;
   animation-duration: 0.7s;
   animation-timing-function: ease-in-out;
+  margin-bottom: ${(props) => props.theme.spacing.large};
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
 
   @keyframes fadeIn {
     0% {

@@ -1,110 +1,247 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
+import AlbumItem from '../../components/AlbumItem';
 import ArtistItem from '../../components/ArtistItem';
-import Carrousel from '../../components/Carrousel';
+import BigPlaylistItem from '../../components/BigPlaylistItem';
+import Carousel from '../../components/Carousel';
 import GenreItem from '../../components/GenreItem';
 import GlobalHeader from '../../components/GlobalHeader';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
-import { Creators as BrowseActions } from '../../store/ducks/browse';
+import { isLoggedIn } from '../../helpers/session';
+import useFetch from '../../hooks/useFetch';
+import { Creators as PlayerActions } from '../../store/ducks/player';
 import { Content, ContentTitle, Section } from './styles';
 
 function Home({ history }) {
-  const browse = useSelector((state) => state.browse);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    if (!browse.isFetched) {
-      dispatch(BrowseActions.fetchBrowse());
+  let recentlyPlayedQuery;
+
+  if (isLoggedIn()) {
+    recentlyPlayedQuery = useFetch(
+      isLoggedIn() ? 'recentlyPlayed' : null,
+      '/app/me/recently-played?page=1&limit=30'
+    );
+  }
+
+  const genresQuery = useFetch('genres', '/app/genres?page=1&limit=30');
+  const trendingQuery = useFetch(
+    'trending',
+    '/app/browse/tracks/trending?page=1&limit=30'
+  );
+  const mostPlayedTracksQuery = useFetch(
+    'mostPlayedTracks',
+    '/app/browse/tracks/most-played?page=1&limit=30'
+  );
+  const mostFollowedArtistsQuery = useFetch(
+    'mostFollowedArtists',
+    '/app/browse/artists/most-followed?page=1&limit=30'
+  );
+
+  function handleQueuePlay({ name, tracks, nameKey }) {
+    dispatch(
+      PlayerActions.loadQueue(null, {
+        id: nameKey,
+        name,
+        tracks,
+      })
+    );
+  }
+
+  function handleQueueTrackPlay(track, nameKey) {
+    dispatch(PlayerActions.play(track, nameKey));
+  }
+
+  function isLoading() {
+    if (!recentlyPlayedQuery?.isLoading) {
+      return false;
     }
-  }, []);
+
+    if (!genresQuery.isLoading) {
+      return false;
+    }
+
+    if (!trendingQuery.isLoading) {
+      return false;
+    }
+
+    if (!mostPlayedTracksQuery.isLoading) {
+      return false;
+    }
+
+    if (!mostFollowedArtistsQuery.isLoading) {
+      return false;
+    }
+
+    return true;
+  }
 
   return (
     <Content>
       <GlobalHeader history={history} />
 
-      {!browse.loading ? (
+      {!isLoading() ? (
         <>
           <ContentTitle>{t('home.title')}</ContentTitle>
 
-          {browse.recentlyPlayed.length > 0 && (
+          {recentlyPlayedQuery?.data?.lists?.length > 0 && (
             <Section>
-              <Carrousel
-                carrouselName={t('home.recently_played')}
-                totalItems={browse.recentlyPlayed.length}
+              <Carousel
+                carouselName={t('home.recently_played')}
+                totalItems={recentlyPlayedQuery?.data?.lists.length}
+                onPlay={() =>
+                  handleQueuePlay({
+                    name: t('home.recently_played'),
+                    tracks: recentlyPlayedQuery?.data?.lists,
+                    nameKey: 'recently_played',
+                  })
+                }
               >
-                {browse.recentlyPlayed.map((data) => (
-                  <TrackItem key={data.id} data={data} />
-                ))}
-              </Carrousel>
+                {recentlyPlayedQuery?.data?.lists.map((data) => {
+                  if (data.listType === 'artist') {
+                    return (
+                      <ArtistItem
+                        key={data.id}
+                        data={{ name: data.name, picture: data.picture }}
+                        onClick={() => history.push(`/artists/${data.id}`)}
+                      />
+                    );
+                  }
+
+                  if (data.listType === 'album') {
+                    return (
+                      <AlbumItem
+                        key={data.id}
+                        data={{
+                          name: data.name,
+                          picture: data.picture,
+                          artists: data.artists || [],
+                          type: data.type || 'album',
+                        }}
+                        onClick={() => history.push(`/albums/${data.id}`)}
+                      />
+                    );
+                  }
+
+                  if (data.listType === 'playlist') {
+                    return (
+                      <BigPlaylistItem
+                        key={data.id}
+                        data={{
+                          name: data.name,
+                          picture: data.picture,
+                        }}
+                        onClick={() => history.push(`/playlists/${data.id}`)}
+                      />
+                    );
+                  }
+
+                  if (data.listType === 'genre') {
+                    return (
+                      <GenreItem
+                        key={data.id}
+                        data={{
+                          name: data.name,
+                        }}
+                        onClick={() => history.push(`/genres/${data.id}`)}
+                      />
+                    );
+                  }
+                })}
+              </Carousel>
             </Section>
           )}
 
-          {browse.genres.length > 0 && (
+          {genresQuery.data?.genres?.length > 0 && (
             <Section>
-              <Carrousel
-                carrouselName={t('home.genres')}
-                totalItems={browse.genres.length}
+              <Carousel
+                carouselName={t('home.genres')}
+                totalItems={genresQuery.data?.genres?.length}
               >
-                {browse.genres.map((data) => (
+                {genresQuery.data?.genres.map((data) => (
                   <GenreItem
                     key={data.id}
                     data={data}
                     onClick={() => history.push(`/genres/${data.id}`)}
                   />
                 ))}
-              </Carrousel>
+              </Carousel>
             </Section>
           )}
 
-          {browse.trending.length > 0 && (
+          {trendingQuery?.data?.tracks?.length > 0 && (
             <Section>
-              <Carrousel
-                carrouselName={t('home.trending')}
-                totalItems={browse.trending.length}
+              <Carousel
+                carouselName={t('home.trending')}
+                totalItems={trendingQuery?.data?.tracks?.length}
+                onPlay={() =>
+                  handleQueuePlay({
+                    name: t('home.trending'),
+                    tracks: trendingQuery?.data?.tracks,
+                    nameKey: 'trending',
+                  })
+                }
               >
-                {browse.trending.map((data) => (
-                  <TrackItem key={data.id} data={data} />
+                {trendingQuery?.data?.tracks.map((data) => (
+                  <TrackItem
+                    key={data.id}
+                    data={data}
+                    onClick={() => handleQueueTrackPlay(data, 'trending')}
+                  />
                 ))}
-              </Carrousel>
+              </Carousel>
             </Section>
           )}
 
-          {browse.mostPlayed.length > 0 && (
+          {mostPlayedTracksQuery?.data?.tracks?.length > 0 && (
             <Section>
-              <Carrousel
-                carrouselName={t('home.most_played_tracks')}
-                totalItems={browse.mostPlayed.length}
+              <Carousel
+                carouselName={t('home.most_played_tracks')}
+                totalItems={mostPlayedTracksQuery?.data?.tracks?.length}
+                onPlay={() =>
+                  handleQueuePlay({
+                    name: t('home.most_played_tracks'),
+                    tracks: mostPlayedTracksQuery?.data?.tracks,
+                    nameKey: 'most_played_tracks',
+                  })
+                }
               >
-                {browse.mostPlayed.map((data) => (
-                  <TrackItem key={data.id} data={data} />
+                {mostPlayedTracksQuery?.data?.tracks.map((data) => (
+                  <TrackItem
+                    key={data.id}
+                    data={data}
+                    onClick={() =>
+                      handleQueueTrackPlay(data, 'most_played_tracks')
+                    }
+                  />
                 ))}
-              </Carrousel>
+              </Carousel>
             </Section>
           )}
 
-          {browse.mostFollowed.length > 0 && (
+          {mostFollowedArtistsQuery?.data?.artists?.length > 0 && (
             <Section>
-              <Carrousel
-                carrouselName={t('home.most_followed_artists')}
-                totalItems={browse.mostFollowed.length}
+              <Carousel
+                carouselName={t('home.most_followed_artists')}
+                totalItems={mostFollowedArtistsQuery?.data?.artists}
               >
-                {browse.mostFollowed.map((data) => (
+                {mostFollowedArtistsQuery?.data?.artists.map((data) => (
                   <ArtistItem
                     key={data.id}
                     data={data}
                     onClick={() => history.push(`/artists/${data.id}`)}
                   />
                 ))}
-              </Carrousel>
+              </Carousel>
             </Section>
           )}
         </>
       ) : (
-        <LoadingSpinner size={120} loading={browse.loading} />
+        <LoadingSpinner size={120} loading />
       )}
     </Content>
   );

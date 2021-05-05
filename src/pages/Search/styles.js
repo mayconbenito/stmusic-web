@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const GlobalHeaderContainer = styled.div`
-  padding: 10px 15px;
+  padding: ${(props) =>
+    `${props.theme.spacing.small} ${props.theme.spacing.base}`};
 `;
 
 export const Content = styled.div`
@@ -11,7 +12,7 @@ export const Content = styled.div`
   top: 0;
   height: ${(props) =>
     props.theme.showPlayer ? 'calc(100% - 100px)' : '100%'};
-  background-color: #141414;
+  background-color: ${(props) => props.theme.colors.darkestGray};
   overflow-y: scroll;
 
   @media (max-width: 780px) {
@@ -25,30 +26,35 @@ export const SearchInputContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
-  border-bottom: 3px solid #000;
+  margin-top: ${(props) => props.theme.spacing.large};
+  border-bottom: 3px solid ${(props) => props.theme.colors.black};
 `;
 
 export const SearchInput = styled.input`
   flex: 1;
   height: 60px;
-  background-color: #141414;
+  background-color: ${(props) => props.theme.colors.darkestGray};
   border: none;
-  padding: 10px 15px;
-  font-size: 26px;
-  color: #fff;
+  padding: ${(props) =>
+    `${props.theme.spacing.small} ${props.theme.spacing.base}`};
+  font-size: ${(props) => props.theme.fontSizes.largeFontSize};
+  color: ${(props) => props.theme.colors.white};
 
   &::placeholder {
     font-family: Roboto;
-    color: #fff;
+    color: ${(props) => props.theme.colors.white};
   }
 `;
 
 export const ClearSearchButton = styled.button`
-  margin-right: 15px;
+  margin-right: ${(props) => props.theme.spacing.base};
   border: none;
   background-color: transparent;
   cursor: pointer;
+
+  svg:hover {
+    color: ${(props) => props.theme.colors.lightPrimary} !important;
+  }
 `;
 
 export const SectionContainer = styled.div`
@@ -56,14 +62,15 @@ export const SectionContainer = styled.div`
   flex-direction: column;
   width: 100%;
   justify-content: center;
-  padding: 10px 15px;
+  padding: ${(props) =>
+    `${props.theme.spacing.small} ${props.theme.spacing.base}`};
 `;
 
 export const Section = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: ${(props) => props.theme.spacing.largest};
   animation-name: fadeIn;
   animation-duration: 0.7s;
   animation-timing-function: ease-in-out;
@@ -92,8 +99,8 @@ export const Section = styled.div`
 `;
 
 export const SectionTitle = styled.span`
-  font-size: 24px;
-  color: #d99207;
+  font-size: ${(props) => props.theme.fontSizes.biggestFontSize};
+  color: ${(props) => props.theme.colors.primary};
 `;
 
 export const SectionItems = styled.div`

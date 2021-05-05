@@ -9,7 +9,7 @@ export const ArtistList = styled.div`
 `;
 
 export const Warning = styled.span`
-  color: #d99207;
+  color: ${(props) => props.theme.colors.primary};
   font-weight: 500;
-  font-size: 12px;
+  font-size: ${(props) => props.theme.fontSizes.smallerFontSize};
 `;

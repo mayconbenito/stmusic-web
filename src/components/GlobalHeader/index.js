@@ -7,7 +7,8 @@ import {
 } from 'react-icons/md';
 import { useLastLocation } from 'react-router-last-location';
 
-import session from '../../services/session';
+import { isLoggedIn, getSessionData, logout } from '../../helpers/session';
+import theme from '../../styles/theme';
 import {
   Container,
   NavigationButtons,
@@ -23,7 +24,8 @@ import {
 function GlobalHeader({ history }) {
   const lastLocation = useLastLocation();
   const { t } = useTranslation();
-  const { user } = session();
+  const { user } = getSessionData();
+  const [userInfoHover, setUserInfoHover] = useState(true);
 
   const [canGoBack, setCanGoBack] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -86,11 +88,6 @@ function GlobalHeader({ history }) {
     };
   }, []);
 
-  function handleLogout() {
-    localStorage.removeItem('@STMusic:token');
-    window.location = '/';
-  }
-
   function handleShowDropdown() {
     setShowDropdown(!showDropdown);
   }
@@ -127,22 +124,30 @@ function GlobalHeader({ history }) {
     <Container>
       <NavigationButtons>
         <NavigationButton onClick={handleGoBack} hover={canGoBack}>
-          <MdKeyboardArrowLeft color="#d99027" size={24} />
+          <MdKeyboardArrowLeft color={theme.colors.primary} size={24} />
         </NavigationButton>
         <NavigationButton onClick={history.goForward} hover>
-          <MdKeyboardArrowRight color="#d99027" size={24} />
+          <MdKeyboardArrowRight color={theme.colors.primary} size={24} />
         </NavigationButton>
       </NavigationButtons>
 
-      {session() ? (
-        <UserInfo ref={dropdownRef}>
+      {isLoggedIn() ? (
+        <UserInfo
+          ref={dropdownRef}
+          menuHover={userInfoHover}
+          onClick={handleShowDropdown}
+        >
           <Name>{user.name}</Name>
-          <ArrowDown onClick={handleShowDropdown}>
-            <MdArrowDropDown size={24} color="#d99207" />
+          <ArrowDown>
+            <MdArrowDropDown size={24} color={theme.colors.primary} />
           </ArrowDown>
           {showDropdown && (
             <Dropdown>
-              <DropdownItem onClick={handleLogout}>
+              <DropdownItem
+                onClick={logout}
+                onMouseOut={() => setUserInfoHover(true)}
+                onMouseEnter={() => setUserInfoHover(false)}
+              >
                 {t('global_header.logout_button')}
               </DropdownItem>
             </Dropdown>

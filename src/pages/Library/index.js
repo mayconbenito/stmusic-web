@@ -9,6 +9,7 @@ import { Content, Header, ContentTitle, Menu, MenuItem } from './styles';
 
 function Library({ location, history }) {
   const { t } = useTranslation();
+
   return (
     <Content>
       <GlobalHeader history={history} />

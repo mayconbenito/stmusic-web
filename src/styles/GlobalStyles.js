@@ -9,11 +9,11 @@ export default createGlobalStyle`
   }
 
   body {
-    background-color: #141414;
+    background-color: ${(props) => props.theme.colors.darkestGray};
   }
 
-  span, a, p, h1, h2, h3 {
-    color: #d99207;
+  span, a, p, label, h1, h2, h3 {
+    color: ${(props) => props.theme.colors.primary};
     font-family: Roboto, sans-serif;
   }
 
@@ -31,14 +31,10 @@ export default createGlobalStyle`
   }
 
   ::-webkit-scrollbar-track {
-    background-color: #fff;
+    background-color: ${(props) => props.theme.colors.white};
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #d99207;
-  }
-
-  .slick-track {
-    margin-left: 0 !important
+    background-color: ${(props) => props.theme.colors.primary};
   }
 `;

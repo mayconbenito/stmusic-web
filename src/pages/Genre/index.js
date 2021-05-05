@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useInfiniteQuery } from 'react-query';
+import { useDispatch } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
 import GlobalHeader from '../../components/GlobalHeader';
 import Image from '../../components/Image';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import SmallTrackItem from '../../components/SmallTrackItem';
-import { Creators as GenreActions } from '../../store/ducks/genre';
+import useFetch from '../../hooks/useFetch';
+import api from '../../services/api';
 import { Creators as PlayerActions } from '../../store/ducks/player';
 import {
   Content,
@@ -30,74 +31,136 @@ function Genre({
   },
   history,
 }) {
-  const { fetchGenre, fetchTracks, clearGenre } = GenreActions;
-  const params = useParams();
-  const genre = useSelector((state) => state.genre);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    if (Number(params.genreId) !== genre.data.id) {
-      dispatch(clearGenre());
-      dispatch(fetchGenre(genreId));
+  const [totalTracks, setTotalTracks] = useState(0);
+
+  const genreQuery = useFetch(`genre-${genreId}`, `/app/genres/${genreId}`);
+
+  const tracksQuery = useInfiniteQuery(
+    `genre-${genreId}-tracks`,
+    async (key, page = 1) => {
+      const response = await api.get(
+        `/app/genres/${genreId}/tracks?page=${page}`
+      );
+
+      return response.data;
+    },
+    {
+      refetchInterval: 999999999,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      getFetchMore: (lastGroup) => {
+        if (Math.ceil(lastGroup?.meta.total / 10) > lastGroup?.meta.page) {
+          return lastGroup?.meta.page + 1;
+        }
+
+        return false;
+      },
     }
+  );
+
+  const onEndReached = useCallback(() => {
+    tracksQuery.fetchMore();
   }, []);
 
-  function handleEndReached() {
-    if (genre.tracks.total > genre.tracks.data.length) {
-      dispatch(fetchTracks(genre.tracks.page, genreId));
+  useEffect(() => {
+    if (tracksQuery.isSuccess) {
+      tracksQuery.data.forEach((group) => {
+        setTotalTracks(totalTracks + group?.tracks.length);
+      });
+    }
+  }, [tracksQuery.isSuccess, tracksQuery.data]);
+
+  const containerRef = useBottomScrollListener(onEndReached);
+
+  function handleQueuePlay() {
+    if (genreQuery.isSuccess && tracksQuery.isSuccess && totalTracks > 0) {
+      const firstTrack = tracksQuery.data.map((group) => group.tracks[0])[0];
+
+      dispatch(
+        PlayerActions.loadQueue({
+          name: genreQuery.data.genre.name,
+          id: genreId,
+          type: 'genres',
+          preloadedTrack: {
+            title: firstTrack.name,
+            artwork: firstTrack.picture,
+            artist: firstTrack.artists.map(
+              (artist, index) => (index ? ', ' : '') + artist.name
+            )[0],
+          },
+          listType: 'genre',
+          listId: genreId,
+        })
+      );
     }
   }
 
-  const containerRef = useBottomScrollListener(handleEndReached);
-  function handlePlaylistPlay() {
-    dispatch(PlayerActions.fetchPlaylist(genreId, 'genres'));
+  function handleQueueTrackPlay(track) {
+    dispatch(PlayerActions.play(track, genreId));
   }
 
   return (
     <Content ref={containerRef}>
       <GlobalHeader history={history} />
 
-      {genre.loading && <LoadingSpinner size={120} loading={genre.loading} />}
+      {genreQuery.isLoading && <LoadingSpinner size={120} />}
 
-      {!genre.loading && (
-        <>
-          <Header>
-            <Image
-              src={genre.data.picture}
-              fallback={fallback}
-              style={{ width: 100, height: 100 }}
-            />
-            <HeaderInfo>
-              <HeaderType>{t('commons.genre')}</HeaderType>
-              <HeaderTitle>{genre.data.name}</HeaderTitle>
-              <Buttons>
-                {genre.tracks.data.length > 0 && (
-                  <Button onClick={handlePlaylistPlay}>
-                    {t('commons.play_tracks_button')}
-                  </Button>
-                )}
-              </Buttons>
-            </HeaderInfo>
-          </Header>
+      {genreQuery.isSuccess && (
+        <Header>
+          <Image
+            src={genreQuery.data.genre.picture}
+            fallback={fallback}
+            style={{ width: 100, height: 100 }}
+          />
+          <HeaderInfo>
+            <HeaderType>{t('commons.genre')}</HeaderType>
+            <HeaderTitle>{genreQuery.data.genre.name}</HeaderTitle>
+            <Buttons>
+              <Button
+                onClick={handleQueuePlay}
+                cursorPointer={tracksQuery.isSuccess && totalTracks > 0}
+              >
+                {t('commons.play_tracks_button')}
+              </Button>
+            </Buttons>
+          </HeaderInfo>
+        </Header>
+      )}
 
-          {genre.tracks.data.length > 0 ? (
-            <Section>
-              <SectionTitle>{t('commons.tracks')}</SectionTitle>
-              <TracksList>
-                {genre.tracks.data.map((data) => (
-                  <SmallTrackItem
-                    key={data.id}
-                    data={data}
-                    style={{ marginBottom: 5 }}
-                  />
-                ))}
-              </TracksList>
-            </Section>
-          ) : (
-            <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
-          )}
-        </>
+      {tracksQuery.isError && totalTracks === 0 && (
+        <SectionTitle>{t('commons.internal_server_error')}</SectionTitle>
+      )}
+
+      {tracksQuery.isSuccess && totalTracks === 0 && (
+        <SectionTitle>{t('commons.no_track_available')}</SectionTitle>
+      )}
+
+      {tracksQuery.isLoading && <LoadingSpinner size={40} loading />}
+
+      {tracksQuery.isSuccess && totalTracks > 0 && (
+        <Section>
+          <SectionTitle>{t('commons.tracks')}</SectionTitle>
+          <TracksList>
+            {tracksQuery.data.map((group, index) => (
+              <React.Fragment key={index}>
+                {group?.tracks &&
+                  group.tracks.map((track) => (
+                    <SmallTrackItem
+                      key={track.id}
+                      data={track}
+                      showMenu
+                      style={{ marginBottom: 5 }}
+                      onClick={() => handleQueueTrackPlay(track)}
+                    />
+                  ))}
+              </React.Fragment>
+            ))}
+          </TracksList>
+        </Section>
       )}
     </Content>
   );

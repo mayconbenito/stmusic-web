@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdClear } from 'react-icons/md';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import GlobalHeader from '../../components/GlobalHeader';
 import SmallAlbumItem from '../../components/SmallAlbumItem';
 import SmallArtistItem from '../../components/SmallArtistItem';
 import SmallTrackItem from '../../components/SmallTrackItem';
+import SearchContext from '../../contexts/SearchContext';
 import isStringEmpty from '../../helpers/isStringEmpty';
-import useDebounce from '../../hooks/useDebounce';
-import { Creators as SearchActions } from '../../store/ducks/search';
+import { Creators as PlayerActions } from '../../store/ducks/player';
+import theme from '../../styles/theme';
 import {
   GlobalHeaderContainer,
   Content,
@@ -23,29 +24,17 @@ import {
 } from './styles';
 
 function Search({ history }) {
-  const { setQuery, fetchSearch, clearSearch } = SearchActions;
-  const search = useSelector((state) => state.search);
-  const dispatch = useDispatch();
   const { t } = useTranslation();
-
-  const debouncedQuery = useDebounce(search.query, 500);
+  const dispatch = useDispatch();
+  const searchContext = useContext(SearchContext);
 
   function handleInput(e) {
-    const { value } = e.target;
-    dispatch(setQuery(value));
+    searchContext.setQuery(e.target.value);
   }
 
-  useEffect(() => {
-    if (!isStringEmpty(debouncedQuery)) {
-      dispatch(fetchSearch(search.query));
-    } else {
-      dispatch(clearSearch());
-    }
-  }, [debouncedQuery]);
-
   function handleClearSearch() {
-    dispatch(clearSearch());
-    dispatch(setQuery(''));
+    searchContext.setQuery('');
+    searchContext.handleClearSearch();
   }
 
   return (
@@ -56,25 +45,25 @@ function Search({ history }) {
 
       <SearchInputContainer>
         <SearchInput
-          value={search.query}
+          value={searchContext.query}
           onChange={handleInput}
           autoFocus
           placeholder={t('search.input')}
         />
 
-        {!isStringEmpty(search.query) && (
+        {!isStringEmpty(searchContext.query) && (
           <ClearSearchButton onClick={handleClearSearch}>
-            <MdClear size={26} color="#d99207" />
+            <MdClear size={26} color={theme.colors.primary} />
           </ClearSearchButton>
         )}
       </SearchInputContainer>
 
       <SectionContainer>
-        {search.data.artists.length > 0 && (
+        {searchContext.results.artists.length > 0 && (
           <Section>
             <SectionTitle>{t('commons.artists')}</SectionTitle>
             <SectionItems>
-              {search.data.artists.map((data) => (
+              {searchContext.results.artists.map((data) => (
                 <SmallArtistItem
                   key={data.id}
                   data={data}
@@ -85,11 +74,11 @@ function Search({ history }) {
           </Section>
         )}
 
-        {search.data.albums.length > 0 && (
+        {searchContext.results.albums.length > 0 && (
           <Section>
             <SectionTitle>{t('commons.albums')}</SectionTitle>
             <SectionItems>
-              {search.data.albums.map((data) => (
+              {searchContext.results.albums.map((data) => (
                 <SmallAlbumItem
                   key={data.id}
                   data={data}
@@ -100,12 +89,17 @@ function Search({ history }) {
           </Section>
         )}
 
-        {search.data.tracks.length > 0 && (
+        {searchContext.results.tracks.length > 0 && (
           <Section>
             <SectionTitle>{t('commons.tracks')}</SectionTitle>
             <SectionItems>
-              {search.data.tracks.map((data) => (
-                <SmallTrackItem key={data.id} data={data} />
+              {searchContext.results.tracks.map((data) => (
+                <SmallTrackItem
+                  key={data.id}
+                  showMenu
+                  data={data}
+                  onClick={() => dispatch(PlayerActions.loadSingleTrack(data))}
+                />
               ))}
             </SectionItems>
           </Section>

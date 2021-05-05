@@ -1,11 +1,11 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
-import logo from '../../assets/images/logo.svg';
-import { Creators as SignUpActions } from '../../store/ducks/signUp';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import api from '../../services/api';
+import { InputLabel, FormFooter } from '../Login/styles';
 import {
   GlobalStyle,
   Container,
@@ -28,21 +28,20 @@ const schema = yup.object().shape({
   password: yup.string().required('signup.password_is_required'),
 });
 
-function SignUp() {
-  const { requestSignUp } = SignUpActions;
-  const dispatch = useDispatch();
-  const signUp = useSelector(state => state.signUp);
+function SignUp({ history }) {
   const alert = useAlert();
   const { t } = useTranslation();
 
+  const [loading, setLoading] = useState(false);
   const [warning, setWarning] = useState(false);
+  const [error, setError] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', password: '' });
 
   useLayoutEffect(() => {
-    if (signUp.error.length > 0) {
-      alert.show(t(signUp.error));
+    if (error.length > 0) {
+      alert.show(t(error));
     }
-  }, [signUp.error]);
+  }, [error]);
 
   function handleInputChange(event) {
     setForm({
@@ -51,17 +50,45 @@ function SignUp() {
     });
   }
 
+  async function handleSignup({ name, email, password }) {
+    try {
+      setLoading(true);
+      const response = await api.post('/app/register', {
+        name,
+        email,
+        password,
+      });
+
+      setLoading(false);
+      localStorage.setItem('@STMusic:token', response.data.jwt);
+      history.push('/');
+    } catch (err) {
+      setLoading(false);
+      if (err.response.data.error.code === 'EmailAlreadyUsed') {
+        setError(t('signup.email_already_used'));
+      }
+
+      if (err.response.status === 500) {
+        setError(t('commons.internal_server_error'));
+      }
+    }
+  }
+
   async function handleSubmit(e) {
     try {
       e.preventDefault();
       const isValid = await schema.validate(form, { abortEarly: false });
-      setWarning(false);
-      dispatch(requestSignUp(isValid));
+
+      if (isValid) {
+        setWarning(false);
+        await handleSignup(form);
+      }
     } catch (err) {
       const validationErrors = {};
-      err.inner.forEach(error => {
-        validationErrors[error.path] = error.message;
+      err.inner.forEach((validationError) => {
+        validationErrors[validationError.path] = validationError.message;
       });
+
       setWarning(validationErrors);
     }
   }
@@ -69,15 +96,18 @@ function SignUp() {
   return (
     <React.Fragment>
       <GlobalStyle />
+
       <Container>
+        <Logo width="270px" height="151.88px" />
         <Form onSubmit={handleSubmit}>
-          <Logo src={logo} />
           <Title>{t('signup.title')}</Title>
           <InputGroup>
+            <InputLabel htmlFor="name">{t('signup.name_input')}</InputLabel>
             <Input
+              id="name"
               name="name"
               type="text"
-              placeholder={t('signup.name_input')}
+              placeholder={t('signup.name_input_placeholder')}
               value={form.name}
               onChange={handleInputChange}
             />
@@ -85,9 +115,10 @@ function SignUp() {
           </InputGroup>
 
           <InputGroup>
+            <InputLabel htmlFor="email">{t('signup.email_input')}</InputLabel>
             <Input
               name="email"
-              placeholder={t('signup.email_input')}
+              placeholder={t('signup.email_input_placeholder')}
               value={form.email}
               onChange={handleInputChange}
             />
@@ -95,10 +126,14 @@ function SignUp() {
           </InputGroup>
 
           <InputGroup>
+            <InputLabel htmlFor="email">
+              {t('signup.password_input')}
+            </InputLabel>
             <Input
+              id="password"
               name="password"
               type="password"
-              placeholder={t('signup.password_input')}
+              placeholder={t('signup.password_input_placeholder')}
               value={form.password}
               onChange={handleInputChange}
             />
@@ -106,10 +141,16 @@ function SignUp() {
           </InputGroup>
 
           <Submit type="submit">
-            {signUp.loading ? t('signup.loading') : t('signup.sign_up')}
+            {loading ? (
+              <LoadingSpinner loading size={14} />
+            ) : (
+              t('signup.sign_up')
+            )}
           </Submit>
 
-          <Button to="/login">{t('signup.sign_in_button')}</Button>
+          <FormFooter>
+            <Button to="/login">{t('signup.sign_in_button')}</Button>
+          </FormFooter>
         </Form>
       </Container>
     </React.Fragment>

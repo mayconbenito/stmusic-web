@@ -1,39 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useTranslation } from 'react-i18next';
 import { IconContext } from 'react-icons';
-import { useSelector } from 'react-redux';
-import { ThemeProvider } from 'styled-components';
+import { QueryCache, ReactQueryCacheProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query-devtools';
+import { Provider } from 'react-redux';
 
-import GlobalStyles from './GlobalStyles';
+import { AppProvider } from './contexts/AppContext';
+import { SearchProvider } from './contexts/SearchContext';
 import DownloadApp from './pages/DownloadApp';
 import Routes from './routes';
+import store from './store';
+import GlobalStyles from './styles/GlobalStyles';
 
 function App() {
-  const player = useSelector(state => state.player);
   const { t } = useTranslation();
-
-  const [theme, setTheme] = useState({
-    showPlayer: false,
-  });
 
   useEffect(() => {
     document.title = t('page.title');
   }, []);
 
-  useEffect(() => {
-    setTheme({
-      showPlayer: player.active ? player.showPlayer : false,
-    });
-  }, [player.active]);
+  const queryCache = new QueryCache();
+
+  if (isMobile) {
+    return (
+      <AppProvider>
+        <GlobalStyles />
+        <DownloadApp />
+      </AppProvider>
+    );
+  }
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <IconContext.Provider value={{ style: { verticalAlign: 'middle' } }}>
-        {isMobile ? <DownloadApp /> : <Routes />}
-      </IconContext.Provider>
-    </ThemeProvider>
+    <ReactQueryCacheProvider queryCache={queryCache}>
+      <Provider store={store}>
+        <AppProvider>
+          <SearchProvider>
+            <IconContext.Provider
+              value={{ style: { verticalAlign: 'middle' } }}
+            >
+              <GlobalStyles />
+              <Routes />
+            </IconContext.Provider>
+          </SearchProvider>
+        </AppProvider>
+      </Provider>
+      <ReactQueryDevtools />
+    </ReactQueryCacheProvider>
   );
 }
 

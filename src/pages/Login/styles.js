@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
+import { ReactComponent as SVGLogo } from '../../assets/images/logo.svg';
+
 export const GlobalStyle = createGlobalStyle`
   html, body, #root {
     height: 100%;
@@ -11,84 +13,112 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   width: 100%;
   height: 100%;
-  background-color: #141414;
+  background-color: ${(props) => props.theme.colors.darkestGray};
 `;
 
-export const Title = styled.h1`
-  font-size: 34px;
-  font-weight: 500;
-  margin-bottom: 5px;
-`;
-
-export const Logo = styled.img`
-  width: 270px;
+export const Logo = styled(SVGLogo)`
+  min-width: 270px;
+  min-height: 151.88px;
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
-  user-drag: none;
+  margin-top: ${(props) => props.theme.spacing.large}; ;
 `;
 
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  background-color: #000;
-  padding: 20px 30px 20px 30px;
-  border-radius: 3px;
+  justify-content: center;
+  background-color: ${(props) => props.theme.colors.black};
+  padding: ${(props) =>
+    `${props.theme.spacing.large} ${props.theme.spacing.largest} ${props.theme.spacing.large} ${props.theme.spacing.largest}`};
+
+  border-radius: ${(props) => props.theme.spacing.tiny};
+  margin: ${(props) => props.theme.spacing.large} 0px;
+`;
+
+export const Title = styled.h1`
+  font-size: ${(props) => props.theme.fontSizes.extraLargeFontSize};
+  font-weight: 500;
+  margin-bottom: ${(props) => props.theme.spacing.base};
 `;
 
 export const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+  margin-bottom: ${(props) => props.theme.spacing.small};
+`;
+
+export const InputLabel = styled.label`
+  font-size: ${(props) => props.theme.spacing.smallFontSize};
+  color: ${(props) => props.theme.colors.primary};
+  margin-bottom: ${(props) => props.theme.spacing.tiny};
 `;
 
 export const Input = styled.input`
   min-width: 300px;
   height: 35px;
-  padding: 3px 5px;
+  padding: ${(props) =>
+    `${props.theme.spacing.tiny} ${props.theme.spacing.smallest}`};
   border: none;
-  background-color: #141414;
-  color: #d99207;
-  border-radius: 3px;
+  font-size: ${(props) => props.theme.fontSizes.smallerFontSize};
+  background-color: ${(props) => props.theme.colors.darkestGray};
+  color: ${(props) => props.theme.colors.primary};
+  border-radius: ${(props) => props.theme.spacing.tiny};
   font-weight: 500;
 
   &::placeholder {
-    color: #d99207;
+    color: ${(props) => props.theme.colors.darkGray};
   }
 `;
 
 export const InputMessage = styled.span`
-  font-size: 12px;
-  color: #d99207;
-  margin-top: 2px;
+  font-size: ${(props) => props.theme.fontSizes.smallerFontSize};
+  color: ${(props) => props.theme.colors.red};
+  margin-top: 3px;
 `;
 
 export const Submit = styled.button`
   min-width: 300px;
   height: 35px;
-  padding: 3px 5px;
+  padding: ${(props) =>
+    `${props.theme.spacing.tiny} ${props.theme.spacing.smallest}`};
   border: none;
-  background-color: #141414;
-  color: #d99207;
-  margin-bottom: 10px;
-  border-radius: 3px;
+  background-color: ${(props) => props.theme.colors.darkestGray};
+  color: ${(props) => props.theme.colors.primary};
+  margin-bottom: ${(props) => props.theme.spacing.small};
+  border-radius: ${(props) => props.theme.spacing.tiny};
   font-weight: 500;
   cursor: pointer;
-  border-bottom: ${props => (props.warning ? '1px solid #d99207' : 'none')};
+  border-bottom: ${(props) =>
+    props.warning ? `1px solid ${props.theme.colors.primary}` : 'none'};
+
+  &:hover {
+    background-color: #202020;
+  }
+`;
+
+export const FormFooter = styled.div`
+  border-top: 1px solid ${(props) => props.theme.colors.darkestGray};
+  padding-top: ${(props) => props.theme.spacing.small};
 `;
 
 export const Button = styled(Link)`
-  padding: 5px 10px;
-  background-color: #141414;
-  color: #d99207;
-  font-size: 12px;
+  padding: ${(props) =>
+    `${props.theme.spacing.smallest} ${props.theme.spacing.small}`};
+  background-color: ${(props) => props.theme.colors.darkestGray};
+  color: ${(props) => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.fontSizes.smallerFontSize};
   font-weight: 500;
-  border-radius: 3px;
+  border-radius: ${(props) => props.theme.spacing.tiny};
   cursor: pointer;
   border: none;
   align-self: flex-start;
+
+  &:hover {
+    background-color: #202020;
+  }
 `;

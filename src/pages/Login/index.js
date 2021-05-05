@@ -1,21 +1,22 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { useAlert } from 'react-alert';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
-import logo from '../../assets/images/logo.svg';
-import { Creators as LoginActions } from '../../store/ducks/login';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import api from '../../services/api';
 import {
   GlobalStyle,
   Container,
-  Title,
   Logo,
   Form,
+  Title,
   InputGroup,
+  InputLabel,
   Input,
   InputMessage,
   Submit,
+  FormFooter,
   Button,
 } from './styles';
 
@@ -27,21 +28,20 @@ const schema = yup.object().shape({
   password: yup.string().required('login.password_is_required'),
 });
 
-function Login() {
-  const { requestLogin } = LoginActions;
-  const dispatch = useDispatch();
-  const login = useSelector(state => state.login);
+function Login({ history }) {
   const alert = useAlert();
 
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
   const [warning, setWarning] = useState(false);
+  const [error, setError] = useState(false);
   const [form, setForm] = useState({ email: '', password: '' });
 
   useLayoutEffect(() => {
-    if (login.error.length > 0) {
-      alert.show(t(login.error));
+    if (error.length > 0) {
+      alert.show(t(error));
     }
-  }, [login.error]);
+  }, [error]);
 
   function handleInputChange(event) {
     setForm({
@@ -50,19 +50,41 @@ function Login() {
     });
   }
 
+  async function handleLogin({ email, password }) {
+    try {
+      setLoading(true);
+      const response = await api.post('/app/sessions', { email, password });
+
+      setLoading(false);
+      localStorage.setItem('@STMusic:token', response.data.jwt);
+      history.push('/');
+    } catch (err) {
+      setLoading(false);
+      if (err.response.status === 401) {
+        setError(t('login.email_or_password_invalid'));
+      }
+
+      if (err.response.status === 500) {
+        setError(t('commons.internal_server_error'));
+      }
+    }
+  }
+
   async function handleSubmit(e) {
     try {
       e.preventDefault();
       const isValid = await schema.validate(form, { abortEarly: false });
+
       if (isValid) {
         setWarning(false);
-        dispatch(requestLogin(isValid));
+        await handleLogin(form);
       }
     } catch (err) {
       const validationErrors = {};
-      err.inner.forEach(error => {
-        validationErrors[error.path] = error.message;
+      err.inner.forEach((validationError) => {
+        validationErrors[validationError.path] = validationError.message;
       });
+
       setWarning(validationErrors);
     }
   }
@@ -71,13 +93,16 @@ function Login() {
     <React.Fragment>
       <GlobalStyle />
       <Container>
+        <Logo width="270px" height="151.88px" />
+
         <Form onSubmit={handleSubmit}>
-          <Logo src={logo} />
           <Title>{t('login.title')}</Title>
           <InputGroup>
+            <InputLabel htmlFor="email">{t('login.email_input')}</InputLabel>
             <Input
+              id="email"
               name="email"
-              placeholder={t('login.email_input')}
+              placeholder={t('login.email_input_placeholder')}
               value={form.email}
               onChange={handleInputChange}
             />
@@ -85,10 +110,14 @@ function Login() {
           </InputGroup>
 
           <InputGroup>
+            <InputLabel htmlFor="password">
+              {t('login.password_input')}
+            </InputLabel>
             <Input
+              id="password"
               name="password"
               type="password"
-              placeholder={t('login.password_input')}
+              placeholder={t('login.password_input_placeholder')}
               value={form.password}
               onChange={handleInputChange}
             />
@@ -96,10 +125,16 @@ function Login() {
           </InputGroup>
 
           <Submit type="submit">
-            {login.loading ? t('login.loading') : t('login.sign_in')}
+            {loading ? (
+              <LoadingSpinner loading size={14} />
+            ) : (
+              t('login.sign_in')
+            )}
           </Submit>
 
-          <Button to="/sign-up">{t('login.sign_up_button')}</Button>
+          <FormFooter>
+            <Button to="/sign-up">{t('login.sign_up_button')}</Button>
+          </FormFooter>
         </Form>
       </Container>
     </React.Fragment>

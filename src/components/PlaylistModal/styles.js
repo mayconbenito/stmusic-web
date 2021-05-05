@@ -14,30 +14,31 @@ export const Container = styled.div`
 export const Modal = styled.div`
   width: 400px;
   height: 550px;
-  padding: 5px 10px;
-  border-radius: 3px;
-  background-color: #000;
+  padding: ${(props) =>
+    `${props.theme.spacing.smallest} ${props.theme.spacing.small}`};
+  border-radius: ${(props) => props.theme.spacing.tiny};
+  background-color: ${(props) => props.theme.colors.black};
   display: flex;
   flex-direction: column;
 `;
 
 export const Header = styled.div`
   width: 100%;
-  height: 22px;
+  height: ${(props) => props.theme.fontSizes.biggerFontSize};
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #d99207;
+  border-bottom: 1px solid ${(props) => props.theme.colors.primary};
 `;
 
 export const HeaderTitle = styled.h2`
-  font-size: 18px;
-  color: #d99207;
+  font-size: ${(props) => props.theme.fontSizes.headerFontSize};
+  color: ${(props) => props.theme.colors.primary};
 `;
 
 export const HeaderButton = styled.button`
   border: none;
   background-color: transparent;
-  color: #d99207;
+  color: ${(props) => props.theme.colors.primary};
   cursor: pointer;
 `;
 
@@ -47,7 +48,8 @@ export const Body = styled.div`
   width: 100%;
   height: 100%;
   flex: 1;
-  padding-top: 5px;
+  padding-top: ${(props) => props.theme.spacing.smallest};
+  margin-top: ${(props) => props.theme.spacing.tiny};
   overflow: auto;
 `;
 
@@ -64,7 +66,7 @@ export const PlaylistOpacity = styled.div`
 
 export const PlaylistItem = styled.div`
   display: flex;
-  margin-bottom: 5px;
+  margin-bottom: ${(props) => props.theme.spacing.smallest};
   position: relative;
   cursor: pointer;
 
@@ -76,23 +78,23 @@ export const PlaylistItem = styled.div`
 export const PlaylistInfo = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 5px;
+  margin-left: ${(props) => props.theme.spacing.smallest};
 `;
 
 export const PlaylistTitle = styled.span`
-  font-size: 16px;
-  color: #d99207;
+  font-size: ${(props) => props.theme.fontSizes.baseFontSize};
+  color: ${(props) => props.theme.colors.primary};
   font-weight: 500;
 `;
 
 export const PlaylistTracks = styled.span`
-  color: #d99207;
-  font-size: 12px;
+  color: ${(props) => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.fontSizes.smallerFontSize};
   font-weight: 500;
 `;
 
 export const Warning = styled.span`
-  color: #d99207;
+  color: ${(props) => props.theme.colors.primary};
   font-weight: 500;
-  font-size: 12px;
+  font-size: ${(props) => props.theme.fontSizes.smallerFontSize};
 `;

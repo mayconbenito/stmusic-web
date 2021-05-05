@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
-import session from '../../services/session';
-import { Creators as PlayerActions } from '../../store/ducks/player';
-import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
+import AppContext from '../../contexts/AppContext';
+import { isLoggedIn } from '../../helpers/session';
 import Image from '../Image';
 import ToolbarMenu, { ToolbarMenuItem } from '../ToolbarMenu';
 import {
@@ -14,12 +12,13 @@ import {
   Name,
   TextList,
   Type,
-  ToolbarButton
+  ToolbarButton,
 } from './styles';
 
-function TrackItem({ data, style }) {
-  const dispatch = useDispatch();
+function TrackItem({ data, style, onClick }) {
+  const appContext = useContext(AppContext);
   const { t } = useTranslation();
+
   return (
     <Container style={style}>
       <Image
@@ -28,8 +27,8 @@ function TrackItem({ data, style }) {
         style={{ width: 150, height: 150 }}
       />
 
-      <Details onClick={() => dispatch(PlayerActions.play(data))}>
-        <Name>{data.name}</Name>
+      <Details>
+        <Name onClick={onClick}>{data.name}</Name>
         <TextList>
           <Type>{t('commons.track')} | </Type>
           {data.artists.map(
@@ -38,10 +37,19 @@ function TrackItem({ data, style }) {
         </TextList>
       </Details>
 
-      {session() && (
+      {isLoggedIn() && (
         <ToolbarButton>
           <ToolbarMenu style={{ marginLeft: 'auto' }}>
-            <ToolbarMenuItem onClick={() => dispatch(PlaylistModalActions.openModal(data.id))}>Adicionar à uma playlist</ToolbarMenuItem>
+            <ToolbarMenuItem
+              onClick={() =>
+                appContext.showPlaylistModal({
+                  trackId: data.id,
+                  picture: data.picture,
+                })
+              }
+            >
+              Adicionar à uma playlist
+            </ToolbarMenuItem>
           </ToolbarMenu>
         </ToolbarButton>
       )}

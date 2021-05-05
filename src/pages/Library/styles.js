@@ -8,8 +8,9 @@ export const Content = styled.div`
   top: 0;
   height: ${(props) =>
     props.theme.showPlayer ? 'calc(100% - 100px)' : '100%'};
-  background-color: #141414;
-  padding: 10px 15px;
+  background-color: ${(props) => props.theme.colors.darkestGray};
+  padding: ${(props) =>
+    `${props.theme.spacing.small} ${props.theme.spacing.base}`};
   @media (max-width: 780px) {
     width: 100%;
   }
@@ -17,25 +18,27 @@ export const Content = styled.div`
 
 export const Header = styled.div`
   width: 100%;
-  background-color: #141414;
-  margin-top: 20px;
+  background-color: ${(props) => props.theme.colors.darkestGray};
+  margin-top: ${(props) => props.theme.spacing.large};
 `;
 
 export const ContentTitle = styled.h2`
-  font-size: 40px;
+  font-size: ${(props) => props.theme.fontSizes.extraLargeFontSize};
   font-weight: normal;
 `;
 
 export const Menu = styled.div`
   display: flex;
-  padding-bottom: 5px;
+  padding-bottom: ${(props) => props.theme.spacing.smallest};
 `;
 
 export const MenuItem = styled(Link)`
-  color: #d99207;
-  font-size: 18px;
+  color: ${(props) => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.fontSizes.baseFontSize};
   font-weight: 500;
-  margin-right: 5px;
+  margin-right: ${(props) => props.theme.spacing.smallest};
   border-bottom: ${(props) =>
-    props.underline === 'show' ? '2px solid #d99207' : 'none'};
+    props.underline === 'show'
+      ? `2px solid ${props.theme.colors.primary}`
+      : 'none'};
 `;

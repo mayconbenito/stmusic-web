@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   MdPlayArrow,
@@ -6,15 +6,25 @@ import {
   MdSkipPrevious,
   MdSkipNext,
   MdVolumeMute,
+  MdQueueMusic,
+  MdClose,
 } from 'react-icons/md';
 import { useSelector, useDispatch } from 'react-redux';
-import Sound from 'react-sound';
+import {
+  usePlaybackTrackChanged,
+  useTrackPlayerProgress,
+  usePlaybackState,
+  usePlayerQueue,
+} from 'react-web-track-player';
 
 import fallback from '../../assets/images/fallback.png';
+import AppContext from '../../contexts/AppContext';
 import usePersistedState from '../../hooks/usePersistedState';
 import api from '../../services/api';
 import { Creators as PlayerActions } from '../../store/ducks/player';
+import theme from '../../styles/theme';
 import Image from '../Image';
+import SmallTrackItem from '../SmallTrackItem';
 import {
   Container,
   TrackInfo,
@@ -30,154 +40,230 @@ import {
   Control,
   Volume,
   VolumeBar,
+  PlayerQueueListContainer,
+  PlayerQueueListHeader,
+  PlayerQueueListTitle,
 } from './styles';
 
 function Player() {
-  const { pause, resume, stop, prev, next } = PlayerActions;
+  const { pause, resume, prev, next, skipToIndex } = PlayerActions;
 
+  const appContext = useContext(AppContext);
   const player = useSelector((state) => state.player);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const [currentTime, setCurrentTime] = useState();
-  const [duration, setDuration] = useState();
-  const [playCountStatus, setPlayCountStatus] = useState(false);
+  const [showPlayerQueueList, setShowPlayerQueueList] = useState(false);
+  const [playCountStatus, setPlayCountStatus] = useState(null);
+  const currentTrack = usePlaybackTrackChanged();
+  const currentTrackProgress = useTrackPlayerProgress();
+  const playbackState = usePlaybackState();
+  const playerQueue = usePlayerQueue();
   const [volume, setVolume] = usePersistedState('@stmusic:playerVolume', 20);
 
-  useEffect(() => {
-    setCurrentTime(0);
-    setDuration(0);
-    setPlayCountStatus(false);
-  }, [player.active]);
+  function formatTime(seconds = 0) {
+    const format = (val) => `0${Math.floor(val)}`.slice(-2);
+    const minutes = (seconds % 3600) / 60;
 
-  async function handleSetPlayCount() {
-    try {
-      await api.post(`/app/tracks/plays/${player.active.id}`);
-      // eslint-disable-next-line no-empty
-    } catch (err) { }
-  }
-
-  function formatTime(millis = 0) {
-    const minutes = Math.floor(millis / 60000);
-    const seconds = ((millis % 60000) / 1000).toFixed(0);
-
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-  }
-
-  function handleOnPlaying({ position, duration: totalDuration }) {
-    setCurrentTime(position);
-    setDuration(totalDuration);
-
-    const percentage = Math.round((currentTime * 100) / duration || 0);
-    if (!playCountStatus && percentage >= 45) {
-      handleSetPlayCount();
-      setPlayCountStatus(true);
-    }
+    return [minutes, seconds % 60].map(format).join(':');
   }
 
   function handleVolumeChange(e) {
     setVolume(parseInt(e.target.value));
   }
 
-  function streamUrl(youtubeId) {
-    return `${process.env.REACT_APP_STREAM_URL}/yt?url=${youtubeId}`;
-  }
+  useEffect(() => {
+    if (playCountStatus) {
+      setPlayCountStatus(null);
+    }
+  }, [currentTrack?.id]);
 
-  function handleFinishedPlaying() {
-    if (player.playlist) {
-      dispatch(next());
-      return;
+  useEffect(() => {
+    function handleSetPlayCount() {
+      try {
+        const percentage = Math.round(
+          (currentTrackProgress.position * 100) / currentTrackProgress.duration
+        );
+
+        if (!playCountStatus && percentage >= 45) {
+          setPlayCountStatus(true);
+          api.post('/app/tracks/plays', {
+            trackId: currentTrack?.id,
+            listId: player.queue.listId,
+            listType: player.queue.listType,
+          });
+        }
+        // eslint-disable-next-line no-empty
+      } catch (err) {}
     }
 
-    dispatch(stop());
+    handleSetPlayCount();
+  }, [
+    currentTrackProgress.position,
+    currentTrackProgress.duration,
+    playCountStatus,
+  ]);
+
+  useEffect(() => {
+    dispatch(PlayerActions.setVolume(volume / 100));
+  }, [volume, player.active]);
+
+  const showPauseButton =
+    playbackState === 'STATE_PLAYING' ||
+    playbackState === 'STATE_BUFFERING' ||
+    playbackState === 'STATE_NONE';
+
+  useEffect(() => {
+    if (player.active) {
+      appContext.togglePlayer();
+    }
+  }, [player.active]);
+
+  function handleTogglePlayerQueueList() {
+    setShowPlayerQueueList(!showPlayerQueueList);
+  }
+
+  function handleSkipToQueueTrack(trackId) {
+    const trackIndex = playerQueue.findIndex((track) => track.id === trackId);
+    dispatch(skipToIndex(trackIndex));
   }
 
   return (
-    <Container visible={player.active}>
-      <div style={{ display: 'none' }}>
-        <Sound
-          url={streamUrl(player.active.youtubeId)}
-          playStatus={player.isPlaying}
-          volume={volume}
-          onPlaying={handleOnPlaying}
-          onFinishedPlaying={handleFinishedPlaying}
-        />
-      </div>
+    <>
+      <Container>
+        {player?.active && (
+          <>
+            <TrackInfo>
+              <Image
+                src={
+                  currentTrack?.artwork[0].src ||
+                  player?.queue?.preloadedTrack?.artwork
+                }
+                fallback={fallback}
+                style={{ width: 70, height: 70 }}
+              />
+              <TrackTexts>
+                <TrackName>
+                  {currentTrack?.title || player?.queue?.preloadedTrack?.title}
+                </TrackName>
+                <ArtistName>
+                  {currentTrack?.artist ||
+                    player?.queue?.preloadedTrack?.artist}
+                </ArtistName>
+              </TrackTexts>
+            </TrackInfo>
 
-      {player.active && (
-        <React.Fragment>
-          <TrackInfo>
-            <Image
-              src={player.active.picture}
-              fallback={fallback}
-              style={{ width: 70, height: 70 }}
-            />
-            <TrackTexts>
-              <TrackName>{player.active.name}</TrackName>
-              <ArtistName>
-                {player.active.artists.map(
-                  (artist, index) => (index ? ', ' : '') + artist.name
-                )}
-              </ArtistName>
-            </TrackTexts>
-          </TrackInfo>
+            <TrackMiddle>
+              <Playing>
+                {player?.queue &&
+                  `${t('player.playing')}: ${player?.queue?.name}`}
+              </Playing>
+              <Controls>
+                <Control
+                  style={{ marginRight: 5 }}
+                  active={player.queue.type !== 'singleTrack'}
+                  onClick={() => dispatch(prev())}
+                >
+                  <MdSkipPrevious size={40} color={theme.colors.primary} />
+                </Control>
+                <Control active>
+                  {showPauseButton && (
+                    <MdPause
+                      size={40}
+                      color={theme.colors.primary}
+                      onClick={() => dispatch(pause())}
+                    />
+                  )}
 
-          <TrackMiddle>
-            <Playing>
-              {player.playlist &&
-                `${t('player.playing')}: ${player.playlist.name}`}
-            </Playing>
-            <Controls>
-              <Control onClick={() => dispatch(prev())}>
-                <MdSkipPrevious size={40} color="#d99207" />
-              </Control>
-              <Control>
-                {player.isPlaying === 'PLAYING' && (
-                  <MdPause
-                    size={40}
-                    color="#d99207"
-                    onClick={() => dispatch(pause())}
-                  />
-                )}
-                {player.isPlaying === 'PLAYING' ||
-                  ('STOPPED' && (
+                  {!showPauseButton && (
                     <MdPlayArrow
                       size={40}
-                      color="#d99207"
+                      color={theme.colors.primary}
                       onClick={() => dispatch(resume())}
                     />
-                  ))}
-              </Control>
-              <Control onClick={() => dispatch(next())}>
-                <MdSkipNext size={40} color="#d99207" />
-              </Control>
-            </Controls>
-            <Progress>
-              <ProgressTime>{formatTime(currentTime)}</ProgressTime>
-              <ProgressBar
-                value={(currentTime * 100) / duration || 0}
+                  )}
+                </Control>
+                <Control
+                  style={{ marginLeft: 5 }}
+                  active={player.queue.type !== 'singleTrack'}
+                  onClick={() => dispatch(next())}
+                >
+                  <MdSkipNext size={40} color={theme.colors.primary} />
+                </Control>
+              </Controls>
+              <Progress>
+                <ProgressTime>
+                  {formatTime(currentTrackProgress.position)}
+                </ProgressTime>
+                <ProgressBar
+                  value={
+                    (currentTrackProgress.position * 100) /
+                      currentTrackProgress.duration || 0
+                  }
+                  max="100"
+                />
+                <ProgressTime>
+                  {formatTime(currentTrackProgress.duration)}
+                </ProgressTime>
+              </Progress>
+            </TrackMiddle>
+
+            <Volume>
+              <MdVolumeMute size={20} color={theme.colors.primary} />
+              <VolumeBar
+                onChange={handleVolumeChange}
+                value={volume}
+                type="range"
+                min="0"
                 max="100"
               />
-              <ProgressTime>{formatTime(duration)}</ProgressTime>
-            </Progress>
-          </TrackMiddle>
-
-          <Volume>
-            <Control>
-              <MdVolumeMute size={20} color="#d99207" />
+            </Volume>
+            <Control
+              active
+              style={{ marginLeft: 10 }}
+              onClick={handleTogglePlayerQueueList}
+            >
+              <MdQueueMusic size={20} color={theme.colors.primary} />
             </Control>
-            <VolumeBar
-              onChange={handleVolumeChange}
-              value={volume}
-              type="range"
-              min="0"
-              max="100"
-            />
-          </Volume>
-        </React.Fragment>
+          </>
+        )}
+      </Container>
+
+      {showPlayerQueueList && (
+        <PlayerQueueListContainer>
+          <PlayerQueueListHeader>
+            <PlayerQueueListTitle>
+              {player?.queue &&
+                `${t('player.queue_list_playing')} - ${player?.queue?.name}`}
+            </PlayerQueueListTitle>
+            <Control active onClick={handleTogglePlayerQueueList}>
+              <MdClose size={20} color={theme.colors.primary} />
+            </Control>
+          </PlayerQueueListHeader>
+          {player?.queue && (
+            <div>
+              {playerQueue.length > 0 &&
+                playerQueue.map((track) => (
+                  <SmallTrackItem
+                    key={track.id}
+                    data={{
+                      name: track.title,
+                      picture: track.artwork[0].src,
+                      artists: track.artist
+                        ? track.artist.split(',').map((artist) => {
+                            return { name: artist };
+                          })
+                        : '',
+                    }}
+                    onClick={() => handleSkipToQueueTrack(track.id)}
+                  />
+                ))}
+            </div>
+          )}
+        </PlayerQueueListContainer>
       )}
-    </Container>
+    </>
   );
 }
 
-export default React.memo(Player);
+export default Player;

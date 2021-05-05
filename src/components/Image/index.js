@@ -1,18 +1,17 @@
 import React from 'react';
 import { Img } from 'react-image';
-import VisibilitySensor from 'react-visibility-sensor';
+
+import theme from '../../styles/theme';
 
 function Loader({ style }) {
-  return <div style={{ ...style, background: '#000' }} />;
+  return <div style={{ ...style, background: theme.colors.black }} />;
 }
 
 function Image(props) {
   const { src, style, fallback } = props;
   return (
-    <VisibilitySensor>
-      <Img {...props} src={[src, fallback]} loader={<Loader style={style} />} />
-    </VisibilitySensor>
+    <Img {...props} src={[src, fallback]} loader={<Loader style={style} />} />
   );
 }
 
-export default React.memo(Image);
+export default Image;

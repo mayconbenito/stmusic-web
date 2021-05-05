@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex: 1;
-  margin-bottom: 5px;
+  margin-bottom: ${(props) => props.theme.spacing.smallest};
 
   &:last-child {
     margin-bottom: 0px !important;
@@ -13,30 +13,30 @@ export const Container = styled.div`
 export const Details = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 3px;
-  margin-left: 5px;
+  margin-top: ${(props) => props.theme.spacing.tiny};
+  margin-left: ${(props) => props.theme.spacing.smallest};
 `;
 
 export const Name = styled.span`
   width: 350px;
-  color: #d99207;
-  font-size: 14px;
+  color: ${(props) => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.fontSizes.smallFontSize};
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  cursor: pointer;
+  cursor: ${(props) => (props.onClick ? 'pointer' : 'default')};
 `;
 
 export const Type = styled.span`
-  color: #606060;
+  color: ${(props) => props.theme.colors.mediumGray}; ;
 `;
 
 export const TextList = styled.span`
   flex-direction: row;
-  color: #606060;
-  font-size: 10px;
+  color: ${(props) => props.theme.colors.mediumGray};
+  font-size: ${(props) => props.theme.fontSizes.smallestFontSize};
 `;
 
 export const ArtistName = styled.span`
-  color: #606060;
+  color: ${(props) => props.theme.colors.mediumGray}; ;
 `;

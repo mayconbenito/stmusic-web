@@ -8,26 +8,29 @@
       "sign_in": "Login",
       "sign_up_button": "Registrar",
       "email_input": "Endereço de email",
-      "password_input": "Sua Senha",
+      "email_input_placeholder": "Digite seu email",
+      "password_input": "Senha",
+      "password_input_placeholder": "Digite sua senha",
       "invalid_email_format": "Formato de email invalido",
-      "email_is_required": "Email é obrigatório",
+      "email_is_required": "Endereço de email é obrigatório",
       "password_is_required": "Senha é obrigatória",
-      "email_or_password_invalid": "Email ou senha incorretos",
-      "loading": "Carregando..."
+      "email_or_password_invalid": "Endereço de email ou senha incorretos"
     },
     "signup": {
       "title": "Registrar",
       "sign_in_button": "Login",
       "sign_up": "Registrar",
       "name_input": "Seu nome",
+      "name_input_placeholder": "Digite seu nome",
       "email_input": "Endereço de email",
+      "email_input_placeholder": "Digite seu email",
       "password_input": "Sua Senha",
+      "password_input_placeholder": "Digite sua senha",
       "name_is_required": "Nome é obrigatório",
       "invalid_email_format": "Formato de email invalido",
-      "email_is_required": "Email é obrigatório",
+      "email_is_required": "Endereço de email é obrigatório",
       "password_is_required": "Senha é obrigatória",
-      "email_already_used": "Endereço de email em uso",
-      "loading": "Carregando..."
+      "email_already_used": "Endereço de email em uso"
     },
     "home": {
       "title": "Ínicio",
@@ -39,7 +42,7 @@
     },
     "artist": {
       "most_played_tracks": "Músicas mais tocadas",
-      "all_artist_tracks": "Todas as músicas"
+      "artist_tracks": "Músicas"
     },
     "library": {
       "title": "Biblioteca",
@@ -58,7 +61,7 @@
       "download_button": "Baixar Aplicativo",
       "version": "Versão"
     },
-    "carrousel": {
+    "carousel": {
       "arrow_prev": "Anterior",
       "arrow_next": "Próximo"
     },
@@ -73,7 +76,8 @@
       "title": "Salvar em"
     },
     "player": {
-      "playing": "Tocando"
+      "playing": "Tocando",
+      "queue_list_playing": "Lista de reprodução"
     },
     "global_header": {
       "login_button": "Fazer login",
@@ -92,7 +96,8 @@
       "followers": "Seguidores",
       "follow": "Seguir",
       "genre": "Genêro",
-      "album": "Album"
+      "album": "Album",
+      "most_played_from": "Mais tocadas de"
     }
   }
 }

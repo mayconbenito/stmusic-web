@@ -1,48 +1,66 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 
 import fallback from '../../assets/images/fallback.png';
-import session from '../../services/session';
-import { Creators as PlayerActions } from '../../store/ducks/player';
-import { Creators as PlaylistModalActions } from '../../store/ducks/playlistModal';
+import AppContext from '../../contexts/AppContext';
+import { isLoggedIn } from '../../helpers/session';
 import Image from '../Image';
 import ToolbarMenu, { ToolbarMenuItem } from '../ToolbarMenu';
-import {
-  Container,
-  Details,
-  Name,
-  TextList,
-  Type,
-} from './styles';
+import { Container, Details, Name, TextList, Type } from './styles';
 
-function SmallTrackItem({ data, style, isPlaylist = false, onRemoveTrackFromPlaylist }) {
-  const dispatch = useDispatch();
+function SmallTrackItem({
+  data,
+  style,
+  isPlaylist = false,
+  onRemoveTrackFromPlaylist,
+  onClick,
+  showMenu,
+}) {
+  const appContext = useContext(AppContext);
+
   const { t } = useTranslation();
 
   return (
     <Container style={style}>
       <Image
-        onClick={() => dispatch(PlayerActions.play(data))}
+        onClick={onClick}
         src={data.picture}
         fallback={fallback}
-        style={{ width: 50, height: 50, cursor: 'pointer' }}
+        style={{
+          width: 50,
+          height: 50,
+          cursor: onClick ? 'pointer' : 'default',
+        }}
       />
 
-      <Details onClick={() => dispatch(PlayerActions.play(data))}>
-        <Name>{data.name}</Name>
+      <Details>
+        <Name onClick={onClick}>{data.name}</Name>
         <TextList>
           <Type>{t('commons.track')} | </Type>
-          {data.artists.map(
-            (artist, index) => (index ? ', ' : '') + artist.name
-          )}
+          {data.artists &&
+            data.artists.map(
+              (artist, index) => (index ? ', ' : '') + artist.name
+            )}
         </TextList>
       </Details>
 
-      {session() && (
+      {isLoggedIn() && showMenu && (
         <ToolbarMenu style={{ marginLeft: 'auto' }}>
-          <ToolbarMenuItem onClick={() => dispatch(PlaylistModalActions.openModal(data.id))}>Adicionar à uma playlist</ToolbarMenuItem>
-          {isPlaylist && <ToolbarMenuItem onClick={onRemoveTrackFromPlaylist}>Remover da Playlist</ToolbarMenuItem> }
+          <ToolbarMenuItem
+            onClick={() =>
+              appContext.showPlaylistModal({
+                trackId: data.id,
+                picture: data.picture,
+              })
+            }
+          >
+            Adicionar à uma playlist
+          </ToolbarMenuItem>
+          {isPlaylist && (
+            <ToolbarMenuItem onClick={onRemoveTrackFromPlaylist}>
+              Remover da Playlist
+            </ToolbarMenuItem>
+          )}
         </ToolbarMenu>
       )}
     </Container>

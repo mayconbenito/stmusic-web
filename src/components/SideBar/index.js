@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdHome, MdSearch, MdFolder, MdAudiotrack } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
+import { useMutation, useQueryCache } from 'react-query';
 
-import session from '../../services/session';
-import { Creators as PlaylistActions } from '../../store/ducks/playlist';
+import { isLoggedIn } from '../../helpers/session';
+import api from '../../services/api';
+import theme from '../../styles/theme';
 import {
   Container,
   Header,
@@ -18,36 +19,51 @@ import {
 } from './styles';
 
 function SideBar() {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [playlistInput, setPlaylistInput] = useState('');
+  const [playlistName, setPlaylistName] = useState('');
+  const queryCache = useQueryCache();
+
+  const [createPlaylist] = useMutation(
+    async ({ name }) => {
+      const response = await api.post(`/app/me/library/playlists`, {
+        name,
+      });
+
+      return response.data;
+    },
+    {
+      onSettled: () => {
+        queryCache.invalidateQueries('libraryPlaylists');
+      },
+    }
+  );
 
   function handlePlaylistName(e) {
-    setPlaylistInput(e.target.value);
+    setPlaylistName(e.target.value);
   }
 
   function handleSubmitPlaylist() {
-    dispatch(PlaylistActions.requestCreatePlaylist(playlistInput));
-    setPlaylistInput('');
+    createPlaylist({ name: playlistName });
+    setPlaylistName('');
   }
 
   return (
     <Container>
       <Header>
         <Logo>
-          <MdAudiotrack size={40} color="#d99207" />
+          <MdAudiotrack size={40} color={theme.colors.primary} />
         </Logo>
 
         <Menu>
           <div>
             <MenuItem>
-              <MdHome size={36} color="#d99207" />
+              <MdHome size={36} color={theme.colors.primary} />
               <MenuText to="/">{t('sidebar.home')}</MenuText>
             </MenuItem>
 
-            {session() && (
+            {isLoggedIn() && (
               <MenuItem>
-                <MdFolder size={36} color="#d99207" />
+                <MdFolder size={36} color={theme.colors.primary} />
                 <MenuText to="/library/playlists">
                   {t('sidebar.library')}
                 </MenuText>
@@ -55,18 +71,18 @@ function SideBar() {
             )}
 
             <MenuItem>
-              <MdSearch size={36} color="#d99207" />
+              <MdSearch size={36} color={theme.colors.primary} />
               <MenuText to="/search">{t('sidebar.search')}</MenuText>
             </MenuItem>
           </div>
         </Menu>
       </Header>
 
-      {session() && (
+      {isLoggedIn() && (
         <CreatePlaylist>
           <PlaylistInput
             id="playlistInput"
-            value={playlistInput}
+            value={playlistName}
             onChange={handlePlaylistName}
             placeholder={t('sidebar.playlist_input')}
           />
