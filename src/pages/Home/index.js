@@ -119,8 +119,8 @@ function Home({ history }) {
                         data={{
                           name: data.name,
                           picture: data.picture,
-                          artists: data.artists || [],
-                          type: data.type || 'album',
+                          artists: data.artists,
+                          type: data.albumType,
                         }}
                         onClick={() => history.push(`/albums/${data.id}`)}
                       />
