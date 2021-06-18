@@ -6,7 +6,6 @@ import { isLoggedIn } from './helpers/session';
 import Album from './pages/Album';
 import AppLayout from './pages/AppLayout';
 import Artist from './pages/Artist';
-import Genre from './pages/Genre';
 import Home from './pages/Home';
 import Library from './pages/Library';
 import Login from './pages/Login';
@@ -40,7 +39,6 @@ function Routes() {
           <AppRoute path="/library" auth component={Library} />
           <AppRoute path="/artists/:artistId" component={Artist} />
           <AppRoute path="/playlists/:playlistId" auth component={Playlist} />
-          <AppRoute path="/genres/:genreId" component={Genre} />
           <AppRoute path="/albums/:albumId" component={Album} />
         </Switch>
       </LastLocationProvider>

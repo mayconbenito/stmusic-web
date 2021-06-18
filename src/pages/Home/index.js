@@ -6,7 +6,6 @@ import AlbumItem from '../../components/AlbumItem';
 import ArtistItem from '../../components/ArtistItem';
 import BigPlaylistItem from '../../components/BigPlaylistItem';
 import Carousel from '../../components/Carousel';
-import GenreItem from '../../components/GenreItem';
 import GlobalHeader from '../../components/GlobalHeader';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import TrackItem from '../../components/TrackItem';
@@ -28,7 +27,6 @@ function Home({ history }) {
     );
   }
 
-  const genresQuery = useFetch('genres', '/app/genres?page=1&limit=30');
   const trendingQuery = useFetch(
     'trending',
     '/app/browse/tracks/trending?page=1&limit=30'
@@ -58,10 +56,6 @@ function Home({ history }) {
 
   function isLoading() {
     if (!recentlyPlayedQuery?.isLoading) {
-      return false;
-    }
-
-    if (!genresQuery.isLoading) {
       return false;
     }
 
@@ -139,36 +133,7 @@ function Home({ history }) {
                       />
                     );
                   }
-
-                  if (data.listType === 'genre') {
-                    return (
-                      <GenreItem
-                        key={data.id}
-                        data={{
-                          name: data.name,
-                        }}
-                        onClick={() => history.push(`/genres/${data.id}`)}
-                      />
-                    );
-                  }
                 })}
-              </Carousel>
-            </Section>
-          )}
-
-          {genresQuery.data?.genres?.length > 0 && (
-            <Section>
-              <Carousel
-                carouselName={t('home.genres')}
-                totalItems={genresQuery.data?.genres?.length}
-              >
-                {genresQuery.data?.genres.map((data) => (
-                  <GenreItem
-                    key={data.id}
-                    data={data}
-                    onClick={() => history.push(`/genres/${data.id}`)}
-                  />
-                ))}
               </Carousel>
             </Section>
           )}

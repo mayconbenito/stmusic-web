@@ -19,6 +19,7 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
+    debug: false,
     resources: { en, pt },
     fallbackLng,
     whitelist: availableLanguages,
