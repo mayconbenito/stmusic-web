@@ -87,13 +87,6 @@ function Home({ history }) {
               <Carousel
                 carouselName={t('home.recently_played')}
                 totalItems={recentlyPlayedQuery?.data?.lists.length}
-                onPlay={() =>
-                  handleQueuePlay({
-                    name: t('home.recently_played'),
-                    tracks: recentlyPlayedQuery?.data?.lists,
-                    nameKey: 'recently_played',
-                  })
-                }
               >
                 {recentlyPlayedQuery?.data?.lists.map((data) => {
                   if (data.listType === 'artist') {
