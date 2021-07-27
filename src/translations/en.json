@@ -69,7 +69,7 @@
       "home": "Home",
       "library": "Library",
       "search": "Search",
-      "playlist_input": "Playlist name",
+      "playlist_input": "Type the playlist name",
       "create_playlist_button": "Create Playlist"
     },
     "playlist_modal": {
