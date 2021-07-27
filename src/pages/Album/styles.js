@@ -72,6 +72,7 @@ export const Section = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: ${(props) => props.theme.spacing.large};
+  margin-top: ${(props) => props.theme.spacing.tiny};
 
   &:last-child {
     margin-bottom: 0px;

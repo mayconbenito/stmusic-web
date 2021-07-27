@@ -107,16 +107,21 @@ export const PlaylistInput = styled.input`
 `;
 
 export const CreatePlaylistButton = styled.button`
-  background-color: ${(props) => props.theme.colors.darkestGray};
-  color: ${(props) => props.theme.colors.primary};
-  border-radius: ${(props) => props.theme.spacing.tiny};
-  margin-top: ${(props) => props.theme.spacing.smallest};
+  width: 100%;
   border: none;
-  padding: ${(props) => props.theme.spacing.smallest};
-  cursor: pointer;
-  font-weight: 500;
+  background-color: ${(props) => props.theme.colors.primary};
+  padding: ${(props) =>
+    `${props.theme.spacing.smallest} ${props.theme.spacing.base}`};
+  font-size: ${(props) => props.theme.fontSizes.small};
+  border-radius: ${(props) => props.theme.spacing.tiny};
+  color: ${(props) => props.theme.colors.black};
+  margin-right: ${(props) => props.theme.spacing.smallest};
+  font-weight: bold;
+  font-family: Roboto;
+  cursor: ${(props) => (props.cursorPointer ? 'pointer' : 'default')};
+  margin-top: ${(props) => props.theme.spacing.smallest};
 
   &:hover {
-    background-color: #202020;
+    background-color: ${(props) => props.theme.colors.lightPrimary};
   }
 `;
