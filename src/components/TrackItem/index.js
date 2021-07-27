@@ -31,9 +31,9 @@ function TrackItem({ data, style, onClick }) {
         <Name onClick={onClick}>{data.name}</Name>
         <TextList>
           <Type>{t('commons.track')} | </Type>
-          {data.artists.map(
-            (artist, index) => (index ? ', ' : '') + artist.name
-          )}
+          {data.artists
+            .slice(0, 2)
+            .map((artist, index) => (index ? ', ' : '') + artist.name)}
         </TextList>
       </Details>
 
