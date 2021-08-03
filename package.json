@@ -29,7 +29,7 @@
     "react-transition-group": "^4.4.1",
     "react-virtualized": "^9.22.2",
     "react-web-track-player": "^1.4.3",
-    "redux": "^4.0.4",
+    "redux": "^4.1.1",
     "redux-saga": "^1.0.3",
     "reduxsauce": "^1.2.0",
     "styled-components": "^4.3.2",
