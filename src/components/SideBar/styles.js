@@ -100,6 +100,7 @@ export const PlaylistInput = styled.input`
   border: none;
   margin-top: ${(props) => props.theme.spacing.tiniest};
   color: ${(props) => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.fontSizes.smallerFontSize};
 
   &::placeholder {
     color: ${(props) => props.theme.colors.primary};
